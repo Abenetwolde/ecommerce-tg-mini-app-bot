@@ -6,13 +6,14 @@ import { FaArrowLeft } from "react-icons/fa";
 import useMobile from '../hooks/useMobile';
 
 
-const Search = () => {
+const Search = ({ searchText, setSearchText }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [isSearchPage,setIsSearchPage] = useState(false)
     const [ isMobile ] = useMobile()
     const params = useLocation()
-    const searchText = params.search.slice(3)
+    // const searchText = params.search.slice(3)
+    // const  [searchText, setSearch] = useState("")
 
     useEffect(()=>{
         const isSearch = location.pathname === "/search"
@@ -26,8 +27,10 @@ const Search = () => {
 
     const handleOnChange = (e)=>{
         const value = e.target.value
-        const url = `/search?q=${value}`
-        navigate(url)
+        setSearchText(value)
+        console.log("searchText",value)
+        // const url = `/search?q=${value}`
+        // navigPate(url)
     }
 
   return (
@@ -81,7 +84,7 @@ const Search = () => {
                     <div className='w-full h-full'>
                         <input
                             type='text'
-                            placeholder='Search for atta dal and more.'
+                            placeholder='Search....'
                             autoFocus
                             defaultValue={searchText}
                             className='bg-transparent w-full h-full outline-none'

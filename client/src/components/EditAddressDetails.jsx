@@ -52,8 +52,8 @@ const EditAddressDetails = ({close, data}) => {
         }
     }
   return (
-    <section className='bg-black fixed top-0 left-0 right-0 bottom-0 z-50 bg-opacity-70 h-screen overflow-auto'>
-        <div className='bg-white p-4 w-full max-w-lg mt-8 mx-auto rounded'>
+    <section className='bg-[var(--tg-theme-secondary-bg-color)] fixed top-0 left-0 right-0 bottom-0 z-50 bg-opacity-70 h-screen overflow-auto'>
+        <div className=' p-4 w-full max-w-lg mt-8 mx-auto rounded'>
             <div className='flex justify-between items-center gap-4'>
                 <h2 className='font-semibold'>Edit Address</h2>
                 <button onClick={close} className='hover:text-red-500'>
@@ -66,7 +66,7 @@ const EditAddressDetails = ({close, data}) => {
                     <input
                         type='text'
                         id='addressline' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("address_line",{required : true})}
                     />
                 </div>
@@ -75,7 +75,7 @@ const EditAddressDetails = ({close, data}) => {
                     <input
                         type='text'
                         id='city' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("city",{required : true})}
                     />
                 </div>
@@ -93,7 +93,7 @@ const EditAddressDetails = ({close, data}) => {
                     <input
                         type='text'
                         id='pincode' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("pincode",{required : true})}
                     />
                 </div>
@@ -102,7 +102,7 @@ const EditAddressDetails = ({close, data}) => {
                     <input
                         type='text'
                         id='country' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("country",{required : true})}
                     />
                 </div>

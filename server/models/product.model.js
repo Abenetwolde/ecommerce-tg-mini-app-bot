@@ -49,16 +49,19 @@ const productSchema = new mongoose.Schema({
         default : true
     }
 },{
-    timestamps : true
+    timestamps : true,
+    autoIndex: true 
 })
 
 //create a text index
 productSchema.index({
     name  : "text",
     description : 'text'
-},{
-    name : 10,
-    description : 5
+}, {
+    weights: {
+        name: 10,
+        description: 5
+    }
 })
 
 

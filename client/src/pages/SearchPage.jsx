@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom'
 import noDataImage from '../assets/nothing here yet.webp'
 import { BackButton } from '@vkruglikov/react-telegram-web-app'
 import Search from '../components/Search'
-
+import toast from "react-hot-toast"
 const SearchPage = () => {
   const [data,setData] = useState([])
   const [loading,setLoading] = useState(true)
@@ -17,36 +17,40 @@ const SearchPage = () => {
   const [page,setPage] = useState(1)
   const [totalPage,setTotalPage] = useState(1)
   const params = useLocation()
-  const searchText = params?.search?.slice(3)
-
+  // const searchText = params?.search?.slice(3)
+  const [searchText, setSearchText] = useState("");
   const fetchData = async() => {
     try {
       setLoading(true)
         const response = await Axios({
             ...SummaryApi.searchProduct,
             data : {
-              search : searchText ,
+              search : searchText .toString(),
               page : page,
             }
         })
-
-        const { data : responseData } = response
-
-        if(responseData.success){
-            if(responseData.page == 1){
-              setData(responseData.data)
+ 
+        const { data : responseDataq } = response
+        // const responseDataq = typeof response.data === "string" 
+        // ? JSON.parse(response.data) 
+        // : response.data
+                                            
+        if(responseDataq?.success){
+            if(responseDataq?.page == 1){
+              setData(responseDataq?.data)
             }else{
               setData((preve)=>{
                 return[
                   ...preve,
-                  ...responseData.data
+                  ...responseDataq?.data
                 ]
               })
             }
-            setTotalPage(responseData.totalPage)
-            console.log(responseData)
+            setTotalPage(responseDataq?.totalPage)
+            console.log(responseDataq)
         }
     } catch (error) {
+      toast.error(`Error: ${error.message || "Unknown error occurred"}`);
         AxiosToastError(error)
     }finally{
       setLoading(false)
@@ -57,7 +61,7 @@ const SearchPage = () => {
     fetchData()
   },[page,searchText])
 
-  console.log("page",page)
+
 
   const handleFetchMore = ()=>{
     if(totalPage > page){
@@ -75,9 +79,9 @@ const SearchPage = () => {
        <BackButton onClick={handleBackButtonClick} />
       <div className='container mx-auto p-4'>
         <p className='font-semibold pb-1'>Search Results: {data.length}  </p>
-<Search />
+<Search searchText={searchText} setSearchText={setSearchText} />
         <InfiniteScroll
-              dataLength={data.length}
+              dataLength={data?.length}
               hasMore={true}
               next={handleFetchMore}
         >

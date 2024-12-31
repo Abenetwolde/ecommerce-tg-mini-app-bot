@@ -66,11 +66,11 @@ export const getProductController = async(request,response)=>{
             limit = 10
         }
 
-        const query = search ? {
-            $text : {
-                $search : search
+        const query = search && search.trim() ? {
+            $text: {
+                $search: search.trim()
             }
-        } : {}
+        } : {};
 
         const skip = (page - 1) * limit
 
@@ -268,7 +268,7 @@ export const deleteProductDetails = async(request,response)=>{
 export const searchProduct = async(request,response)=>{
     try {
         let { search, page , limit } = request.body 
-
+console.log('search',request.body )
         if(!page){
             page = 1
         }
@@ -276,11 +276,18 @@ export const searchProduct = async(request,response)=>{
             limit  = 10
         }
 
+        // const query = search ? {
+        //     $text : {
+        //         $search : search
+        //     }
+        // } : {}
         const query = search ? {
-            $text : {
-                $search : search
-            }
-        } : {}
+            $or: [
+                { name: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } }
+            ]
+        } : {};
+        console.log('query',query)
 
         const skip = ( page - 1) * limit
 
@@ -288,6 +295,7 @@ export const searchProduct = async(request,response)=>{
             ProductModel.find(query).sort({ createdAt  : -1 }).skip(skip).limit(limit).populate('category subCategory'),
             ProductModel.countDocuments(query)
         ])
+        console.log("data..........",data)
 
         return response.json({
             message : "Product data",

@@ -14,11 +14,12 @@ import productRouter from './route/product.route.js'
 import cartRouter from './route/cart.route.js'
 import addressRouter from './route/address.route.js'
 import orderRouter from './route/order.route.js'
+import ProductModel from './models/product.model.js'
 
 const app = express()
 app.use(cors({
     credentials : true,
-    origin : [process.env.FRONTEND_URL,'https://4cytbizx9stc.share.zrok.io']
+    origin : [process.env.FRONTEND_URL,'https://8llynvgh48v2.share.zrok.io']
 }))
 app.use(express.json())
 app.use(cookieParser())

@@ -49,9 +49,9 @@ const AddAddress = ({close}) => {
         }
     }
   return (
-    <section className='  fixed top-0 left-0 right-0 bottom-0 z-50  h-screen overflow-auto '>
+    <section className=' bg-[var(--tg-theme-secondary-bg-color)]  fixed top-0 left-0 right-0 bottom-0 z-50  h-screen overflow-auto '>
         <div className='p-4 w-full max-w-lg mt-8 mx-auto rounded'>
-            <div className='flex justify-between items-center gap-4'>
+            <div className='flex justify-between items-center gap-4 z-40 '>
                 <h2 className='font-semibold '>Add Address</h2>
                 <button onClick={close} className='hover:text-red-500'>
                     <IoClose  size={25}/>
@@ -63,7 +63,7 @@ const AddAddress = ({close}) => {
                     <input
                         type='text'
                         id='addressline' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("addressline",{required : true})}
                     />
                 </div>
@@ -72,7 +72,7 @@ const AddAddress = ({close}) => {
                     <input
                         type='text'
                         id='city' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("city",{required : true})}
                     />
                 </div>
@@ -81,7 +81,7 @@ const AddAddress = ({close}) => {
                     <input
                         type='text'
                         id='state' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("state",{required : true})}
                     />
                 </div>
@@ -90,7 +90,7 @@ const AddAddress = ({close}) => {
                     <input
                         type='text'
                         id='pincode' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("pincode",{required : true})}
                     />
                 </div>
@@ -99,7 +99,7 @@ const AddAddress = ({close}) => {
                     <input
                         type='text'
                         id='country' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("country",{required : true})}
                     />
                 </div>
@@ -108,12 +108,12 @@ const AddAddress = ({close}) => {
                     <input
                         type='text'
                         id='mobile' 
-                        className='border bg-blue-50 p-2 rounded'
+                        className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("mobile",{required : true})}
                     />
                 </div>
 
-                <button type='submit' className='bg-primary-200 w-full  py-2 font-semibold mt-4 hover:bg-primary-100'>Submit</button>
+                <button type='submit' className='bg-[var(--tg-theme-button-color)] w-full  py-2 font-semibold mt-4 hover:bg-primary-100'>Submit</button>
             </form>
         </div>
     </section>

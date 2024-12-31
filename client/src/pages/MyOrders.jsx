@@ -7,9 +7,9 @@ const MyOrders = () => {
 
   console.log("order Items",orders)
   return (
-    <div>
-      <div className='bg-white shadow-md p-3 font-semibold'>
-        <h1>Order</h1>
+    <div className=' md:bg-white lg:bg-white'>
+      <div className='bg-[var(--tg-theme-secondary-bg-color)] shadow-md p-3 font-semibold'>
+        <h1>Orders</h1>
       </div>
         {
           !orders[0] && (
@@ -23,10 +23,10 @@ const MyOrders = () => {
                   <p>Order No : {order?.orderId}</p>
                   <div className='flex gap-3'>
                     <img
-                      src={order.product_details.image[0]} 
+                      src={order?.product_details?.image[0]} 
                       className='w-14 h-14'
                     />  
-                    <p className='font-medium'>{order.product_details.name}</p>
+                    <p className='font-medium'>{order?.product_details?.name}</p>
                   </div>
               </div>
             )

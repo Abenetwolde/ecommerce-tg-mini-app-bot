@@ -39,7 +39,7 @@ const Address = () => {
     <div className=''>
         <div className=' shadow-lg px-2 py-2 flex justify-between gap-4 items-center '>
             <h2 className='font-semibold text-ellipsis line-clamp-1'>Address</h2>
-            <button onClick={()=>setOpenAddress(true)} className='border border-primary-200 text-primary-200 px-3 hover:bg-primary-200 hover:text-black py-1 rounded-full'>
+            <button onClick={()=>setOpenAddress(true)} className='border border-[var(--tg-theme-button-light-color)] text-[var(--tg-theme-button-light-color)] px-3   py-1 rounded-full'>
                 Add Address
             </button>
         </div>
@@ -59,12 +59,12 @@ const Address = () => {
                             <button onClick={()=>{
                               setOpenEdit(true)
                               setEditData(address)
-                            }} className='bg-green-200 p-1 rounded  hover:text-white hover:bg-green-600'>
+                            }} className='bg-green-500 p-1 rounded  hover:text-white hover:bg-green-600'>
                               <MdEdit/>
                             </button>
                             <button onClick={()=>
                               handleDisableAddress(address._id)
-                            } className='bg-red-200 p-1 rounded hover:text-white hover:bg-red-600'>
+                            } className='bg-red-500 p-1 rounded hover:text-white hover:bg-red-600'>
                               <MdDelete size={20}/>  
                             </button>
                           </div>
@@ -72,7 +72,7 @@ const Address = () => {
                   )
                 })
               }
-              <div onClick={()=>setOpenAddress(true)} className='h-16 bg-blue-50 border-2 border-dashed flex justify-center items-center cursor-pointer'>
+              <div onClick={()=>setOpenAddress(true)} className='h-16 border-2 border-dashed flex justify-center items-center cursor-pointer'>
                 Add address
               </div>
         </div>

@@ -10,6 +10,7 @@ import AxiosToastError from '../utils/AxiosToastError'
 import { HiOutlineExternalLink } from "react-icons/hi";
 import isAdmin from '../utils/isAdmin'
 import useTelegramUser from '../hookscopy/useTelegramUser'
+import { BackButton } from '@vkruglikov/react-telegram-web-app'
 
 const UserMenu = ({close}) => {
    const user = useSelector((state)=> state.user)
@@ -44,11 +45,14 @@ const UserMenu = ({close}) => {
    }
    
    const tguser = useTelegramUser();
-   
+   const handleBackButtonClick = () => {
+
+    window.history.back(); // Example: goes back in the browser history
+  };
 
   return (
     <div className=''>
-       <p className='text-black'>Accounttttttttttttttttttt</p>
+ <BackButton onClick={handleBackButtonClick}/>
         <div className='font-semibold'>My Account</div>
         <div className='text-sm flex items-center gap-2'>
           <span className='max-w-52 text-ellipsis line-clamp-1'>{tguser?.first_name   || user.mobile||"user"} <span className='text-medium text-red-600'>{user.role === "ADMIN" ? "(Admin)" : "" }</span></span>
@@ -59,7 +63,7 @@ const UserMenu = ({close}) => {
 
         <Divider/>
 
-        <div className='text-sm grid gap-1'>
+        <div className=' text-sm grid gap-1'>
             {
               isAdmin(user.role) && (
                 <Link onClick={handleClose} to={"/dashboard/category"} className='px-2  py-1'>Category</Link>
@@ -88,7 +92,7 @@ const UserMenu = ({close}) => {
 
             <Link onClick={handleClose} to={"/dashboard/address"} className='px-2  py-1'>Save Address</Link>
 
-            <button onClick={handleLogout} className='text-left px-2  py-1'>Log Out</button>
+            {/* <button onClick={handleLogout} className='text-left px-2  py-1'>Log Out</button> */}
 
         </div>
     </div>

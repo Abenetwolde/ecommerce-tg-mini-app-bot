@@ -103,10 +103,10 @@ const Header = () => {
                                                 </div>
                                                 {
                                                     openUserMenu && (
-                                                        <div className='bg-[var(--tg-theme-bg-color)] !absolute !right-0 !top-12 '>
+                                                        <div className='bg-green-700 !absolute !right-0 !top-12 '>
                                                            
                                                             <div className=' !important  !rounded !p-4 !min-w-52 !lg:shadow-lg'>
-                                                                <UserMenu close={handleCloseUserMenu} />
+                                                                {/* <UserMenu close={handleCloseUserMenu} /> */}
                                                             </div>
                                                         </div>
                                                     )

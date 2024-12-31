@@ -3,7 +3,11 @@ import SummaryApi , { baseURL } from "../common/SummaryApi";
 
 const Axios = axios.create({
     baseURL : baseURL,
-    withCredentials : true
+    withCredentials : true,
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+    },
 })
 
 //sending access token in the header
