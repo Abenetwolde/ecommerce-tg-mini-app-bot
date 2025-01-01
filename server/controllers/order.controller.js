@@ -3,7 +3,7 @@ import CartProductModel from "../models/cartproduct.model.js";
 import OrderModel from "../models/order.model.js";
 import UserModel from "../models/user.model.js";
 import mongoose from "mongoose";
-
+import axios from "axios";
  export async function CashOnDeliveryOrderController(request,response){
     try {
         const userId = request.userId // auth middleware 
@@ -56,50 +56,129 @@ export const pricewithDiscount = (price,dis = 1)=>{
 
 export async function paymentController(request,response){
     try {
-        const userId = request.userId // auth middleware 
-        const { list_items, totalAmt, addressId,subTotalAmt } = request.body 
+        const userId = request.userId; // auth middleware 
+    const { list_items, totalAmt, addressId, subTotalAmt } = request.body;
+console.log("totalAmt",totalAmt)
+    const user = await UserModel.findById(userId);
 
-        const user = await UserModel.findById(userId)
+    // Map line items for reference or records (optional)
+    const line_items = list_items.map(item => ({
+      name: item?.productId.name,
+      quantity: item?.quantity,
+      price: pricewithDiscount(item.productId.price, item.productId.discount),
+    }));
+    const TEXT_REF = "tx-" + Date.now()
+    // Chapa payment payload
+    const paymentData = {
+      tx_ref: TEXT_REF, // unique transaction reference
+      amount: totalAmt,
+      currency: "ETB",
+      customer: {
+        email: user.email||"test-email",
+        name: `${user?.first_name||"test first name"} ${user?.last_name||"test last name"}`,
+        phone_number: user?.mobile || "0947081190",
+      },
+      customizations: {
+        title: "Telegram Mini App",
+        description: "Payment for items in your cart",
+        // logo: `${process.env.FRONTEND_URL}/logo.png`, // Your logo URL
+      },
+    //   callback_url: `${process.env.FRONTEND_URL}/success`,
+    callback_url: `http://localhost:8080/api/order/verify-payment/${TEXT_REF}`,
+      return_url: `${process.env.FRONTEND_URL}/success`,
+    };
 
-        const line_items  = list_items.map(item =>{
-            return{
-               price_data : {
-                    currency : 'inr',
-                    product_data : {
-                        name : item.productId.name,
-                        images : item.productId.image,
-                        metadata : {
-                            productId : item.productId._id
-                        }
-                    },
-                    unit_amount : pricewithDiscount(item.productId.price,item.productId.discount) * 100   
-               },
-               adjustable_quantity : {
-                    enabled : true,
-                    minimum : 1
-               },
-               quantity : item.quantity 
-            }
-        })
+    // Send request to Chapa API
+    const chapaResponse = await axios.post(
+      "https://api.chapa.co/v1/transaction/initialize",
+      paymentData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.CHAPA_SECRET_KEY}`, // Chapa secret key
+        },
+      }
+    );
 
-        const params = {
-            submit_type : 'pay',
-            mode : 'payment',
-            payment_method_types : ['card'],
-            customer_email : user.email,
-            metadata : {
-                userId : userId,
-                addressId : addressId
-            },
-            line_items : line_items,
-            success_url : `${process.env.FRONTEND_URL}/success`,
-            cancel_url : `${process.env.FRONTEND_URL}/cancel`
+    const { data } = chapaResponse;
+console.log("data..........",data)
+    if (data.status !== "success") {
+      throw new Error("Failed to create Chapa payment session");
+    }
 
-        }
+// Payment was successful; create orders in the database
+const payload = list_items.map(el => ({
+    userId: userId,
+    orderId: `ORD-${new mongoose.Types.ObjectId()}`,
+    productId: el.productId._id,
+    product_details: {
+      name: el.productId.name,
+      image: el.productId.image,
+    },
+    paymentId: TEXT_REF, // Use the Chapa transaction reference
+    payment_status: "PAID",
+    delivery_address: addressId,
+    subTotalAmt: subTotalAmt,
+    totalAmt: totalAmt,
+  }));
 
-        const session = await Stripe.checkout.sessions.create(params)
+  const generatedOrder = await OrderModel.insertMany(payload);
 
-        return response.status(200).json(session)
+  // Remove items from the cart
+  await CartProductModel.deleteMany({ userId: userId });
+  await UserModel.updateOne({ _id: userId }, { shopping_cart: [] });
+
+  return response.status(200).json({
+    message: "Payment and order creation successful",
+    error: false,
+    success: true,
+    payment_url: data.data.checkout_url, // Redirect URL to the Chapa payment page
+    orders: generatedOrder,
+  });
+
+        // const userId = request.userId // auth middleware 
+        // const { list_items, totalAmt, addressId,subTotalAmt } = request.body 
+
+        // const user = await UserModel.findById(userId)
+
+        // const line_items  = list_items.map(item =>{
+        //     return{
+        //        price_data : {
+        //             currency : 'inr',
+        //             product_data : {
+        //                 name : item.productId.name,
+        //                 images : item.productId.image,
+        //                 metadata : {
+        //                     productId : item.productId._id
+        //                 }
+        //             },
+        //             unit_amount : pricewithDiscount(item.productId.price,item.productId.discount) * 100   
+        //        },
+        //        adjustable_quantity : {
+        //             enabled : true,
+        //             minimum : 1
+        //        },
+        //        quantity : item.quantity 
+        //     }
+        // })
+
+        // const params = {
+        //     submit_type : 'pay',
+        //     mode : 'payment',
+        //     payment_method_types : ['card'],
+        //     customer_email : user.email,
+        //     metadata : {
+        //         userId : userId,
+        //         addressId : addressId
+        //     },
+        //     line_items : line_items,
+        //     success_url : `${process.env.FRONTEND_URL}/success`,
+        //     cancel_url : `${process.env.FRONTEND_URL}/cancel`
+
+        // }
+
+        // const session = await Stripe.checkout.sessions.create(params)
+
+        // return response.status(200).json(session)
 
     } catch (error) {
         return response.status(500).json({
@@ -109,7 +188,53 @@ export async function paymentController(request,response){
         })
     }
 }
-
+export async function verifyPayment(request, response) {
+    console.log("reach verifyPayment ",request.params.tx_ref)
+    try {
+      const { tx_ref } = request.params;
+  
+      // Send verification request to Chapa API
+      const chapaResponse = await axios.get(
+        `https://api.chapa.co/v1/transaction/verify/${tx_ref}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.CHAPA_SECRET_KEY}`, // Chapa secret key
+          },
+        }
+      );
+  
+      const { status, data } = chapaResponse.data;
+  
+      if (status === "success") {
+        // Update the payment status in the database to "VERIFIED"
+        await OrderModel.updateMany(
+          { paymentId: tx_ref },
+          { payment_status: "VERIFIED", payment_details: data }
+        );
+  
+        console.log("Payment successfully verified.");
+        return response.status(200).json({
+          message: "Payment successfully verified.",
+          error: false,
+          success: true,
+        });
+      } else {
+        console.log("Payment verification failed.");
+        return response.status(400).json({
+          message: "Payment verification failed.",
+          error: true,
+          success: false,
+        });
+      }
+    } catch (error) {
+      console.error("Verification error:", error);
+      return response.status(500).json({
+        message: "Payment verification error.",
+        error: true,
+        success: false,
+      });
+    }
+  }
 
 const getOrderProductItems = async({
     lineItems,

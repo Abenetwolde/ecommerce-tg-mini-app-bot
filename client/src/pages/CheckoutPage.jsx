@@ -11,77 +11,105 @@ import { useNavigate } from 'react-router-dom'
 import { loadStripe } from '@stripe/stripe-js'
 
 const CheckoutPage = () => {
-  const { notDiscountTotalPrice, totalPrice, totalQty, fetchCartItem,fetchOrder } = useGlobalContext()
+  const { notDiscountTotalPrice, totalPrice, totalQty, fetchCartItem, fetchOrder } = useGlobalContext()
   const [openAddress, setOpenAddress] = useState(false)
   const addressList = useSelector(state => state.addresses.addressList)
   const [selectAddress, setSelectAddress] = useState(0)
   const cartItemsList = useSelector(state => state.cartItem.cart)
   const navigate = useNavigate()
 
-  const handleCashOnDelivery = async() => {
-      try {
-          const response = await Axios({
-            ...SummaryApi.CashOnDeliveryOrder,
-            data : {
-              list_items : cartItemsList,
-              addressId : addressList[selectAddress]?._id,
-              subTotalAmt : totalPrice,
-              totalAmt :  totalPrice,
-            }
-          })
-
-          const { data : responseData } = response
-
-          if(responseData.success){
-              toast.success(responseData.message)
-              if(fetchCartItem){
-                fetchCartItem()
-              }
-              if(fetchOrder){
-                fetchOrder()
-              }
-              navigate('/success',{
-                state : {
-                  text : "Order"
-                }
-              })
-          }
-
-      } catch (error) {
-        AxiosToastError(error)
-      }
-  }
-
-  const handleOnlinePayment = async()=>{
+  const handleCashOnDelivery = async () => {
     try {
-        toast.loading("Loading...")
-        const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY
-        const stripePromise = await loadStripe(stripePublicKey)
-       
-        const response = await Axios({
-            ...SummaryApi.payment_url,
-            data : {
-              list_items : cartItemsList,
-              addressId : addressList[selectAddress]?._id,
-              subTotalAmt : totalPrice,
-              totalAmt :  totalPrice,
-            }
-        })
+      const response = await Axios({
+        ...SummaryApi.CashOnDeliveryOrder,
+        data: {
+          list_items: cartItemsList,
+          addressId: addressList[selectAddress]?._id,
+          subTotalAmt: totalPrice,
+          totalAmt: totalPrice,
+        }
+      })
 
-        const { data : responseData } = response
+      const { data: responseData } = response
 
-        stripePromise.redirectToCheckout({ sessionId : responseData.id })
-        
-        if(fetchCartItem){
+      if (responseData.success) {
+        toast.success(responseData.message)
+        if (fetchCartItem) {
           fetchCartItem()
         }
-        if(fetchOrder){
+        if (fetchOrder) {
           fetchOrder()
         }
+        navigate('/success', {
+          state: {
+            text: "Order"
+          }
+        })
+      }
+
     } catch (error) {
-        AxiosToastError(error)
+      AxiosToastError(error)
     }
   }
+
+  // const handleOnlinePayment = async () => {
+  //   try {
+  //     toast.loading("Loading...")
+  //     const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY
+  //     const stripePromise = await loadStripe(stripePublicKey)
+
+  //     const response = await Axios({
+  //       ...SummaryApi.payment_url,
+  //       data: {
+  //         list_items: cartItemsList,
+  //         addressId: addressList[selectAddress]?._id,
+  //         subTotalAmt: totalPrice,
+  //         totalAmt: totalPrice,
+  //       }
+  //     })
+
+  //     const { data: responseData } = response
+
+  //     stripePromise.redirectToCheckout({ sessionId: responseData.id })
+
+  //     if (fetchCartItem) {
+  //       fetchCartItem()
+  //     }
+  //     if (fetchOrder) {
+  //       fetchOrder()
+  //     }
+  //   } catch (error) {
+  //     AxiosToastError(error)
+  //   }
+  // }
+  const handleOnlinePayment = async () => {
+    try {
+      toast.loading("Loading...");
+      const response = await Axios({
+        ...SummaryApi.payment_url, // API endpoint to create a payment
+        data: {
+          list_items: cartItemsList,
+          addressId: addressList[selectAddress]?._id,
+          subTotalAmt: totalPrice,
+          totalAmt: totalPrice,
+        },
+      });
+  
+      const { data: responseData } = response;
+  
+      // Redirect user to the Chapa payment URL
+      window.location.href = responseData.payment_url;
+  
+      if (fetchCartItem) {
+        fetchCartItem();
+      }
+      if (fetchOrder) {
+        fetchOrder();
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    }
+  };
   return (
     <section className=''>
       <div className='container mx-auto p-4 flex flex-col lg:flex-row w-full gap-5 justify-between'>
@@ -93,7 +121,7 @@ const CheckoutPage = () => {
               addressList.map((address, index) => {
                 return (
                   <label htmlFor={"address" + index} className={!address.status && "hidden"}>
-                    <div className='border rounded p-3 flex gap-3 hover:bg-blue-50'>
+                    <div className='border rounded p-3 flex gap-3 '>
                       <div>
                         <input id={"address" + index} type='radio' value={index} onChange={(e) => setSelectAddress(e.target.value)} name='address' />
                       </div>
@@ -109,7 +137,7 @@ const CheckoutPage = () => {
                 )
               })
             }
-            <div onClick={() => setOpenAddress(true)} className='h-16 bg-blue-50 border-2 border-dashed flex justify-center items-center cursor-pointer'>
+            <div onClick={() => setOpenAddress(true)} className='h-16  border-2 border-dashed flex justify-center items-center cursor-pointer'>
               Add address
             </div>
           </div>
@@ -121,29 +149,30 @@ const CheckoutPage = () => {
         <div className='w-full max-w-md  py-4 px-2'>
           {/**summary**/}
           <h3 className='text-lg font-semibold'>Summary</h3>
-          <div className=' p-4'>
-            <h3 className='font-semibold'>Bill details</h3>
-            <div className='flex gap-4 justify-between ml-1'>
+          <h3 className='font-semibold'>Bill details</h3>
+          <div className='grid  sm:grid-cols-2 gap-4'>
+
+            <div className='flex  justify-between   text-sm' >
               <p>Items total</p>
               <p className='flex items-center gap-2'><span className='line-through text-neutral-400'>{DisplayPriceInRupees(notDiscountTotalPrice)}</span><span>{DisplayPriceInRupees(totalPrice)}</span></p>
             </div>
-            <div className='flex gap-4 justify-between ml-1'>
+            <div className='flex  justify-between   text-sm'>
               <p>Quntity total</p>
-              <p className='flex items-center gap-2'>{totalQty} item</p>
+              <p className='flex items-center gap-2  text-sm'>{totalQty} item</p>
             </div>
-            <div className='flex gap-4 justify-between ml-1'>
+            <div className='flex  justify-between   text-sm'>
               <p>Delivery Charge</p>
-              <p className='flex items-center gap-2'>Free</p>
+              <p className='flex items-center gap-2  text-sm'>Free</p>
             </div>
-            <div className='font-semibold flex items-center justify-between gap-4'>
+            <div className='font-semibold flex items-center justify-between gap-4  text-sm'>
               <p >Grand total</p>
               <p>{DisplayPriceInRupees(totalPrice)}</p>
             </div>
           </div>
           <div className='w-full flex flex-col gap-4'>
-            <button className='py-2 px-4 bg-green-600 hover:bg-green-700 rounded text-white font-semibold' onClick={handleOnlinePayment}>Online Payment</button>
+            <button className='py-2 px-4 bg-[var(--tg-theme-button-color)]  rounded text-white font-semibold' onClick={handleOnlinePayment}>Online Payment</button>
 
-            <button className='py-2 px-4 border-2 border-green-600 font-semibold text-green-600 hover:bg-green-600 hover:text-white' onClick={handleCashOnDelivery}>Cash on Delivery</button>
+            <button className='py-2 px-4 border-2 border-[var(--tg-theme-button-color)] font-semibold text-[var(--tg-theme-button-color)] ' onClick={handleCashOnDelivery}>Cash on Delivery</button>
           </div>
         </div>
       </div>

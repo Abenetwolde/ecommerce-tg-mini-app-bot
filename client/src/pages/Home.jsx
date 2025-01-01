@@ -132,7 +132,7 @@ const Home = () => {
         })
       }
 
-{/* <MainButton text="Send Message" onClick={handleButtonClick} /> */}
+<MainButton text="Send Message" onClick={handleButtonClick} />
 
    </section>
   )

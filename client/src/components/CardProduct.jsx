@@ -17,23 +17,28 @@ const CardProduct = ({data}) => {
   
   return (
     <Link to={url} className='bg-[var(--tg-theme-secondary-bg-color)] border-[var(--tg-theme-hint-color)] py-2 lg:p-4 grid gap-1 lg:gap-3 min-w-36 lg:min-w-52 rounded cursor-pointer ' >
-      <div className='min-h-20 w-full max-h-24 lg:max-h-32 rounded overflow-hidden'>
+      <div className=' relative min-h-20 w-full max-h-24 lg:max-h-32 rounded overflow-hidden'>
             <img 
                 src={data.image[0]}
                 className='w-full h-full object-scale-down lg:scale-125'
             />
+               {data.discount && (
+                    <div className='absolute top-0 right-0 text-[var(--tg-theme-text-color)] bg-red-500 bg-opacity-80  text-xs  rounded-bl'>
+                        {data.discount}% OFF
+                    </div>
+                )}
       </div>
       <div className='flex items-center gap-1'>
-        <div className='rounded text-xs w-fit p-[1px] px-2 text-[var(--tg-theme-text-color)] bg-[var(--tg-theme-bg-color)]'>
+        {/* <div className='rounded text-xs w-fit p-[1px] px-2 text-[var(--tg-theme-text-color)] bg-[var(--tg-theme-bg-color)]'>
               10 min 
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
             {
               Boolean(data.discount) && (
                 <p className=' text-[var(--tg-theme-text-color)] bg-[var(--tg-theme-bg-color)] px-2 w-fit text-xs rounded-full'>{data.discount}% discount</p>
               )
             }
-        </div>
+        </div> */}
       </div>
       <div className='px-2 lg:px-0 font-medium text-ellipsis text-sm lg:text-base line-clamp-2'>
         {data.name}

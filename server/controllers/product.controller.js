@@ -268,7 +268,7 @@ export const deleteProductDetails = async(request,response)=>{
 export const searchProduct = async(request,response)=>{
     try {
         let { search, page , limit } = request.body 
-console.log('search',request.body )
+
         if(!page){
             page = 1
         }
@@ -295,7 +295,7 @@ console.log('search',request.body )
             ProductModel.find(query).sort({ createdAt  : -1 }).skip(skip).limit(limit).populate('category subCategory'),
             ProductModel.countDocuments(query)
         ])
-        console.log("data..........",data)
+       
 
         return response.json({
             message : "Product data",
