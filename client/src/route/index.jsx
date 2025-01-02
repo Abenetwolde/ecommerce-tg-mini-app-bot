@@ -24,6 +24,7 @@ import CheckoutPage from "../pages/CheckoutPage";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import AdminLogin from "../pages/AdminLogin";
+import OrderDetails from "../pages/OrderDetails";
 
 const router = createBrowserRouter([
     {
@@ -66,6 +67,11 @@ const router = createBrowserRouter([
                 path : "user",
                 element : <UserMenuMobile/>
             },
+            {
+                path : "/order/:orderId",
+                element : <OrderDetails/>
+            },
+        
             {
                 path : "dashboard",
                 element : <Dashboard/>,

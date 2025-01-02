@@ -3,7 +3,7 @@ import uploadImageClodinary from "../utils/uploadImageClodinary.js"
 const uploadImageController = async(request,response)=>{
     try {
         const file = request.file
-
+console.log("let see the file.........",file)
         const uploadImage = await uploadImageClodinary(file)
 
         return response.json({

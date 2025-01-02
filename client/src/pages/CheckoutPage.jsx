@@ -9,6 +9,8 @@ import SummaryApi from '../common/SummaryApi'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { loadStripe } from '@stripe/stripe-js'
+import successAlert from '../utils/SuccessAlert'
+import useTelegramUser from '../hookscopy/useTelegramUser'
 
 const CheckoutPage = () => {
   const { notDiscountTotalPrice, totalPrice, totalQty, fetchCartItem, fetchOrder } = useGlobalContext()
@@ -17,7 +19,7 @@ const CheckoutPage = () => {
   const [selectAddress, setSelectAddress] = useState(0)
   const cartItemsList = useSelector(state => state.cartItem.cart)
   const navigate = useNavigate()
-
+const user =useTelegramUser();
   const handleCashOnDelivery = async () => {
     try {
       const response = await Axios({
@@ -31,7 +33,37 @@ const CheckoutPage = () => {
       })
 
       const { data: responseData } = response
-
+      const orderId = responseData.data[0]?.orderId;
+      const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendMessage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            chat_id: user?.id||"1213", // User's Telegram ID
+            text: `Hello, ${user?.first_name||"first name"}! Your order has been placed successfully. Order ID: ${orderId||"1234"}`,
+            reply_markup: {
+              inline_keyboard: [
+                  [
+                      {
+                          text: "View Order",
+                          web_app: {
+                              url: `https://a192r4rebja4.share.zrok.io/order/${orderId}`
+                          }
+                      }
+                  ]
+              ]
+          }
+        }),
+    });
+    console.log("telegramResponse",telegramResponse)
+    if (telegramResponse.ok) {
+      const result = await telegramResponse.json();
+      successAlert('Message sent successfully:');
+  } else {
+    successAlert('Failed to send message:', telegramResponse.statusText);
+  }
+   
       if (responseData.success) {
         toast.success(responseData.message)
         if (fetchCartItem) {
@@ -40,13 +72,18 @@ const CheckoutPage = () => {
         if (fetchOrder) {
           fetchOrder()
         }
-        navigate('/success', {
-          state: {
-            text: "Order"
-          }
-        })
+        // navigate('/success', {
+        //   state: {
+        //     text: "Order"
+        //   }
+        // })
+        const successMessage = "Order placed successfully!";
+        const encodedMessage = encodeURIComponent(successMessage);
+        navigate(`/success?message=${encodedMessage}`);
+       
       }
-
+   
+     
     } catch (error) {
       AxiosToastError(error)
     }
@@ -96,10 +133,12 @@ const CheckoutPage = () => {
       });
   
       const { data: responseData } = response;
-  
+      const successMessage = "online Payment successful!";
+      const encodedMessage = encodeURIComponent(successMessage);
+      window.location.href = `${responseData.payment_url}?message=${encodedMessage}`;
       // Redirect user to the Chapa payment URL
-      window.location.href = responseData.payment_url;
-  
+      // window.location.href = responseData.payment_url;
+
       if (fetchCartItem) {
         fetchCartItem();
       }

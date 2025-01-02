@@ -16,10 +16,20 @@ bot.start((ctx) => {
         caption: "Caption",
         parse_mode: "Markdown",
         ...Markup.inlineKeyboard([
-          Markup.button.webApp("Click", `https://r1j6w244prt7.share.zrok.io`),
+          Markup.button.webApp("Click", `https://a192r4rebja4.share.zrok.io`),
         ])
 }); 
 })
+// bot.on('callback_query', async (ctx) => {
+//   const callbackData = ctx.callbackQuery.data;
+//   if (callbackData.startsWith('view_order_')) {
+//     const orderId = callbackData.replace('view_order_', '');
+//     const orderInfoUrl = `https://a192r4rebja4.share.zrok.io/order/${orderId}`;
+//     await ctx.answerCbQuery(); // Acknowledge the callback query
+//     await ctx.reply(`You can view your order details here: ${orderInfoUrl}`);
+//   }
+// });
+
 bot.on("message", async (ctx) => {
   // console.log(ctx.message.web_app_data)
   return ctx.reply(ctx.message.web_app_data?.data)

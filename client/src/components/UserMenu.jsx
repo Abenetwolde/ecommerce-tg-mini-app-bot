@@ -51,7 +51,7 @@ const UserMenu = ({close}) => {
   };
 
   return (
-    <div className=''>
+    <div className='md:bg-white'>
  <BackButton onClick={handleBackButtonClick}/>
         <div className='font-semibold'>My Account</div>
         <div className='text-sm flex items-center gap-2'>
