@@ -9,7 +9,7 @@ export async function CashOnDeliveryOrderController(request, response) {
     const userId = request.userId // auth middleware 
     const { list_items, totalAmt, addressId, subTotalAmt } = request.body
 
-    const payload = list_items.map(el => {
+    const payload = list_items?.map(el => {
       return ({
         userId: userId,
         orderId: `ORD-${new mongoose.Types.ObjectId()}`,
@@ -100,7 +100,7 @@ export async function paymentController(request, response) {
     );
 
     const { data } = chapaResponse;
-    console.log("data..........", data)
+
     if (data.status !== "success") {
       throw new Error("Failed to create Chapa payment session");
     }
