@@ -3,11 +3,16 @@ import banner from '../assets/banner.jpg'
 import bannerMobile from '../assets/banner-mobile.jpg'
 import { useSelector } from 'react-redux'
 import { valideURLConvert } from '../utils/valideURLConvert'
-import {Link, useLocation, useNavigate} from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import CategoryWiseProductDisplay from '../components/CategoryWiseProductDisplay'
 import { MainButton } from '@vkruglikov/react-telegram-web-app';
 import useTelegramUser from '../hookscopy/useTelegramUser'
 import Search from '../components/Search'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+
+import 'swiper/css';
+
 const Home = () => {
   const loadingCategory = useSelector(state => state.product.loadingCategory)
   const categoryData = useSelector(state => state.product.allCategory)
@@ -43,98 +48,125 @@ const Home = () => {
     }
   };
 
-  const handleRedirectProductListpage = (id,cat)=>{
-      console.log(id,cat)
-      const subcategory = subCategoryData.find(sub =>{
-        const filterData = sub.category.some(c => {
-          return c._id == id
-        })
-
-        return filterData ? true : null
+  const handleRedirectProductListpage = (id, cat) => {
+    console.log(id, cat)
+    const subcategory = subCategoryData.find(sub => {
+      const filterData = sub.category.some(c => {
+        return c._id == id
       })
-      const url = `/${valideURLConvert(cat)}-${id}/${valideURLConvert(subcategory.name)}-${subcategory._id}`
 
-      navigate(url)
-      console.log(url)
+      return filterData ? true : null
+    })
+    const url = `/${valideURLConvert(cat)}-${id}/${valideURLConvert(subcategory.name)}-${subcategory._id}`
+
+    navigate(url)
+    console.log(url)
   }
 
-    const location = useLocation();
+  const location = useLocation();
   const telegram = useTelegramUser()
-    const isLoginPage = location.pathname === '/login';
-    const isSearchPage = location.pathname === "/search"
+  const isLoginPage = location.pathname === '/login';
+  const isSearchPage = location.pathname === "/search"
   return (
-   <section className='bg-[var(--tg-theme-bg-color)]'>
-              { !isLoginPage&&    <div className="flex py-2 gap-2 justify-center items-center">
-                <p className='text-[var(--tg-theme-hint-color)]'>Welcome</p>
-                <p className="text-[var(--tg-theme-text-color)] font-semibold">{telegram?.first_name}</p>
-            </div>}
-       {    !isLoginPage&& <div className='container mx-auto px-2 lg:hidden'>
-                <Search />
-             
-            </div>}
-      <div className='container mx-auto'>
+    <section className='bg-[var(--tg-theme-bg-color)]'>
+      {!isLoginPage && <div className="flex py-2 gap-2 justify-center items-center">
+        <p className='text-[var(--tg-theme-hint-color)]'>Welcome</p>
+        <p className="text-[var(--tg-theme-text-color)] font-semibold">{telegram?.first_name}</p>
+      </div>}
+      {!isLoginPage && <div className='container mx-auto px-2 lg:hidden'>
+        <Search />
 
-          <div className={`w-full my-5  h-full min-h-20 rounded ${!banner && "animate-pulse my-2 " } `}>
-              <img
-                src={banner}
-                className='w-full h-full hidden lg:block'
-                alt='banner' 
-              />
-              <img
-                src={banner}
-                className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full  h-full lg:hidden'
-                alt='banner' 
-              />
+      </div>}
+      <div className='container mx-auto'>
+      <Swiper
+        spaceBetween={10}
+  
+        slidesPerView={1} // Display 1 image at a time
+        loop={true} // Enable looping through images
+        pagination={{
+          clickable: true, // Makes pagination dots clickable
+          // el: '.swiper-pagination', // Custom pagination class
+        }}// Add pagination controls
+        autoplay={{
+          delay: 4000, // Delay between slide transitions (in ms)
+          disableOnInteraction: true, // Autoplay continues even if user interacts with Swiper
+        }}
+        navigation // Enable navigation buttons
+        modules={[Autoplay, Pagination, Navigation]}
+      >
+        {/* Add image inside SwiperSlide */}
+        <SwiperSlide>
+          <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
+            <img
+              src={banner}
+              className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
+              alt='banner'
+            />
           </div>
+          
+        </SwiperSlide>
+        <SwiperSlide>
+          <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
+            <img
+              src={banner}
+              className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
+              alt='banner'
+            />
+          </div>
+        </SwiperSlide>
+
+        {/* You can add more SwiperSlide components here for additional images */}
+      </Swiper>
+      <div className="swiper-pagination"></div>
       </div>
       <p className='px-4 mx-auto text-sm font-semibold'>Categories</p>
       <div className='container mx-auto px-4 my-2 grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10  gap-2'>
 
-          {
-            loadingCategory ? (
-              new Array(12).fill(null).map((c,index)=>{
-                return(
-                  <div key={index+"loadingcategory"} className='bg-white rounded p-4 min-h-36 grid gap-2 shadow animate-pulse'>
-                    <div className='bg-blue-100 min-h-24 rounded'></div>
-                    <div className='bg-blue-100 h-8 rounded'></div>
+        {
+          loadingCategory ? (
+            new Array(12).fill(null).map((c, index) => {
+              return (
+                <div key={index + "loadingcategory"} className='bg-white rounded p-4 min-h-36 grid gap-2 shadow animate-pulse'>
+                  <div className='bg-blue-100 min-h-24 rounded'></div>
+                  <div className='bg-blue-100 h-8 rounded'></div>
+                </div>
+              )
+            })
+          ) : (
+            categoryData.map((cat, index) => {
+              return (
+                <div key={cat._id + "displayCategory"} className='w-full h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)]' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
+                  <div>
+                    <img
+                      src={cat.image}
+                      className='w-full h-full object-scale-down'
+                    />
+                    {/* <p className='text-xs'>jdsdsd</p> */}
                   </div>
-                )
-              })
-            ) : (
-              categoryData.map((cat,index)=>{
-                return(
-                  <div key={cat._id+"displayCategory"} className='w-full h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)]' onClick={()=>handleRedirectProductListpage(cat._id,cat.name)}>
-                    <div>
-                        <img 
-                          src={cat.image}
-                          className='w-full h-full object-scale-down'
-                        />
-                        {/* <p className='text-xs'>jdsdsd</p> */}
-                    </div>
-                  </div>
-                )
-              })
-              
-            )
-          }
+                </div>
+              )
+            })
+
+          )
+        }
       </div>
 
       {/***display category product */}
       {
-        categoryData?.map((c,index)=>{
-          return(
-            <CategoryWiseProductDisplay 
-              key={c?._id+"CategorywiseProduct"} 
-              id={c?._id} 
+        categoryData?.map((c, index) => {
+          return (
+            <CategoryWiseProductDisplay
+              key={c?._id + "CategorywiseProduct"}
+              id={c?._id}
               name={c?.name}
             />
           )
         })
       }
 
-<MainButton text="Send Message" onClick={handleButtonClick} />
+      {/* <MainButton text="Send Message" onClick={handleButtonClick} /> */}
 
-   </section>
+    </section>
   )
 }
 

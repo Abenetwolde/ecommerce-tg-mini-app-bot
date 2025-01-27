@@ -1,5 +1,22 @@
 import mongoose from "mongoose";
-
+const itemSchema = new mongoose.Schema({
+    productId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "product",
+    },
+    product_details: {
+      name: String,
+      image: [String], // Ensuring an array of strings for product images
+    },
+    quantity: {
+      type: Number,
+      default: 1, // Quantity of the product in the order
+    },
+    price: {
+      type: Number, // Price per unit of the product
+      required: [true, "Provide product price"],
+    },
+  });
 const orderSchema = new mongoose.Schema({
     userId : {
         type : mongoose.Schema.ObjectId,
@@ -10,10 +27,11 @@ const orderSchema = new mongoose.Schema({
         required : [true, "Provide orderId"],
         unique : true
     },
-    productId : {
-        type : mongoose.Schema.ObjectId,
-        ref : "product"
-    },
+    // productId : {
+    //     type : mongoose.Schema.ObjectId,
+    //     ref : "product"
+    // },
+    products: [itemSchema],
     product_details : {
         name : String,
         image : Array,
@@ -25,6 +43,11 @@ const orderSchema = new mongoose.Schema({
     payment_status : {
         type : String,
         default : ""
+    },
+    order_status: {
+        type: String,
+        enum: ["Complete", "Pending", "Cancelled", "Shipped", "Delivered"],
+        default: "Complete", // Default value
     },
     delivery_address : {
         type : mongoose.Schema.ObjectId,

@@ -19,7 +19,7 @@ import ProductModel from './models/product.model.js'
 const app = express()
 app.use(cors({
     credentials : true,
-    origin : [process.env.FRONTEND_URL,'https://wptfxncqhq7h.share.zrok.io']
+    origin : [process.env.FRONTEND_URL,'https://w7s48yrdhj06.share.zrok.io']
 }))
 app.use(express.json())
 app.use(cookieParser())

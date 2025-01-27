@@ -29,3 +29,34 @@
 *::after {
     box-sizing: border-box;
 }
+.swiper-pagination {
+  bottom: 10px; /* Adjust the position if needed */
+  text-align: center;
+}
+
+.swiper-pagination .swiper-pagination-bullet {
+  background-color: #333; /* Bullet color */
+  width: 12px; /* Bullet size */
+  height: 12px; /* Bullet size */
+}
+
+.swiper-pagination .swiper-pagination-bullet-active {
+  background-color: #ff6600; /* Active bullet color */
+}
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.splash-screen h1 {
+  font-size: 24px;
+  color: #333;
+}

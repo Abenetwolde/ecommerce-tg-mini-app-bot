@@ -56,21 +56,22 @@ export const pricewithDiscount = (price, dis = 1) => {
 
 export async function paymentController(request, response) {
   try {
-    const userId = request.userId; // auth middleware 
+    const userId = request.userId; // Retrieved from auth middleware
     const { list_items, totalAmt, addressId, subTotalAmt } = request.body;
-    console.log("totalAmt", totalAmt)
     const user = await UserModel.findById(userId);
 
-    // Map line items for reference or records (optional)
+    // Map line items for Chapa reference or records
     const line_items = list_items.map(item => ({
       name: item?.productId.name,
       quantity: item?.quantity,
       price: pricewithDiscount(item.productId.price, item.productId.discount),
     }));
-    const TEXT_REF = "tx-" + Date.now()
+
+    const TEXT_REF = "tx-" + Date.now();
+
     // Chapa payment payload
     const paymentData = {
-      tx_ref: TEXT_REF, // unique transaction reference
+      tx_ref: TEXT_REF, // Unique transaction reference
       amount: totalAmt,
       currency: "ETB",
       customer: {
@@ -81,9 +82,7 @@ export async function paymentController(request, response) {
       customizations: {
         title: "Telegram Mini App",
         description: "Payment for items in your cart",
-        // logo: `${process.env.FRONTEND_URL}/logo.png`, // Your logo URL
       },
-      //   callback_url: `${process.env.FRONTEND_URL}/success`,
       callback_url: `http://localhost:8080/api/order/verify-payment/${TEXT_REF}`,
       return_url: `${process.env.FRONTEND_URL}/success`,
     };
@@ -105,27 +104,34 @@ export async function paymentController(request, response) {
       throw new Error("Failed to create Chapa payment session");
     }
 
-    // Payment was successful; create orders in the database
-    const payload = list_items.map(el => ({
+    // Create order(s) in the database
+    const orderId = `ORD-${new mongoose.Types.ObjectId()}`;
+    const payload = {
       userId: userId,
-      orderId: `ORD-${new mongoose.Types.ObjectId()}`,
-      productId: el.productId._id,
-      product_details: {
-        name: el.productId.name,
-        image: el.productId.image,
-      },
-      paymentId: TEXT_REF, // Use the Chapa transaction reference
+      orderId: orderId,
+      products: list_items.map(item => ({
+        productId: item.productId._id,
+        product_details: {
+          name: item.productId.name,
+          image: item.productId.image,
+        },
+        quantity: item.quantity,
+        price: pricewithDiscount(item.productId.price, item.productId.discount),
+      })),
+      paymentId: TEXT_REF, // Use Chapa transaction reference
       payment_status: "PAID",
       delivery_address: addressId,
       subTotalAmt: subTotalAmt,
       totalAmt: totalAmt,
-    }));
+    };
 
-    const generatedOrder = await OrderModel.insertMany(payload);
+    const generatedOrder = await OrderModel.create(payload);
 
     // Remove items from the cart
     await CartProductModel.deleteMany({ userId: userId });
     await UserModel.updateOne({ _id: userId }, { shopping_cart: [] });
+
+    console.log(`Generated Order:`, generatedOrder);
 
     return response.status(200).json({
       message: "Payment and order creation successful",
@@ -134,58 +140,13 @@ export async function paymentController(request, response) {
       payment_url: data.data.checkout_url, // Redirect URL to the Chapa payment page
       orders: generatedOrder,
     });
-
-    // const userId = request.userId // auth middleware 
-    // const { list_items, totalAmt, addressId,subTotalAmt } = request.body 
-
-    // const user = await UserModel.findById(userId)
-
-    // const line_items  = list_items.map(item =>{
-    //     return{
-    //        price_data : {
-    //             currency : 'inr',
-    //             product_data : {
-    //                 name : item.productId.name,
-    //                 images : item.productId.image,
-    //                 metadata : {
-    //                     productId : item.productId._id
-    //                 }
-    //             },
-    //             unit_amount : pricewithDiscount(item.productId.price,item.productId.discount) * 100   
-    //        },
-    //        adjustable_quantity : {
-    //             enabled : true,
-    //             minimum : 1
-    //        },
-    //        quantity : item.quantity 
-    //     }
-    // })
-
-    // const params = {
-    //     submit_type : 'pay',
-    //     mode : 'payment',
-    //     payment_method_types : ['card'],
-    //     customer_email : user.email,
-    //     metadata : {
-    //         userId : userId,
-    //         addressId : addressId
-    //     },
-    //     line_items : line_items,
-    //     success_url : `${process.env.FRONTEND_URL}/success`,
-    //     cancel_url : `${process.env.FRONTEND_URL}/cancel`
-
-    // }
-
-    // const session = await Stripe.checkout.sessions.create(params)
-
-    // return response.status(200).json(session)
-
   } catch (error) {
+    console.error("Payment Controller Error:", error.message);
     return response.status(500).json({
       message: error.message || error,
       error: true,
-      success: false
-    })
+      success: false,
+    });
   }
 }
 export async function verifyPayment(request, response) {
@@ -336,11 +297,13 @@ export const getOrderById = async (req, res) => {
   try {
     console.log("req.params............", req.params)
     const { orderId } = req.params;
-    const order = await OrderModel.findOne({ orderId })
+    const neworderId = `ORD-${orderId}`.toString()
+  
+    const order = await OrderModel.findById(orderId)
       .populate('userId')
-      .populate('productId')
+      // .populate('productId')
       .populate('delivery_address');
-
+console.log("order.................",order)
     if (!order) {
       return res.status(404).json({
         message: 'Order not found',
@@ -363,3 +326,50 @@ export const getOrderById = async (req, res) => {
     });
   }
 };
+export async function updateOrderStatusController(req, res) {
+  try {
+      const { orderId } = req.params;
+      const { order_status } = req.body;
+console.log(`orderId........`,orderId)
+console.log(`order_status..........`,order_status)
+
+// Validate order_status
+      const validStatuses = ["Complete", "Pending", "Cancelled", "Shipped", "Delivered"];
+      if (!validStatuses.includes(order_status)) {
+          return res.status(400).json({
+              message: "Invalid order status",
+              error: true,
+              success: false,
+          });
+      }
+
+      // Find the order and update its status
+      const order = await OrderModel.findByIdAndUpdate(
+          orderId , // Find by orderId
+          { order_status }, // Update the order_status
+          { new: true } // Return the updated document
+      );
+
+      if (!order) {
+          return res.status(404).json({
+              message: "Order not found",
+              error: true,
+              success: false,
+          });
+      }
+
+      return res.status(200).json({
+          message: "Order status updated successfully",
+          error: false,
+          success: true,
+          data: order,
+      });
+  } catch (error) {
+      console.error("Error updating order status:", error.message);
+      return res.status(500).json({
+          message: "Internal server error",
+          error: true,
+          success: false,
+      });
+  }
+}

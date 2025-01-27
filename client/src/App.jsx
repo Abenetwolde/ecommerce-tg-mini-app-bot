@@ -3,7 +3,7 @@ import './App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import toast, { Toaster } from 'react-hot-toast';
-import { useEffect } from 'react';
+import { useEffect ,useState} from 'react';
 import fetchUserDetails from './utils/fetchUserDetails';
 import { setUserDetails } from './store/userSlice';
 import { setAllCategory, setAllSubCategory, setLoadingCategory } from './store/productSlice';
@@ -17,7 +17,8 @@ import CartMobileLink from './components/CartMobile';
 import { useThemeParams } from "@vkruglikov/react-telegram-web-app";
 import useTelegramUser from './hookscopy/useTelegramUser';
 import useTelegram from './hookscopy/useTelegram'
-
+// import { useTelegramWebApp } from '@vkruglikov/react-telegram-web-app';
+import useIsReadyTelegram from './hookscopy/useIsReadyTelegram'
 
 
 function App() {
@@ -25,13 +26,20 @@ function App() {
   const tg = useTelegram()
   const userState = useSelector((state) => state?.user);
   const user  = useTelegramUser();
-
+  const [isLoading, setIsLoading] = useState(true);
 
   // console.log("tg",tg)
   const dispatch = useDispatch()
   const location = useLocation()
 
+  const isTelegramReady = useIsReadyTelegram();
 
+  useEffect(() => {
+    // When the Telegram Web App is ready, hide the splash screen
+    if (isTelegramReady) {
+      setIsLoading(false);
+    }
+  }, [isTelegramReady]);
   const authenticateUser = async () => {
     try {
         const response = await Axios({
@@ -142,7 +150,12 @@ const fetchSubCategory = async () => {
 
     <div className="contentWrapper bg-tg-theme-bg text-tg-theme-text px-4 py-1  shadow-md">
 
-      <GlobalProvider>
+{isLoading ? (
+        <div className="splash-screen">
+          <h1>Loading...</h1>
+          {/* You can add a logo or animation here */}
+        </div>
+      ) :(<GlobalProvider>
      
         <Header />
        
@@ -156,7 +169,8 @@ const fetchSubCategory = async () => {
             <CartMobileLink />
           )
         }
-      </GlobalProvider>
+      </GlobalProvider>) 
+}
     </div>
 
   )

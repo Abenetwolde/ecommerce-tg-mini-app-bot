@@ -48,7 +48,7 @@ const user =useTelegramUser();
                       {
                           text: "View Order",
                           web_app: {
-                              url: `https://a192r4rebja4.share.zrok.io/order/${orderId}`
+                              url: `https://w7s48yrdhj06.share.zrok.io/order/${orderId}`
                           }
                       }
                   ]
@@ -133,12 +133,42 @@ const user =useTelegramUser();
       });
   
       const { data: responseData } = response;
+          
       const successMessage = "online Payment successful!";
       const encodedMessage = encodeURIComponent(successMessage);
       window.location.href = `${responseData.payment_url}?message=${encodedMessage}`;
       // Redirect user to the Chapa payment URL
       // window.location.href = responseData.payment_url;
-
+    
+      const orderId = responseData?.orders?._id;
+      const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendMessage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            chat_id: user?.id||"1213", // User's Telegram ID
+            text: `Hello, ${user?.first_name||"first name"}! Your order has been placed successfully. Order ID: ${orderId||"1234"}`,
+            reply_markup: {
+              inline_keyboard: [
+                  [
+                      {
+                          text: "View Order",
+                          web_app: {
+                              url: `https://w7s48yrdhj06.share.zrok.io/order/${orderId}`
+                          }
+                      }
+                  ]
+              ]
+          }
+        }),
+    });
+        if (telegramResponse.ok) {
+      const result = await telegramResponse.json();
+      successAlert('Message sent successfully:');
+  } else {
+    successAlert('Failed to send message:', telegramResponse.statusText);
+  }
       if (fetchCartItem) {
         fetchCartItem();
       }
@@ -157,12 +187,12 @@ const user =useTelegramUser();
           <h3 className='text-lg font-semibold'>Choose your address</h3>
           <div className=' p-2 grid gap-4'>
             {
-              addressList.map((address, index) => {
+              addressList?.map((address, index) => {
                 return (
                   <label htmlFor={"address" + index} className={!address.status && "hidden"}>
                     <div className='border rounded p-3 flex gap-3 '>
                       <div>
-                        <input id={"address" + index} type='radio' value={index} onChange={(e) => setSelectAddress(e.target.value)} name='address' />
+                        <input id={"address" + index} checked={selectAddress === index} type='radio' value={index} onChange={(e) => setSelectAddress(e.target.value)} name='address' />
                       </div>
                       <div>
                         <p>{address.address_line}</p>
