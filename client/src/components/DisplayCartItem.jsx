@@ -10,12 +10,14 @@ import { pricewithDiscount } from '../utils/PriceWithDiscount'
 import imageEmpty from '../assets/empty_cart.webp'
 import toast from 'react-hot-toast'
 import { BackButton } from '@vkruglikov/react-telegram-web-app';
+import useTelegram from '../hookscopy/useTelegram'
+import useTelegramUser from '../hookscopy/useTelegramUser'
 
 <BackButton onClick={() => console.log('Hello, I am back button!')} />;
 const DisplayCartItem = ({ close }) => {
     const { notDiscountTotalPrice, totalPrice, totalQty } = useGlobalContext()
     const cartItem = useSelector(state => state.cartItem.cart)
-    const user = useSelector(state => state.user)
+    const user = useTelegramUser()
     const navigate = useNavigate()
     const handleBackButtonClick = () => {
         console.log('Hello, I am back button!');
@@ -24,13 +26,13 @@ const DisplayCartItem = ({ close }) => {
     };
 
     const redirectToCheckoutPage = () => {
-        if (user?._id) {
+   
             navigate("/checkout")
             if (close) {
                 close()
             }
             return
-        }
+   
 
     }
     return (

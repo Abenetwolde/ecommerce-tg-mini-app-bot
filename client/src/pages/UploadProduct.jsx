@@ -48,26 +48,60 @@ const UploadProduct = () => {
     })
   }
 
-  const handleUploadImage = async(e)=>{
-    const file = e.target.files[0]
+  // const handleUploadImage = async(e)=>{
+  //   const file = e.target.files[0]
 
-    if(!file){
-      return 
+  //   if(!file){
+  //     return 
+  //   }
+  //   setImageLoading(true)
+  //   const response = await uploadImage(file)
+  //   const { data : ImageResponse } = response
+  //   const imageUrl = ImageResponse.data.url 
+
+  //   setData((preve)=>{
+  //     return{
+  //       ...preve,
+  //       image : [...preve.image,imageUrl]
+  //     }
+  //   })
+  //   setImageLoading(false)
+
+  // }
+  const handleUploadImage = async (e) => {
+    const files = e.target.files;
+  
+    if (!files.length) {
+      return;
     }
-    setImageLoading(true)
-    const response = await uploadImage(file)
-    const { data : ImageResponse } = response
-    const imageUrl = ImageResponse.data.url 
-
-    setData((preve)=>{
-      return{
-        ...preve,
-        image : [...preve.image,imageUrl]
-      }
-    })
-    setImageLoading(false)
-
-  }
+  
+    setImageLoading(true);
+  
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append('images', file);
+    }
+  
+    try {
+      const response = await Axios.post('/api/file/multi-upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      const { data: ImageResponse } = response;
+      const uploadedImages = ImageResponse.data.map(image => image.url);
+  
+      setData((prev) => ({
+        ...prev,
+        image: [...prev.image, ...uploadedImages],
+      }));
+    } catch (error) {
+      console.error('Error uploading images:', error);
+    } finally {
+      setImageLoading(false);
+    }
+  };
 
   const handleDeleteImage = async(index)=>{
       data.image.splice(index,1)
@@ -200,6 +234,7 @@ const UploadProduct = () => {
                             id='productImage'
                             className='hidden'
                             accept='image/*'
+                            multiple
                             onChange={handleUploadImage}
                           />
                       </label>

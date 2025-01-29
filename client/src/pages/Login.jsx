@@ -190,11 +190,11 @@ const toastStyle = {
             AxiosToastError(error);
         }
     };
-    if (!userState?._id) {
-        // console.log("is there really no user............")
-        navigate("/login")
-        return
-    }
+    // if (!userState?._id) {
+    //     // console.log("is there really no user............")
+    //     navigate("/login")
+    //     return
+    // }
     const handleBackButtonClick = () => {
         console.log('Hello, I am back button!');
         // You can handle custom navigation logic here if needed

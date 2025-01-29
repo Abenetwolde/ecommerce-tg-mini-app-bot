@@ -10,7 +10,7 @@ import AxiosToastError from '../utils/AxiosToastError'
 import { HiOutlineExternalLink } from "react-icons/hi";
 import isAdmin from '../utils/isAdmin'
 import useTelegramUser from '../hookscopy/useTelegramUser'
-import { BackButton } from '@vkruglikov/react-telegram-web-app'
+// import { BackButton } from '@vkruglikov/react-telegram-web-app'
 
 const UserMenu = ({close}) => {
    const user = useSelector((state)=> state.user)
@@ -52,7 +52,7 @@ const UserMenu = ({close}) => {
 
   return (
     <div className='md:bg-white'>
- <BackButton onClick={handleBackButtonClick}/>
+ {/* <BackButton onClick={handleBackButtonClick}/> */}
         <div className='font-semibold'>My Account</div>
         <div className='text-sm flex items-center gap-2'>
           <span className='max-w-52 text-ellipsis line-clamp-1'>{tguser?.first_name   || user.mobile||"user"} <span className='text-medium text-red-600'>{user.role === "ADMIN" ? "(Admin)" : "" }</span></span>

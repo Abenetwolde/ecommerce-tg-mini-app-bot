@@ -62,7 +62,7 @@ const CategoryPage = () => {
 
             const { data : responseData } = response
 
-            if(responseData.success){
+            if(responseData?.success){
                 toast.success(responseData.message)
                 fetchCategory()
                 setOpenConfirmBoxDelete(false)
@@ -75,7 +75,7 @@ const CategoryPage = () => {
 
         window.history.back(); // Example: goes back in the browser history
       };
-      <BackButton onClick={handleBackButtonClick} />
+    //   <BackButton onClick={handleBackButtonClick} />
   return (
     <>
  

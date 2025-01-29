@@ -15,6 +15,15 @@ export default {
         'tg-theme-text': 'var(--tg-theme-text-color)',
         'tg-theme-button': 'var(--tg-theme-button-color)',
         'tg-theme-secondary-bg': 'var(--tg-theme-secondary-bg-color)',
+      },
+      keyframes: {
+        shimmer: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
+      animation: {
+        shimmer: "shimmer 1.5s infinite",
       }
     },
   },

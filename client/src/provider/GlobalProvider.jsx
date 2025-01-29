@@ -107,7 +107,7 @@ const GlobalProvider = ({children}) => {
   },[cartItem])
 
     const handleLogoutOut = ()=>{
-        localStorage.clear()
+        // localStorage.clear()
         dispatch(handleAddItemCart([]))
     }
 

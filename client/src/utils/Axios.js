@@ -4,6 +4,7 @@ import SummaryApi , { baseURL } from "../common/SummaryApi";
 const Axios = axios.create({
     baseURL : baseURL,
     withCredentials : true,
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

@@ -53,6 +53,10 @@ const SummaryApi = {
         url : '/api/file/upload',
         method : 'post'
     },
+    mutltiupload : {
+        url : '/api/file/multi-upload',
+        method : 'post'
+    },
     getCategory : {
         url : '/api/category/get',
         method : 'get'

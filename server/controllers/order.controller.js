@@ -131,7 +131,7 @@ export async function paymentController(request, response) {
     await CartProductModel.deleteMany({ userId: userId });
     await UserModel.updateOne({ _id: userId }, { shopping_cart: [] });
 
-    console.log(`Generated Order:`, generatedOrder);
+    // console.log(`Generated Order:`, generatedOrder);
 
     return response.status(200).json({
       message: "Payment and order creation successful",

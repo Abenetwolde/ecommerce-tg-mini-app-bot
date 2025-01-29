@@ -146,7 +146,7 @@ export async function authUserController(request, response) {
 
         // Check if the user already exists
         const user = await UserModel.findOne({ telegram_id });
-console.log("user", user)
+// console.log("user", user)
         if (user) {
             // If user exists, generate tokens and authenticate
             const accessToken = await generatedAccessToken(user._id);

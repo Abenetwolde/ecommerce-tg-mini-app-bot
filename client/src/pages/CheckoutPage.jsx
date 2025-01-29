@@ -48,7 +48,7 @@ const user =useTelegramUser();
                       {
                           text: "View Order",
                           web_app: {
-                              url: `https://w7s48yrdhj06.share.zrok.io/order/${orderId}`
+                              url: `${import.meta.env.VITE_DEV}/order/${orderId}`
                           }
                       }
                   ]
@@ -155,7 +155,7 @@ const user =useTelegramUser();
                       {
                           text: "View Order",
                           web_app: {
-                              url: `https://w7s48yrdhj06.share.zrok.io/order/${orderId}`
+                              url: `${import.meta.env.VITE_DEV}/order/${orderId}`
                           }
                       }
                   ]

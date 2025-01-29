@@ -48,23 +48,33 @@ const UploadCategoryModel = ({close, fetchData}) => {
         }
     }
 
-    const handleUploadCategoryImage = async(e)=>{
-        const file = e.target.files[0]
-
-        if(!file){
-            return
+    const handleUploadCategoryImage = async (e) => {
+        const file = e.target.files[0];
+    
+        if (!file) {
+            return;
         }
-
-        const response = await uploadImage(file)
-        const { data : ImageResponse } = response
-
-        setData((preve)=>{
-            return{
-                ...preve,
-                image : ImageResponse.data.url
-            }
-        })
-    }
+    
+        const formData = new FormData();
+        formData.append('image', file);
+    
+        try {
+            const response = await Axios.post('/api/file/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+    
+            const { data: ImageResponse } = response;
+    
+            setData((prev) => ({
+                ...prev,
+                image: ImageResponse?.data?.url,
+            }));
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    };
   return (
     <section className='fixed top-0 bottom-0 left-0 right-0 p-4 bg-neutral-800 bg-opacity-60 flex items-center justify-center'>
         <div className='bg-white max-w-4xl w-full p-4 rounded'>

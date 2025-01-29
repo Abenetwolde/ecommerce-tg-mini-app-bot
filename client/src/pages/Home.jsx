@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import banner from '../assets/banner.jpg'
 import bannerMobile from '../assets/banner-mobile.jpg'
 import { useSelector } from 'react-redux'
@@ -13,7 +13,9 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 import 'swiper/css';
 
+
 const Home = () => {
+  const userState = useSelector((state) => state?.user);
   const loadingCategory = useSelector(state => state.product.loadingCategory)
   const categoryData = useSelector(state => state.product.allCategory)
   const subCategoryData = useSelector(state => state.product.allSubCategory)
@@ -62,7 +64,15 @@ const Home = () => {
     navigate(url)
     console.log(url)
   }
+  const [userData, setUserData] = useState(null);
 
+  // useEffect(() => {
+  //   // Retrieve user data from localStorage
+  //   const user = localStorage.getItem('user');
+  //   if (user) {
+  //     setUserData(JSON.stringify(JSON.parse(user), null, 2));
+  //   }
+  // }, []);
   const location = useLocation();
   const telegram = useTelegramUser()
   const isLoginPage = location.pathname === '/login';
@@ -78,6 +88,17 @@ const Home = () => {
 
       </div>}
       <div className='container mx-auto'>
+      {/* <div className='container mx-auto'>
+ 
+        {userState && (
+          <div className="mt-4 p-4  shadow-md rounded">
+            <h2 className="text-lg font-semibold">User Data:</h2>
+            <pre className="text-sm">{userData}</pre>
+            <h2 className="text-lg font-semibold">accesstoken:</h2>
+            <pre className="text-sm">{localStorage.getItem('accesstoken')?"ture":"false"}</pre>
+          </div>
+        )}
+      </div> */}
       <Swiper
         spaceBetween={10}
   
@@ -123,20 +144,28 @@ const Home = () => {
       <div className='container mx-auto px-4 my-2 grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10  gap-2'>
 
         {
-          loadingCategory ? (
-            new Array(12).fill(null).map((c, index) => {
-              return (
-                <div key={index + "loadingcategory"} className='bg-white rounded p-4 min-h-36 grid gap-2 shadow animate-pulse'>
-                  <div className='bg-blue-100 min-h-24 rounded'></div>
-                  <div className='bg-blue-100 h-8 rounded'></div>
-                </div>
-              )
-            })
-          ) : (
+      loadingCategory ? (
+        new Array(5).fill(null).map((_, index) => (
+          <div
+            key={index + "loadingcategory"}
+            className="bg-tg-theme-secondary-bg rounded-lg min-h-10 grid gap-2 shadow relative overflow-hidden"
+          >
+            {/* Themed Shimmer Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--tg-theme-button-light-color)] to-transparent animate-shimmer"></div>
+      
+            {/* Placeholder for image */}
+            {/* <div className="bg-[var(--tg-theme-text-color)]/10 min-h-24 rounded-lg"></div> */}
+      
+            {/* Placeholder for text */}
+            {/* <div className="bg-[var(--tg-theme-text-color)]/10 h-8 rounded-lg"></div> */}
+          </div>
+        ))
+      ) : (
+         
             categoryData.map((cat, index) => {
               return (
-                <div key={cat._id + "displayCategory"} className='w-full h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)]' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
-                  <div>
+                <div key={cat._id + "displayCategory"} className='w-full rounded-lg h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)] ' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
+                  <div className='rounded-sm overflow-hidden '>
                     <img
                       src={cat.image}
                       className='w-full h-full object-scale-down'

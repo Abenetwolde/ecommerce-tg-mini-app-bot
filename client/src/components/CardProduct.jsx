@@ -20,7 +20,7 @@ const CardProduct = ({data}) => {
       <div className=' relative min-h-20 w-full max-h-24 lg:max-h-32 rounded overflow-hidden'>
             <img 
                 src={data.image[0]}
-                className='w-full h-full object-scale-down lg:scale-125'
+                className='w-full h-full object-cover lg:scale-125'
             />
                {data.discount && (
                     <div className='absolute top-0 right-0 text-[var(--tg-theme-text-color)] bg-red-500 bg-opacity-80  text-xs  rounded-bl'>

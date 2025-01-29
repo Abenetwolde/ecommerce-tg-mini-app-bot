@@ -40,12 +40,7 @@ const Header = () => {
     }
 
     const handleMobileUser = () => {
-        console.log("is there handleMobileUser no user,,,,")
-        if (!user?._id) {
-            console.log("is there really no user............")
-            navigate("/login")
-            return
-        }
+
 
         navigate("/user")
     }
