@@ -16,7 +16,7 @@ bot.start((ctx) => {
         caption: "Caption",
         parse_mode: "Markdown",
         ...Markup.inlineKeyboard([
-          Markup.button.webApp("Click", `https://yatdj7ucepix.share.zrok.io`),
+          Markup.button.webApp("Click", `https://v60ohpkxrmx1.share.zrok.io`),
         ])
 }); 
 })
