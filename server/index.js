@@ -36,7 +36,9 @@ app.get("/",(request,response)=>{
         message : "Server is running " + PORT
     })
 })
-
+app.get("/test", (req, res) => {
+    res.send("Hello from Vercel!");
+  });
 app.use('/api/user',userRouter)
 app.use("/api/category",categoryRouter)
 app.use("/api/file",uploadRouter)

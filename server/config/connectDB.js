@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import ProductModel from "../models/product.model.js";
 dotenv.config()
 
-if(!process.env.MONGODB_URI){
+if(!process.env.MONGODB_URI_ATLAT){
     throw new Error(
         "Please provide MONGODB_URI in the .env file"
     )
@@ -11,7 +11,7 @@ if(!process.env.MONGODB_URI){
 
 async function connectDB(){
     try {
-        await mongoose.connect(process.env.MONGODB_URI)
+        await mongoose.connect(process.env.MONGODB_URI_ATLAT)
         console.log("connect DB")
         await ProductModel.syncIndexes();
         console.log('Indexes synced successfully.');
