@@ -4,7 +4,7 @@ import SummaryApi , { baseURL } from "../common/SummaryApi";
 const Axios = axios.create({
     baseURL : baseURL,
     withCredentials : true,
-    timeout: 10000,
+    timeout: 30000,
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -19,6 +19,12 @@ Axios.interceptors.request.use(
         if(accessToken){
             config.headers.Authorization = `Bearer ${accessToken}`
         }
+     // Add AbortController for request cancellation
+    //  const controller = new AbortController();
+    //  config.signal = controller.signal;
+
+    //  // Set timeout for the request
+    //  setTimeout(() => controller.abort(), 10000); // Timeout set to 10 seconds
 
         return config
     },

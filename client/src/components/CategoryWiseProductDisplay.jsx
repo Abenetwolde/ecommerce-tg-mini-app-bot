@@ -15,7 +15,7 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
     const containerRef = useRef()
     const subCategoryData = useSelector(state => state.product.allSubCategory)
     const loadingCardNumber = new Array(6).fill(null)
-
+  const loadingCategory = useSelector(state => state.product.loadingCategory)
     const fetchCategoryWiseProduct = async () => {
         try {
             setLoading(true)
@@ -77,9 +77,10 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
             <div className='relative flex items-center'>
         <div className='flex gap-4 md:gap-6 lg:gap-8 container mx-auto px-4 overflow-x-scroll scrollbar-none no-scrollbar scroll-smooth' ref={containerRef}>
           {loading ? (
-            loadingCardNumber.map((_, index) => (
-              <CardLoading key={"CategorywiseProductDisplay123" + index} />
-            ))
+            <p>Loadining</p>
+            // loadingCardNumber.map((_, index) => (
+            //   <CardLoading key={"CategorywiseProductDisplay123" + index} />
+            // ))
           ) : (
             data.map((p, index) => (
               <CardProduct

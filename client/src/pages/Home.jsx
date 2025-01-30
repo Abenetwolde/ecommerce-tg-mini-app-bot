@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 import 'swiper/css';
+import CardLoading from '../components/CardLoading'
 
 
 const Home = () => {
@@ -77,6 +78,7 @@ const Home = () => {
   const telegram = useTelegramUser()
   const isLoginPage = location.pathname === '/login';
   const isSearchPage = location.pathname === "/search"
+  const loadingCardNumber = new Array(6).fill(null)
   return (
     <section className='bg-[var(--tg-theme-bg-color)]'>
       {!isLoginPage && <div className="flex py-2 gap-2 justify-center items-center">
@@ -88,7 +90,7 @@ const Home = () => {
 
       </div>}
       <div className='container mx-auto'>
-      {/* <div className='container mx-auto'>
+        {/* <div className='container mx-auto'>
  
         {userState && (
           <div className="mt-4 p-4  shadow-md rounded">
@@ -99,69 +101,69 @@ const Home = () => {
           </div>
         )}
       </div> */}
-      <Swiper
-        spaceBetween={10}
-  
-        slidesPerView={1} // Display 1 image at a time
-        loop={true} // Enable looping through images
-        pagination={{
-          clickable: true, // Makes pagination dots clickable
-          // el: '.swiper-pagination', // Custom pagination class
-        }}// Add pagination controls
-        autoplay={{
-          delay: 4000, // Delay between slide transitions (in ms)
-          disableOnInteraction: true, // Autoplay continues even if user interacts with Swiper
-        }}
-        navigation // Enable navigation buttons
-        modules={[Autoplay, Pagination, Navigation]}
-      >
-        {/* Add image inside SwiperSlide */}
-        <SwiperSlide>
-          <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
-            <img
-              src={banner}
-              className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
-              alt='banner'
-            />
-          </div>
-          
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
-            <img
-              src={banner}
-              className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
-              alt='banner'
-            />
-          </div>
-        </SwiperSlide>
+        <Swiper
+          spaceBetween={10}
 
-        {/* You can add more SwiperSlide components here for additional images */}
-      </Swiper>
-      <div className="swiper-pagination"></div>
+          slidesPerView={1} // Display 1 image at a time
+          loop={true} // Enable looping through images
+          pagination={{
+            clickable: true, // Makes pagination dots clickable
+            // el: '.swiper-pagination', // Custom pagination class
+          }}// Add pagination controls
+          autoplay={{
+            delay: 4000, // Delay between slide transitions (in ms)
+            disableOnInteraction: true, // Autoplay continues even if user interacts with Swiper
+          }}
+          navigation // Enable navigation buttons
+          modules={[Autoplay, Pagination, Navigation]}
+        >
+          {/* Add image inside SwiperSlide */}
+          <SwiperSlide>
+            <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
+              <img
+                src={banner}
+                className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
+                alt='banner'
+              />
+            </div>
+
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
+              <img
+                src={banner}
+                className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
+                alt='banner'
+              />
+            </div>
+          </SwiperSlide>
+
+          {/* You can add more SwiperSlide components here for additional images */}
+        </Swiper>
+        <div className="swiper-pagination"></div>
       </div>
       <p className='px-4 mx-auto text-sm font-semibold'>Categories</p>
       <div className='container mx-auto px-4 my-2 grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10  gap-2'>
 
         {
-      loadingCategory ? (
-        new Array(5).fill(null).map((_, index) => (
-          <div
-            key={index + "loadingcategory"}
-            className="bg-tg-theme-secondary-bg rounded-lg min-h-10 grid gap-2 shadow relative overflow-hidden"
-          >
-            {/* Themed Shimmer Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--tg-theme-button-light-color)] to-transparent animate-shimmer"></div>
-      
-            {/* Placeholder for image */}
-            {/* <div className="bg-[var(--tg-theme-text-color)]/10 min-h-24 rounded-lg"></div> */}
-      
-            {/* Placeholder for text */}
-            {/* <div className="bg-[var(--tg-theme-text-color)]/10 h-8 rounded-lg"></div> */}
-          </div>
-        ))
-      ) : (
-         
+          loadingCategory ? (
+            new Array(5).fill(null).map((_, index) => (
+              <div
+                key={index + "loadingcategory"}
+                className="bg-tg-theme-secondary-bg rounded-lg min-h-10 grid gap-2 shadow relative overflow-hidden"
+              >
+                {/* Themed Shimmer Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--tg-theme-button-light-color)] to-transparent animate-shimmer"></div>
+
+                {/* Placeholder for image */}
+                {/* <div className="bg-[var(--tg-theme-text-color)]/10 min-h-24 rounded-lg"></div> */}
+
+                {/* Placeholder for text */}
+                {/* <div className="bg-[var(--tg-theme-text-color)]/10 h-8 rounded-lg"></div> */}
+              </div>
+            ))
+          ) : (
+
             categoryData.map((cat, index) => {
               return (
                 <div key={cat._id + "displayCategory"} className='w-full rounded-lg h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)] ' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
@@ -181,7 +183,19 @@ const Home = () => {
       </div>
 
       {/***display category product */}
+      {loadingCategory&&<p className='px-4 mb-2 mx-auto text-sm font-semibold'>Products</p> }
       {
+        loadingCategory ?  (
+        
+          <div>
+          {/* <h2 className="text-lg font-semibold mb-4">Products</h2> */}
+          <div className="px-4 grid grid-cols-2 gap-5">
+            {loadingCardNumber.map((_, index) => (
+              <CardLoading key={"CategorywiseProductDisplay123" + index} />
+            ))}
+          </div>
+        </div>
+        ) :
         categoryData?.map((c, index) => {
           return (
             <CategoryWiseProductDisplay
