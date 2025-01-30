@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import dotenv from 'dotenv'
 import ProductModel from "../models/product.model.js";
 dotenv.config()
-
+//MONGODB_URI_ATLAT MONGODB_URI
 if(!process.env.MONGODB_URI_ATLAT){
     throw new Error(
         "Please provide MONGODB_URI in the .env file"
