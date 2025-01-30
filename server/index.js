@@ -39,6 +39,9 @@ app.get("/",(request,response)=>{
 app.get("/test", (req, res) => {
     res.send("Hello from Vercel!");
   });
+  app.get("/test", (req, res) => {
+    res.send("Hello from Vercel22!");
+  });
 app.use('/api/user',userRouter)
 app.use("/api/category",categoryRouter)
 app.use("/api/file",uploadRouter)
