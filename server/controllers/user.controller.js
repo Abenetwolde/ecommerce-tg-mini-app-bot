@@ -1,4 +1,4 @@
-import sendEmail from '../config/sendEmail.js'
+// import sendEmail from '../config/sendEmail.js'
 import UserModel from '../models/user.model.js'
 import bcryptjs from 'bcryptjs'
 import verifyEmailTemplate from '../utils/verifyEmailTemplate.js'
@@ -415,14 +415,14 @@ export async function forgotPasswordController(request, response) {
             forgot_password_expiry: new Date(expireTime).toISOString()
         })
 
-        await sendEmail({
-            sendTo: email,
-            subject: "Forgot password from Binkeyit",
-            html: forgotPasswordTemplate({
-                name: user.name,
-                otp: otp
-            })
-        })
+        // await sendEmail({
+        //     sendTo: email,
+        //     subject: "Forgot password from Binkeyit",
+        //     html: forgotPasswordTemplate({
+        //         name: user.name,
+        //         otp: otp
+        //     })
+        // })
 
         return response.json({
             message: "check your email",
