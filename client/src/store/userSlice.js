@@ -1,23 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// const storedUser = localStorage.getItem('user');
-// const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+const storedUser = localStorage.getItem('user');
+const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 
-const initialValue =  {
-    _id:  "",
-    name: "",
-    email: "",
-    avatar: "",
-    mobile: "",
-    verify_email: "",
-    last_login_date: "",
-    status: "",
-    address_details: [],
-    shopping_cart: [],
-    orderHistory: [],
-    role: "",
-    accesstoken:localStorage.getItem('accesstoken') || ""
+const initialValue = {
+    _id: parsedUser?._id || "",
+    name: parsedUser?.name || "",
+    email: parsedUser?.email || "",
+    avatar: parsedUser?.avatar || "",
+    mobile: parsedUser?.mobile || "",
+    verify_email: parsedUser?.verify_email || "",
+    last_login_date: parsedUser?.last_login_date || "",
+    status: parsedUser?.status || "",
+    address_details: parsedUser?.address_details || [],
+    shopping_cart: parsedUser?.shopping_cart || [],
+    orderHistory: parsedUser?.orderHistory || [],
+    role: parsedUser?.role || "",
+    accesstoken: localStorage.getItem('accesstoken') || ""
 };
+
 
 const userSlice  = createSlice({
     name : 'user',

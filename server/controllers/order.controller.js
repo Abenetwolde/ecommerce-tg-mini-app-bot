@@ -4,6 +4,10 @@ import OrderModel from "../models/order.model.js";
 import UserModel from "../models/user.model.js";
 import mongoose from "mongoose";
 import axios from "axios";
+const generateOrderId = () => {
+  return `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
+};
+
 export async function CashOnDeliveryOrderController(request, response) {
   try {
     const userId = request.userId // auth middleware 
@@ -12,7 +16,7 @@ export async function CashOnDeliveryOrderController(request, response) {
     const payload = list_items?.map(el => {
       return ({
         userId: userId,
-        orderId: `ORD-${new mongoose.Types.ObjectId()}`,
+        orderId: generateOrderId(),
         productId: el.productId._id,
         product_details: {
           name: el.productId.name,
@@ -105,7 +109,7 @@ export async function paymentController(request, response) {
     }
 
     // Create order(s) in the database
-    const orderId = `ORD-${new mongoose.Types.ObjectId()}`;
+    const orderId = generateOrderId()
     const payload = {
       userId: userId,
       orderId: orderId,
@@ -212,7 +216,7 @@ const getOrderProductItems = async ({
 
       const paylod = {
         userId: userId,
-        orderId: `ORD-${new mongoose.Types.ObjectId()}`,
+        orderId: generateOrderId(),
         productId: product.metadata.productId,
         product_details: {
           name: product.name,

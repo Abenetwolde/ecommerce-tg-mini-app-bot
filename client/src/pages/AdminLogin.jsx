@@ -52,6 +52,7 @@ const AdminLogin = () => {
                 localStorage.setItem('refreshToken',response.data.data.refreshToken)
 
                 const userDetails = await fetchUserDetails()
+                localStorage.setItem('user', JSON.stringify(userDetails.data)); // Convert to JSON string
                 dispatch(setUserDetails(userDetails.data))
 
                 setData({

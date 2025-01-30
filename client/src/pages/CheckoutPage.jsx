@@ -141,6 +141,8 @@ const user =useTelegramUser();
       // window.location.href = responseData.payment_url;
     
       const orderId = responseData?.orders?._id;
+          
+      const orderId4Digit = responseData?.orders?.orderId;
       const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendMessage`, {
         method: 'POST',
         headers: {
@@ -148,7 +150,7 @@ const user =useTelegramUser();
         },
         body: JSON.stringify({
             chat_id: user?.id||"1213", // User's Telegram ID
-            text: `Hello, ${user?.first_name||"first name"}! Your order has been placed successfully. Order ID: ${orderId||"1234"}`,
+            text: `Hello, ${user?.first_name||"first name"}! Your order has been placed successfully. Order ID: ${orderId4Digit||"1234"}`,
             reply_markup: {
               inline_keyboard: [
                   [
