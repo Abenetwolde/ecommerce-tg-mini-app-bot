@@ -18,6 +18,7 @@ import useTelegram from './hookscopy/useTelegram'
 import useIsReadyTelegram from './hookscopy/useIsReadyTelegram'
 import OnboardingScreenPage from './pages/onboaring';
 import './i18n';
+import splash_screen from './assets/splash_screen.jpeg'
 // import { setAccessToken } from '../store/userSlice'
 
 function App() {
@@ -59,15 +60,15 @@ function App() {
             data: {
                 telegram_id: user.id,
                 first_name: user.first_name,
-                last_name: user.last_name || '',
+                last_name: user?.last_name || '',
                 username: user.username || '',
             },
         });
 
         if (response.data.success) {
-            toast.success(response.data.message, { style: toastStyle });
-            localStorage.setItem('accesstoken', response.data.data.accesstoken);
-            localStorage.setItem('refreshToken', response.data.data.refreshToken);
+            // toast.success(response.data.message, { style: toastStyle });
+             localStorage.setItem('accesstoken', response?.data?.data?.accesstoken);
+            localStorage.setItem('refreshToken', response?.data?.data?.refreshToken);
 
             const userDetails = await fetchUserDetails();
             localStorage.setItem('user', userDetails.data);
@@ -77,7 +78,7 @@ function App() {
             toast.error(response.data.error, { style: toastStyle });
         }
     } catch (error) {
-        toast.error('Authentication failed. Please try again.', { style: toastStyle });
+        // toast.error('Authentication failed. Please try again.', { style: toastStyle });
     }
 };
 
@@ -92,9 +93,11 @@ function App() {
 
 
 useEffect(() => {
+ 
   initializeApp();
 }, []);
 useEffect(async () => {
+  // localStorage.clear()
   // await fetchUser();
   await fetchCategory();
   await fetchSubCategory();
@@ -103,6 +106,7 @@ const fetchUser = async () => {
   const userData = await fetchUserDetails()
   // toast.success("User Data fetched",userData?.data)
   console.log("userData///////////",userData)
+  // localStorage.setItem('user', JSON.stringify(userData.data));
   dispatch(setUserDetails(userData.data))
 }
 
@@ -144,10 +148,12 @@ const fetchSubCategory = async () => {
 
     <div className="contentWrapper bg-tg-theme-bg text-tg-theme-text px-4 py-1 shadow-md">
       {isLoading ? (
-        <div className="splash-screen">
-          <h1>Loading...</h1>
-          {/* You can add a logo or animation here */}
+        <div className=" flex items-center justify-center h-screen w-screen fixed top-0 left-0  z-50">
+        <div className="text-center">
+          <img src={splash_screen} alt="Splash Screen" className="w-full h-full object-cover absolute top-0 left-0 z-0" />
+          <h1 className="text-white relative z-10 text-2xl font-bold">Loading...</h1>
         </div>
+      </div>
       ) : showOnboarding ? (
       // <LanguageSelection />
         <OnboardingScreenPage onComplete={() => setShowOnboarding(false)} />

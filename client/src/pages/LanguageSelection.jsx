@@ -1,6 +1,7 @@
 import { useState } from "react";
 import amharic from "../assets/amharic.png";
 import english from "../assets/english.jpeg";
+import logo from "../assets/logo.jpeg";
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 export default function LanguageSelection() {
@@ -18,10 +19,11 @@ export default function LanguageSelection() {
 
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-[var(--tg-theme-bg-color)]">
+    //min-h-screen
+    <div className="flex flex-col items-center justify-center  p-2 bg-[var(--tg-theme-bg-color)]">
       {/* Google Translate Icon */}
-      <div className="flex flex-col items-center space-y-4">
-        <img src="https://th.bing.com/th/id/OIP.avmc0NE_MqQcImsF3wasngHaE8?w=900&h=600&rs=1&pid=ImgDetMain" alt="Google Translate" className="w-20 h-20 object-cover" />
+      <div className="flex flex-col items-center space-y-2">
+        <img src={logo} alt="Bot" className="rounded-sm w-20 h-20 object-cover" />
         <h2 className="text-lg font-semibold text-[var(--tg-theme-text-color)]">{t("select_language")}</h2>
         <p className="text-sm text-[var(--tg-theme-hint-color)] text-center">
           {t("language_sub")}
@@ -29,11 +31,11 @@ export default function LanguageSelection() {
       </div>
 
       {/* Language Options */}
-      <div className="w-full max-w-sm mt-6 mb-10 space-y-4">
+      <div className="w-full max-w-sm mt-6  space-y-4">
         {languages.map((lang) => (
           <div
             key={lang.code}
-            className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer ${
+            className={`flex items-center justify-between p-2 border rounded-lg cursor-pointer ${
               selectedLanguage === lang.code ? "border-[var(--tg-theme-button-color)] border-2  bg-[var(--tg-theme-bg-color)]" : "border-[var(--tg-theme-hint-color)] "
             }`}
             onClick={() => handleChangeLanguage(lang.code)}

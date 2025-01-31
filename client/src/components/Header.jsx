@@ -12,6 +12,7 @@ import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
 import { useGlobalContext } from '../provider/GlobalProvider';
 import DisplayCartItem from './DisplayCartItem';
 import useTelegramUser from '../hookscopy/useTelegramUser';
+import LanguageDropdown from './LanguageDropdown';
 
 const Header = () => {
     const [isMobile] = useMobile()
@@ -22,7 +23,7 @@ const Header = () => {
     const isSearchPage = location.pathname === "/search"
     const navigate = useNavigate()
     const user = useSelector((state) => state?.user)
-    console.log("user fro center state ",user?._id)
+    console.log("user fro center state ", user?._id)
     const [openUserMenu, setOpenUserMenu] = useState(false)
     const cartItem = useSelector(state => state.cartItem.cart)
     const telegram = useTelegramUser()
@@ -60,24 +61,35 @@ const Header = () => {
     // },[cartItem])
 
     return (
-        <header className='bg-[var(--tg-theme-bg-color)] lg:h-20 lg:shadow-md  flex flex-col justify-center gap-1 '>
+        <header className='bg-[var(--tg-theme-bg-color)] lg:h-20 lg:shadow-md  flex flex-col justify-center gap-1 mb-2 '>
             {
                 !(isSearchPage && isMobile) && (
                     <div className="sticky  w-full top-0 z-150 bg-[var(--tg-theme-bg-color)] ">
                         <div className=' mx-auto flex items-center px-2 justify-between'>
                             {/**logo */}
                             <div></div>
-                          
+
                             <div className='hidden lg:block'>
                                 <Search />
                             </div>
 
 
                             {/**login and my cart */}
-                            <div className=''>
+                            <div className='flex items-center gap-2'>
+                                {/* <p>Language</p> */}
+                                <LanguageDropdown />
+                                {/*   <LanguageDropdown />  */}
                                 {/**user icons display in only mobile version**/}
-                   <button className='text-[var(--tg-theme-hint-color)] lg:hidden' onClick={handleMobileUser}>
-                                    <FaRegCircleUser size={26} />
+                                <button className='text-[var(--tg-theme-hint-color)] lg:hidden' onClick={handleMobileUser}>
+                                {telegram?.photo_url ? (
+              <img
+                src={telegram.photo_url}
+                alt="Profile"
+                className="w-6 h-6 rounded-full"
+              />
+            ) : (
+              <FaRegCircleUser size={26} />
+            )}
                                 </button>
 
                                 {/**Desktop**/}
@@ -99,7 +111,7 @@ const Header = () => {
                                                 {
                                                     openUserMenu && (
                                                         <div className=' !absolute !right-0 !top-12 '>
-                                                           
+
                                                             <div className=' !important  !rounded !p-4 !min-w-52 !lg:shadow-lg'>
                                                                 <UserMenu close={handleCloseUserMenu} />
                                                             </div>
@@ -136,7 +148,7 @@ const Header = () => {
                     </div>
                 )
             }
-       {/* { !isLoginPage&&    <div className="flex py-2 gap-2 justify-center items-center">
+            {/* { !isLoginPage&&    <div className="flex py-2 gap-2 justify-center items-center">
                 <p className='text-[var(--tg-theme-hint-color)]'>Welcome</p>
                 <p className="text-[var(--tg-theme-text-color)] font-semibold">{telegram?.first_name}</p>
             </div>}

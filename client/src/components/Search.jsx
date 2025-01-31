@@ -4,9 +4,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
 import { FaArrowLeft } from "react-icons/fa";
 import useMobile from '../hooks/useMobile';
-
+import { useTranslation } from 'react-i18next';
 
 const Search = ({ searchText, setSearchText }) => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const [isSearchPage,setIsSearchPage] = useState(false)
@@ -75,7 +76,7 @@ const Search = ({ searchText, setSearchText }) => {
                     <div className='w-full h-full'>
                         <input
                             type='text'
-                            placeholder='Search....'
+                            placeholder={t('search')}
                             autoFocus
                             defaultValue={searchText}
                             className='bg-transparent w-full h-full outline-none'

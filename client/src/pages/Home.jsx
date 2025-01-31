@@ -10,12 +10,14 @@ import useTelegramUser from '../hookscopy/useTelegramUser'
 import Search from '../components/Search'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { useTranslation } from 'react-i18next'
 
 import 'swiper/css';
 import CardLoading from '../components/CardLoading'
 
 
 const Home = () => {
+  const { t } = useTranslation();
   const userState = useSelector((state) => state?.user);
   const loadingCategory = useSelector(state => state.product.loadingCategory)
   const categoryData = useSelector(state => state.product.allCategory)
@@ -78,29 +80,37 @@ const Home = () => {
   const telegram = useTelegramUser()
   const isLoginPage = location.pathname === '/login';
   const isSearchPage = location.pathname === "/search"
+  
   const loadingCardNumber = new Array(6).fill(null)
   return (
     <section className='bg-[var(--tg-theme-bg-color)]'>
       {!isLoginPage && <div className="flex py-2 gap-2 justify-center items-center">
-        <p className='text-[var(--tg-theme-hint-color)]'>Welcome</p>
+        <p className='text-[var(--tg-theme-hint-color)]'>{t('welcome')}</p>
         <p className="text-[var(--tg-theme-text-color)] font-semibold">{telegram?.first_name}</p>
+        {/* {user?.photo_url && (
+            <img
+              src={telegram.photo_url}
+              alt="Profile"
+              className="w-10 h-10 rounded-full"
+            />
+          )} */}
       </div>}
       {!isLoginPage && <div className='container mx-auto px-2 lg:hidden'>
         <Search />
 
       </div>}
       <div className='container mx-auto'>
-        {/* <div className='container mx-auto'>
+        <div className='container mx-auto'>
  
         {userState && (
           <div className="mt-4 p-4  shadow-md rounded">
             <h2 className="text-lg font-semibold">User Data:</h2>
             <pre className="text-sm">{userData}</pre>
             <h2 className="text-lg font-semibold">accesstoken:</h2>
-            <pre className="text-sm">{localStorage.getItem('accesstoken')?"ture":"false"}</pre>
+            <pre className="text-sm">{localStorage.getItem('user')?"ture":"false"}</pre>
           </div>
         )}
-      </div> */}
+      </div>
         <Swiper
           spaceBetween={10}
 
@@ -142,7 +152,7 @@ const Home = () => {
         </Swiper>
         <div className="swiper-pagination"></div>
       </div>
-      <p className='px-4 mx-auto text-sm font-semibold'>Categories</p>
+      <p className='px-4 mx-auto text-sm font-semibold'>{t('category')}</p>
       <div className='container mx-auto px-4 my-2 grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10  gap-2'>
 
         {

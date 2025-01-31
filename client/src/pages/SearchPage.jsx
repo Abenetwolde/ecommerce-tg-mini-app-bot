@@ -10,7 +10,9 @@ import noDataImage from '../assets/nothing here yet.webp'
 import { BackButton } from '@vkruglikov/react-telegram-web-app'
 import Search from '../components/Search'
 import toast from "react-hot-toast"
+import { useTranslation } from 'react-i18next'
 const SearchPage = () => {
+  const { t } = useTranslation()
   const [data,setData] = useState([])
   const [loading,setLoading] = useState(true)
   const loadingArrayCard = new Array(10).fill(null)
@@ -78,7 +80,7 @@ const SearchPage = () => {
  
        <BackButton onClick={handleBackButtonClick} />
       <div className='container mx-auto p-4'>
-        <p className='font-semibold pb-1'>Search Results: {data.length}  </p>
+        <p className='font-semibold pb-1'>{t('search_result')}: {data.length}  </p>
 <Search searchText={searchText} setSearchText={setSearchText} />
         <InfiniteScroll
               dataLength={data?.length}

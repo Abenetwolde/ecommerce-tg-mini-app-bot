@@ -16,7 +16,7 @@ bot.start((ctx) => {
         caption: "Caption",
         parse_mode: "Markdown",
         ...Markup.inlineKeyboard([
-          Markup.button.webApp("Click", `https://o97nsm2a662x.share.zrok.io`),
+          Markup.button.webApp("Click", `https://ecommerce-tg-mini-app-bot.vercel.app`),
         ])
 }); 
 })

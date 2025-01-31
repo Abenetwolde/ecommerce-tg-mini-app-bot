@@ -3,27 +3,9 @@ import { useSpring, animated } from "@react-spring/web";
 import { useNavigate } from "react-router-dom";
 import LanguageSelection from "./LanguageSelection";
 import { useTranslation } from 'react-i18next';
-const onboardingScreens = [
-  { id: 0, type: "component", component: <LanguageSelection /> },
-  {
-    id: 1,
-    title: "Welcome to the App",
-    description: "Discover amazing features tailored just for you.",
-    image: "https://th.bing.com/th/id/R.8dc6c051348b27830b2a3ac551bea8a3?rik=A6ovPLBqFlkqVA&pid=ImgRaw&r=0",
-  },
-  {
-    id: 2,
-    title: "Stay Organized",
-    description: "Keep track of your tasks and goals effortlessly.",
-    image: "https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/ecommerce3-2.jpg",
-  },
-  {
-    id: 3,
-    title: "Get Started",
-    description: "Start your journey with us today!",
-    image: "https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/ecommerce3-2.jpg",
-  },
-];
+import onboaring1 from '../assets/onboaring1.jpeg'
+import onboaring2 from '../assets/onboaring2.jpeg'
+import onboaring3 from '../assets/onboaring3.jpeg'
 
 function OnboardingScreenPage() {
   const [currentScreen, setCurrentScreen] = useState(0);
@@ -49,7 +31,28 @@ function OnboardingScreenPage() {
     transform: `translateX(-${currentScreen * 100}%)`,
     from: { opacity: 0, transform: `translateX(-${currentScreen * 100}%)` },
   });
-
+  const onboardingScreens = [
+    { id: 0, type: "component", component: <LanguageSelection /> },
+    {
+      id: 1,
+      title: "Welcome to the App",
+      description: t("onboaring1"),
+      image: onboaring3
+    },
+    {
+      id: 2,
+      title: "Stay Organized",
+      description: t("onboaring2"),
+      image: onboaring2
+    },
+    {
+      id: 3,
+      title: "Get Started",
+      description: t("onboaring3"),
+      image: onboaring1
+    },
+  ];
+  
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-[var(--tg-theme-bg-color)]">
       {/* Onboarding Screens */}
@@ -67,10 +70,10 @@ function OnboardingScreenPage() {
               ) : (
                 <>
                   <img src={screen.image} alt={screen.title} className="w-64 h-64 mb-8 rounded-lg shadow-lg" />
-                  <h1 className="text-2xl font-bold text-center mb-4">
+                  {/* <h1 className="text-2xl font-bold text-center mb-4">
                     {screen.title}
-                  </h1>
-                  <p className="text-center mb-8">{screen.description}</p>
+                  </h1> */}
+                  <p className="text-center mt-10 mb-4">{screen.description}</p>
                 </>
               )}
             </div>

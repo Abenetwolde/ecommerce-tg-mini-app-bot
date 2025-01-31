@@ -12,7 +12,7 @@ import toast from 'react-hot-toast'
 import { BackButton } from '@vkruglikov/react-telegram-web-app';
 import useTelegram from '../hookscopy/useTelegram'
 import useTelegramUser from '../hookscopy/useTelegramUser'
-
+import onboaring3 from '../assets/onboaring3.jpeg'
 <BackButton onClick={() => console.log('Hello, I am back button!')} />;
 const DisplayCartItem = ({ close }) => {
     const { notDiscountTotalPrice, totalPrice, totalQty } = useGlobalContext()
@@ -113,10 +113,10 @@ const DisplayCartItem = ({ close }) => {
                         ) : (
                             <div className='bg-[var(--tg-theme-secondary-bg-color)] flex flex-col justify-center items-center'>
                                 <img
-                                    src={imageEmpty}
+                                    src={onboaring3}
                                     className='w-full h-full object-scale-down'
                                 />
-                                <Link onClick={close} to={"/"} className='block bg-[var(--tg-theme-button-color)] px-4 py-2 text-white rounded'>Shop Now</Link>
+                                <Link onClick={close} to={"/"} className='mt-10 block bg-[var(--tg-theme-button-color)] px-4 py-2 text-white rounded'>Shop Now</Link>
                             </div>
                         )
                     }

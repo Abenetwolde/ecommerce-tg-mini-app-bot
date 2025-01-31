@@ -59,7 +59,7 @@ const AddAddress = ({close}) => {
             </div>
             <form className='mt-4 grid gap-4' onSubmit={handleSubmit(onSubmit)}>
                 <div className='grid gap-1'>
-                    <label htmlFor='addressline'>Address Line :</label>
+                    <label htmlFor='addressline'>Address  :</label>
                     <input
                         type='text'
                         id='addressline' 
@@ -68,7 +68,7 @@ const AddAddress = ({close}) => {
                     />
                 </div>
                 <div className='grid gap-1'>
-                    <label htmlFor='city'>City :</label>
+                    <label htmlFor='city'>Sub City :</label>
                     <input
                         type='text'
                         id='city' 
@@ -85,7 +85,7 @@ const AddAddress = ({close}) => {
                         {...register("state",{required : true})}
                     />
                 </div>
-                <div className='grid gap-1'>
+                {/* <div className='grid gap-1'>
                     <label htmlFor='pincode'>Pincode :</label>
                     <input
                         type='text'
@@ -102,7 +102,7 @@ const AddAddress = ({close}) => {
                         className='border bg-[var(--tg-theme-secondary-bg-color)] p-2 rounded'
                         {...register("country",{required : true})}
                     />
-                </div>
+                </div> */}
                 <div className='grid gap-1'>
                     <label htmlFor='mobile'>Mobile No. :</label>
                     <input
