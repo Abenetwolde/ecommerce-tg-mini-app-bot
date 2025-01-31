@@ -179,11 +179,17 @@ export async function authUserController(request, response) {
             first_name,
             last_name,
             telegram_id,
+             email: ""
         };
+try {
+    const newUser = new UserModel(payload);
+    console.log("New user (before save):", newUser);
+    const savedUser = await newUser.save();
+    console.log("Saved user:", savedUser);   
+} catch (error) {
+    console.log("Error saving user:", error);
+}
 
-        const newUser = new UserModel(payload);
-        console.log("newUser", newUser)
-        const savedUser = await newUser.save();
 
         const accessToken = await generatedAccessToken(savedUser._id);
         const refreshToken = await genertedRefreshToken(savedUser._id);
@@ -613,7 +619,7 @@ export async function refreshToken(request, response) {
 export async function userDetails(request, response) {
     try {
         const userId = request.userId
-
+console.log("userdetail....................",userId)
         console.log(userId)
 
         const user = await UserModel.findById(userId).select('-password -refresh_token')
@@ -625,6 +631,7 @@ export async function userDetails(request, response) {
             success: true
         })
     } catch (error) {
+        console.log("error",error)
         return response.status(500).json({
             message: "Something is wrong",
             error: true,

@@ -1,95 +1,97 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    telegram_id : {
-        type : String,
-        required : true
+    telegram_id: {
+        type: String,
+        required: true
     },
-    first_name:{
-        type : String,
-        required : true
+    first_name: {
+        type: String,
+        required: true
     },
-    last_name:{
-        type : String,
-        required : false
-        },
-        username:{
-            type : String,
-            required : true
-            },
-    name : {
-        type : String,
-        required : [false,"Provide name"]
+    last_name: {
+        type: String,
+        required: false
     },
-    email : {
-        type : String,
-        required : [false, "provide email"],
-        unique : false
+    username: {
+        type: String,
+        required: false
     },
-    password : {
-        type : String,
-        required : [false, "provide password"]
+    name: {
+        type: String,
+        required: [false, "Provide name"]
     },
-    avatar : {
-        type : String,
-        default : ""
+    email: {
+        type: String,
+        required: false,
+        default: "",
+        unique: false
+
     },
-    mobile : {
-        type : Number,
-        default : null
+    password: {
+        type: String,
+        required: [false, "provide password"]
     },
-    refresh_token : {
-        type : String,
-        default : ""
+    avatar: {
+        type: String,
+        default: ""
     },
-    verify_email : {
-        type : Boolean,
-        default : false
+    mobile: {
+        type: Number,
+        default: null
     },
-    last_login_date : {
-        type : Date,
-        default : ""
+    refresh_token: {
+        type: String,
+        default: ""
     },
-    status : {
-        type : String,
-        enum : ["Active","Inactive","Suspended"],
-        default : "Active"
+    verify_email: {
+        type: Boolean,
+        default: false
     },
-    address_details : [
+    last_login_date: {
+        type: Date,
+        default: ""
+    },
+    status: {
+        type: String,
+        enum: ["Active", "Inactive", "Suspended"],
+        default: "Active"
+    },
+    address_details: [
         {
-            type : mongoose.Schema.ObjectId,
-            ref : 'address'
+            type: mongoose.Schema.ObjectId,
+            ref: 'address'
         }
     ],
-    shopping_cart : [
+    shopping_cart: [
         {
-            type : mongoose.Schema.ObjectId,
-            ref : 'cartProduct'
+            type: mongoose.Schema.ObjectId,
+            ref: 'cartProduct'
         }
     ],
-    orderHistory : [
+    orderHistory: [
         {
-            type : mongoose.Schema.ObjectId,
-            ref : 'order'
+            type: mongoose.Schema.ObjectId,
+            ref: 'order'
         }
     ],
-    forgot_password_otp : {
-        type : String,
-        default : null
+    forgot_password_otp: {
+        type: String,
+        default: null
     },
-    forgot_password_expiry : {
-        type : Date,
-        default : ""
+    forgot_password_expiry: {
+        type: Date,
+        default: ""
     },
-    role : {
-        type : String,
-        enum : ['ADMIN',"USER"],
-        default : "USER"
+    role: {
+        type: String,
+        enum: ['ADMIN', "USER"],
+        default: "USER"
     }
-},{
-    timestamps : true
+}, {
+    timestamps: true
 })
 
-const UserModel = mongoose.model("User",userSchema)
+const UserModel = mongoose.model("User", userSchema)
 
 export default UserModel
