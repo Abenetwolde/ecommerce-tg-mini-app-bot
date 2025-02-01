@@ -59,9 +59,10 @@ function App() {
             ...SummaryApi.auth,
             data: {
                 telegram_id: user.id,
-                first_name: user.first_name,
+                first_name: user?.first_name,
                 last_name: user?.last_name || '',
-                username: user.username || '',
+                username: user?.username || '',
+                avatar: user?.photo_url || '',
             },
         });
 

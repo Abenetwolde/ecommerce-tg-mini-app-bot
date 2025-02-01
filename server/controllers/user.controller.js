@@ -132,7 +132,7 @@ export async function authUserController(request, response) {
     try { 
         const { username,
             first_name,
-            last_name, telegram_id } = request.body;
+            last_name, telegram_id ,avatar} = request.body;
 
         // Validate input
         if (!first_name || !telegram_id) {
@@ -179,6 +179,7 @@ export async function authUserController(request, response) {
             first_name,
             last_name,
             telegram_id,
+            avatar,
              email: ""
         };
 try {

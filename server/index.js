@@ -19,7 +19,7 @@ import ProductModel from './models/product.model.js'
 const app = express()
 app.use(cors({
     credentials : true,
-    origin : [process.env.FRONTEND_URL,'http://localhost:5173','https://ecommerce-tg-mini-app-bot.vercel.app']
+    origin : [process.env.FRONTEND_URL,'https://nt3pqrw5-5173.uks1.devtunnels.ms','http://localhost:5173']
 }))
 // app.use((req, res, next) => {
 //     res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);

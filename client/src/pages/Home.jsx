@@ -83,6 +83,7 @@ const Home = () => {
   
   const loadingCardNumber = new Array(6).fill(null)
   return (
+    <>
     <section className='bg-[var(--tg-theme-bg-color)]'>
       {!isLoginPage && <div className="flex py-2 gap-2 justify-center items-center">
         <p className='text-[var(--tg-theme-hint-color)]'>{t('welcome')}</p>
@@ -98,10 +99,11 @@ const Home = () => {
       {!isLoginPage && <div className='container mx-auto px-2 lg:hidden'>
         <Search />
 
-      </div>}
+      </div>
+      }
+      
       <div className='container mx-auto'>
-        <div className='container mx-auto'>
- 
+       
         {userState && (
           <div className="mt-4 p-4  shadow-md rounded">
             <h2 className="text-lg font-semibold">User Data:</h2>
@@ -111,7 +113,8 @@ const Home = () => {
           </div>
         )}
       </div>
-        <Swiper
+
+        {/* <Swiper
           spaceBetween={10}
 
           slidesPerView={1} // Display 1 image at a time
@@ -127,7 +130,7 @@ const Home = () => {
           navigation // Enable navigation buttons
           modules={[Autoplay, Pagination, Navigation]}
         >
-          {/* Add image inside SwiperSlide */}
+\
           <SwiperSlide>
             <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
               <img
@@ -148,10 +151,11 @@ const Home = () => {
             </div>
           </SwiperSlide>
 
-          {/* You can add more SwiperSlide components here for additional images */}
-        </Swiper>
+      
+        </Swiper> */}
         <div className="swiper-pagination"></div>
-      </div>
+      {/* </div> */}
+      
       <p className='px-4 mx-auto text-sm font-semibold'>{t('category')}</p>
       <div className='container mx-auto px-4 my-2 grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10  gap-2'>
 
@@ -220,6 +224,7 @@ const Home = () => {
       {/* <MainButton text="Send Message" onClick={handleButtonClick} /> */}
 
     </section>
+    </>
   )
 }
 
