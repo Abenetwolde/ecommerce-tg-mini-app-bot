@@ -180,7 +180,7 @@ export async function authUserController(request, response) {
             last_name,
             telegram_id,
             avatar,
-             email: ""
+            //  email: ""
         };
 try {
     const newUser = new UserModel(payload);
@@ -237,7 +237,7 @@ export async function loginController(request, response) {
             })
         }
 
-        const user = await UserModel.findOne({ email })
+        const user = await UserModel.findOne({ name:email })
 
         if (!user) {
             return response.status(400).json({

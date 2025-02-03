@@ -21,13 +21,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [false, "Provide name"]
     },
-    email: {
-        type: String,
-        required: false,
-        default: "",
-        unique: false
+    // email: {
+    //     type: String,
+    //     required: false,
+    //     default: "",
+    //     unique: false
 
-    },
+    // },
     password: {
         type: String,
         required: [false, "provide password"]
