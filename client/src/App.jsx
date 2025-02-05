@@ -25,7 +25,7 @@ function App() {
 
   const tg = useTelegram()
   const userState = useSelector((state) => state?.user);
-  const user  = useTelegramUser();
+  const user  =  useTelegramUser();
   const [isLoading, setIsLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(true); // State for showing onboarding screen
 
@@ -55,10 +55,14 @@ function App() {
   }, [isTelegramReady]);
   const authenticateUser = async () => {
     try {
+      if (!user) {
+        toast.error("User data is not available");
+        return;
+      }
         const response = await Axios({
             ...SummaryApi.auth,
             data: {
-                telegram_id: user.id,
+                telegram_id: user?.id,
                 first_name: user?.first_name,
                 last_name: user?.last_name || '',
                 username: user?.username || '',
@@ -79,7 +83,7 @@ function App() {
             toast.error(response.data.error, { style: toastStyle });
         }
     } catch (error) {
-        // toast.error('Authentication failed. Please try again.', { style: toastStyle });
+        toast.error('Authentication failed. Please try again.');
     }
 };
 

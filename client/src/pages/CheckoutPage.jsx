@@ -181,6 +181,7 @@ const user =useTelegramUser();
       AxiosToastError(error);
     }
   };
+  const telegram=useTelegramUser()
   return (
     <section className=''>
       <div className='container mx-auto p-4 flex flex-col lg:flex-row w-full gap-5 justify-between'>
@@ -197,11 +198,11 @@ const user =useTelegramUser();
                         <input id={"address" + index} checked={selectAddress === index} type='radio' value={index} onChange={(e) => setSelectAddress(e.target.value)} name='address' />
                       </div>
                       <div>
-                        <p>{address.address_line}</p>
-                        <p>{address.city}</p>
-                        <p>{address.state}</p>
-                        <p>{address.country} - {address.pincode}</p>
-                        <p>{address.mobile}</p>
+                        <p>{address?.address_line}</p>
+                        <p>{address?.city}</p>
+                        <p>{address?.state}</p>
+                        <p>{address?.country} - {address?.pincode}</p>
+                        <p>{address?.mobile}</p>
                       </div>
                     </div>
                   </label>
@@ -223,6 +224,10 @@ const user =useTelegramUser();
           <h3 className='font-semibold'>Bill details</h3>
           <div className='grid  sm:grid-cols-2 gap-4'>
 
+            <div className='flex  justify-between   text-sm' >
+              <p>Name </p>
+              <p className='flex items-center gap-2'><span className='line-through text-neutral-400'>{DisplayPriceInRupees(notDiscountTotalPrice)}</span><span>{telegram?.first_name||"first name"}</span></p>
+            </div>
             <div className='flex  justify-between   text-sm' >
               <p>Items total</p>
               <p className='flex items-center gap-2'><span className='line-through text-neutral-400'>{DisplayPriceInRupees(notDiscountTotalPrice)}</span><span>{DisplayPriceInRupees(totalPrice)}</span></p>

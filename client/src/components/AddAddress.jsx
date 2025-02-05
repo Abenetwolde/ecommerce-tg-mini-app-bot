@@ -18,7 +18,7 @@ const AddAddress = ({close}) => {
         color: theme?.text_color || '#fff',       // Text color
         borderRadius: '8px',                      // Optional styling
         padding: '12px',                          // Optional styling
-    };
+    }; 
     const onSubmit = async(data)=>{
 
         try {

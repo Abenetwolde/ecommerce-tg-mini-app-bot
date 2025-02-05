@@ -24,7 +24,10 @@ export default {
       },
       animation: {
         shimmer: "shimmer 1.5s infinite",
-      }
+      },
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+      },
     },
   },
   plugins: [],

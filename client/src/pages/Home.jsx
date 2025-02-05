@@ -102,7 +102,7 @@ const Home = () => {
       </div>
       }
       
-      <div className='container mx-auto'>
+      {/* <div className='container mx-auto'>
        
         {userState && (
           <div className="mt-4 p-4  shadow-md rounded">
@@ -112,7 +112,7 @@ const Home = () => {
             <pre className="text-sm">{localStorage.getItem('user')?"ture":"false"}</pre>
           </div>
         )}
-      </div>
+      </div> */}
 
         {/* <Swiper
           spaceBetween={10}
@@ -156,7 +156,7 @@ const Home = () => {
         <div className="swiper-pagination"></div>
       {/* </div> */}
       
-      <p className='px-4 mx-auto text-sm font-semibold'>{t('category')}</p>
+      <p className='px-4 mx-auto text-sm font-semibold '>{t('category')}</p>
       <div className='container mx-auto px-4 my-2 grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10  gap-2'>
 
         {
@@ -183,10 +183,10 @@ const Home = () => {
                 <div key={cat._id + "displayCategory"} className='w-full rounded-lg h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)] ' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
                   <div className='rounded-sm overflow-hidden '>
                     <img
-                      src={cat.image}
+                      src={cat?.image}
                       className='w-full h-full object-scale-down'
                     />
-                    {/* <p className='text-xs'>jdsdsd</p> */}
+                    <p className='text-[var(--tg-theme-text-color)] pt-1 text-xs text-center'>{cat?.name}</p>
                   </div>
                 </div>
               )

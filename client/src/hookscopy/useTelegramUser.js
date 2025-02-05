@@ -1,6 +1,6 @@
 import qs from "query-string";
-const useTelegramUser = () => {
-  const { tgWebAppData } = JSON.parse(
+const useTelegramUser = async() => {
+  const { tgWebAppData } = await JSON.parse(
     sessionStorage.getItem("__telegram__initParams") || ""
   );
   console.log("tgWebAppData",tgWebAppData)
