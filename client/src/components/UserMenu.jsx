@@ -11,6 +11,7 @@ import { HiOutlineExternalLink } from "react-icons/hi";
 import isAdmin from '../utils/isAdmin'
 import useTelegramUser from '../hookscopy/useTelegramUser'
 import { BackButton } from '@vkruglikov/react-telegram-web-app'
+import { useTranslation } from 'react-i18next'
 
 const UserMenu = ({close}) => {
    const user = useSelector((state)=> state.user)
@@ -49,11 +50,11 @@ const UserMenu = ({close}) => {
 
     window.history.back(); // Example: goes back in the browser history
   };
-
+const {t}=useTranslation()
   return (
     <div className='md:bg-white'>
  <BackButton onClick={handleBackButtonClick}/>
-        <div className='font-semibold'>My Account</div>
+        <div className='font-semibold'>{t('my_account')}</div>
         <div className='text-sm flex items-center gap-2'>
           <span className='max-w-52 text-ellipsis line-clamp-1'>{tguser?.first_name   || user.mobile||"user"} <span className='text-medium text-red-600'>{user.role === "ADMIN" ? "(Admin)" : "" }</span></span>
           <Link onClick={handleClose} to={"/dashboard/profile"} className='hover:text-primary-200'>
@@ -88,9 +89,9 @@ const UserMenu = ({close}) => {
               )
             }
 
-            <Link onClick={handleClose} to={"/dashboard/myorders"} className='px-2  py-1'>My Orders</Link>
+            <Link onClick={handleClose} to={"/dashboard/myorders"} className='px-2  py-1'>{t('my_orders')}</Link>
 
-            <Link onClick={handleClose} to={"/dashboard/address"} className='px-2  py-1'>Save Address</Link>
+            <Link onClick={handleClose} to={"/dashboard/address"} className='px-2  py-1'>{t('saved_address')}</Link>
 
             {/* <button onClick={handleLogout} className='text-left px-2  py-1'>Log Out</button> */}
 

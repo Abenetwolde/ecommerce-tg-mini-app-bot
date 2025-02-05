@@ -7,6 +7,7 @@ import AxiosToastError from '../utils/AxiosToastError'
 import Loading from './Loading'
 import { useSelector } from 'react-redux'
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { useTranslation } from 'react-i18next'
 
 const AddToCartButton = ({ data }) => {
     const { fetchCartItem, updateCartItem, deleteCartItem } = useGlobalContext()
@@ -93,6 +94,7 @@ const AddToCartButton = ({ data }) => {
             }
         }
     }
+    const {t}=useTranslation()
     return (
         <div className='w-full max-w-[150px]'>
             {
@@ -106,7 +108,7 @@ const AddToCartButton = ({ data }) => {
                     </div>
                 ) : (
                     <button onClick={handleADDTocart} className=' text-white bg-[var(--tg-theme-button-color)] px-2 lg:px-4 py-1 rounded'>
-                        {loading ? <Loading /> : "Add"}
+                        {loading ? <Loading /> : t('add')}
                     </button>
                 )
             }
