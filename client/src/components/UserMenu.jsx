@@ -12,9 +12,21 @@ import isAdmin from '../utils/isAdmin'
 import useTelegramUser from '../hookscopy/useTelegramUser'
 import { BackButton } from '@vkruglikov/react-telegram-web-app'
 import { useTranslation } from 'react-i18next'
-
+const parseJSON = (jsonString) => {
+  try {
+    return (new Function('return ' + jsonString))();
+  } catch (error) {
+    console.error('Error parsing JSON string:', error);
+    return null;
+  }
+};
 const UserMenu = ({close}) => {
    const user = useSelector((state)=> state.user)
+  // const userString = localStorage.getItem('user');
+  // const user = parseJSON(userString);
+  // Parse the JSON string into a JavaScript object
+  // const user = userString ? JSON.parse(userString) : null;
+  console.log("user...................",user)
    const dispatch = useDispatch()
    const navigate = useNavigate()
 

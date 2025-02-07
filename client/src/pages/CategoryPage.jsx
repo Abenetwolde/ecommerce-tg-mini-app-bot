@@ -9,8 +9,6 @@ import CofirmBox from '../components/CofirmBox'
 import toast from 'react-hot-toast'
 import AxiosToastError from '../utils/AxiosToastError'
 import { useSelector } from 'react-redux'
-import { BackButton } from '@vkruglikov/react-telegram-web-app'
-
 const CategoryPage = () => {
     const [openUploadCategory,setOpenUploadCategory] = useState(false)
     const [loading,setLoading] = useState(false)

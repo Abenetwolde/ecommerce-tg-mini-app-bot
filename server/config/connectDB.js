@@ -7,7 +7,7 @@ if(!process.env.MONGODB_URI_ATLAT){
     throw new Error(
         "Please provide MONGODB_URI in the .env file"
     )
-}
+} 
 
 async function connectDB(){
     try {

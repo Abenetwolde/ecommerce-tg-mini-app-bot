@@ -48,24 +48,47 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
       }
     })
   }
-
+    const [loading,setLoading] = useState(false)
   const handleUploadImage = async (e) => {
-    const file = e.target.files[0]
+    const files = e.target.files;
 
-    if (!file) {
+    if (!files) {
       return
     }
     setImageLoading(true)
-    const response = await uploadImage(file)
-    const { data: ImageResponse } = response
-    const imageUrl = ImageResponse.data.url
+    // const response = await uploadImage(file)
+    // const { data: ImageResponse } = response
+    // const imageUrl = ImageResponse.data.url
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append('images', file);
+    }
+  
+    setImageLoading(true)
+    try {
+        const response = await Axios.post('/api/file/multi-upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
-    setData((preve) => {
-      return {
-        ...preve,
-        image: [...preve.image, imageUrl]
-      }
-    })
+        const { data: ImageResponse } = response;
+        const uploadedImages = ImageResponse.data.map(image => image.url);
+        setImageLoading(false)
+        setData((prev) => ({
+            ...prev,
+            image: [...prev.image, ...uploadedImages],
+        }));
+    } catch (error) {
+      setImageLoading(false)
+        console.error('Error uploading image:', error);
+    }
+    // setData((preve) => {
+    //   return {
+    //     ...preve,
+    //     image: [...preve.image, imageUrl]
+    //   }
+    // })
     setImageLoading(false)
 
   }
@@ -207,13 +230,14 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
                       id='productImage'
                       className='hidden'
                       accept='image/*'
+                      multiple
                       onChange={handleUploadImage}
                     />
                   </label>
                   {/**display uploded image*/}
                   <div className='flex flex-wrap gap-4'>
                     {
-                      data.image.map((img, index) => {
+                      data?.image?.map((img, index) => {
                         return (
                           <div key={img + index} className='h-20 mt-1 w-20 min-w-20 bg-blue-50 border relative group'>
                             <img

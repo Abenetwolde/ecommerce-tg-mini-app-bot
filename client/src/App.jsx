@@ -18,6 +18,9 @@ import useTelegram from './hookscopy/useTelegram'
 import useIsReadyTelegram from './hookscopy/useIsReadyTelegram'
 import OnboardingScreenPage from './pages/onboaring';
 import './i18n';
+import "@fontsource/poppins"; // Defaults to weight 400
+import "@fontsource/poppins/400.css"; // Specify weight
+import "@fontsource/poppins/400-italic.css";
 import splash_screen from './assets/splash_screen.jpeg'
 // import { setAccessToken } from '../store/userSlice'
 

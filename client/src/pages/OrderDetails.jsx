@@ -4,7 +4,7 @@ import Axios from "../utils/Axios";
 import { FaTruck } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import useTelegramUser from "../hookscopy/useTelegramUser";
-
+import { useNavigate } from 'react-router-dom';
 const OrderDetails = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
@@ -12,6 +12,7 @@ const OrderDetails = () => {
   const [error, setError] = useState(null);
   const [canceling, setCanceling] = useState(false);
   const user=useTelegramUser()
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
@@ -45,19 +46,19 @@ const OrderDetails = () => {
             },
             body: JSON.stringify({
               chat_id: user.id || "1213", // User's Telegram ID
-              text: `Hello, ${user?.first_name || "Customer"}! Your order with ID ${orderId} has been successfully canceled.`,
-              reply_markup: {
-                inline_keyboard: [
-                  [
-                    {
-                      text: "View Orders",
-                      web_app: {
-                        url: `https://w7s48yrdhj06.share.zrok.io`,
-                      },
-                    },
-                  ],
-                ],
-              },
+              text: `Hello, ${user?.first_name || "Customer"}! Your order with ID ${order?.orderId} has been successfully canceled.`,
+              // reply_markup: {
+              //   inline_keyboard: [
+              //     [
+              //       {
+              //         text: "View Orders",
+              //         web_app: {
+              //           url: `https://w7s48yrdhj06.share.zrok.io`,
+              //         },
+              //       },
+              //     ],
+              //   ],
+              // },
             }),
           }
         );
@@ -91,9 +92,12 @@ const OrderDetails = () => {
   return (
     <div className="min-h-screen text-[var(--tg-theme-text-color)] ">
       {/* Header */}
+      <button onClick={() => navigate('/')}  className="p-2 text-[var(--tg-theme-button-color)]">
+        Home
+      </button>
       <header className="bg-[var(--tg-theme-secondary-bg-color)] p-4 flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold">
+          <h1  className={order.order_status=="Complete"?"text-green-500": "text-red-500 font-medium"}>
             {order.order_status || "Processing"}
           </h1>
           <p className="text-sm">Your order is on the way!</p>

@@ -153,48 +153,59 @@ const Home = () => {
 
       
         </Swiper> */}
+            {/* <div>
+      {user ? (
+        <div>
+          <p><strong>First Name:</strong> {user.first_name}</p>
+          <p><strong>Last Name:</strong> {user.last_name || "N/A"}</p>
+          <p><strong>Username:</strong> {user.username || "N/A"}</p>
+          <p><strong>Language Code:</strong> {user.language_code}</p>
+        </div>
+      ) : (
+        <p>Loading user info...</p>
+      )}
+    </div> */}
         <div className="swiper-pagination"></div>
       {/* </div> */}
       
       <p className='px-4 mx-auto text-sm font-semibold '>{t('category')}</p>
-      <div className='container mx-auto px-4 my-2 grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10  gap-2'>
+      <div className='container mx-auto px-4 my-2 overflow-x-auto no-scrollbar '>
+  <div className='flex gap-2'>
+    {
+      loadingCategory ? (
+        new Array(5).fill(null).map((_, index) => (
+          <div
+            key={index + "loadingcategory"}
+            className="bg-tg-theme-secondary-bg rounded-lg min-h-10 flex-shrink-0 w-40 shadow relative overflow-hidden"
+          >
+            {/* Themed Shimmer Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--tg-theme-button-light-color)] to-transparent animate-shimmer"></div>
 
-        {
-          loadingCategory ? (
-            new Array(5).fill(null).map((_, index) => (
-              <div
-                key={index + "loadingcategory"}
-                className="bg-tg-theme-secondary-bg rounded-lg min-h-10 grid gap-2 shadow relative overflow-hidden"
-              >
-                {/* Themed Shimmer Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--tg-theme-button-light-color)] to-transparent animate-shimmer"></div>
+            {/* Placeholder for image */}
+            {/* <div className="bg-[var(--tg-theme-text-color)]/10 min-h-24 rounded-lg"></div> */}
 
-                {/* Placeholder for image */}
-                {/* <div className="bg-[var(--tg-theme-text-color)]/10 min-h-24 rounded-lg"></div> */}
-
-                {/* Placeholder for text */}
-                {/* <div className="bg-[var(--tg-theme-text-color)]/10 h-8 rounded-lg"></div> */}
+            {/* Placeholder for text */}
+            {/* <div className="bg-[var(--tg-theme-text-color)]/10 h-8 rounded-lg"></div> */}
+          </div>
+        ))
+      ) : (
+        categoryData.map((cat, index) => {
+          return (
+            <div key={cat._id + "displayCategory"} className='w-20 flex-shrink-0 rounded-lg h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)]' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
+              <div className='rounded-sm overflow-hidden p-1'>
+                <img
+                  src={cat?.image}
+                  className='w-full h-full object-scale-down'
+                />
+                <p className='text-[var(--tg-theme-text-color)] p-1 text-xs text-center whitespace-normal break-words'>{cat?.name}</p>
               </div>
-            ))
-          ) : (
-
-            categoryData.map((cat, index) => {
-              return (
-                <div key={cat._id + "displayCategory"} className='w-full rounded-lg h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)] ' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
-                  <div className='rounded-sm overflow-hidden '>
-                    <img
-                      src={cat?.image}
-                      className='w-full h-full object-scale-down'
-                    />
-                    <p className='text-[var(--tg-theme-text-color)] pt-1 text-xs text-center'>{cat?.name}</p>
-                  </div>
-                </div>
-              )
-            })
-
+            </div>
           )
-        }
-      </div>
+        })
+      )
+    }
+  </div>
+</div>
 
       {/***display category product */}
       {loadingCategory&&<p className='px-4 mb-2 mx-auto text-sm font-semibold'>Products</p> }

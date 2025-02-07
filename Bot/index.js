@@ -12,13 +12,17 @@ app.post('/webapp-data', (req, res) => {
   res.status(200).send({ message: 'Data received and message sent' });
 })
 bot.start((ctx) => {
-    ctx.reply("Click Here!", {
+    ctx.reply(`Hello, ${ctx.from.first_name}! 👋
+
+🛍 Shop your favorite products right here inside Telegram!
+🆕 Browse our latest collections, 🛒 add items to your cart, and ✅ securely checkout—all without leaving the app!
+ `, {
         caption: "Caption",
         parse_mode: "Markdown",
         ...Markup.inlineKeyboard([
           //https://ecommerce-tg-mini-app-bot.vercel.app
-          Markup.button.webApp("Click", `https://ecommerce-tg-mini-app-bot.vercel.app`),
-        ])
+          Markup.button.webApp("🚀 Order Now & Get It Fast!", `https://ecommerce-tg-mini-app-bot.vercel.app`),
+        ]) 
 }); 
 })
 // bot.on('callback_query', async (ctx) => {

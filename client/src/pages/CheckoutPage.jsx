@@ -34,19 +34,20 @@ const user =useTelegramUser();
 
       const { data: responseData } = response
       const orderId = responseData.data[0]?.orderId;
-      const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendMessage`, {
+      const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendPhoto`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             chat_id: user?.id||"1213", // User's Telegram ID
-            text: `Hello, ${user?.first_name||"first name"}! Your order has been placed successfully. Order ID: ${orderId||"1234"}`,
+            photo: responseData?.data[0]?.product_details?.image[0], // URL of the image
+            caption: `Hello, ${user?.first_name || "first name"}! Your order has been placed successfully. Order ID: ${orderId || "1234"}`,
             reply_markup: {
               inline_keyboard: [
                   [
                       {
-                          text: "View Order",
+                          text: "View your Order ↗️",
                           web_app: {
                               url: `${import.meta.env.VITE_DEV}/order/${orderId}`
                           }
@@ -60,6 +61,9 @@ const user =useTelegramUser();
     if (telegramResponse.ok) {
       const result = await telegramResponse.json();
       successAlert('Message sent successfully:');
+      setTimeout(() => {
+        window.Telegram.WebApp.close();
+      }, 2000);
   } else {
     successAlert('Failed to send message:', telegramResponse.statusText);
   }
@@ -133,7 +137,7 @@ const user =useTelegramUser();
       });
   
       const { data: responseData } = response;
-          
+          console.log("product Image......",responseData.orders.products[0]?.product_details?.image[0])
       const successMessage = "online Payment successful!";
       const encodedMessage = encodeURIComponent(successMessage);
       window.location.href = `${responseData.payment_url}?message=${encodedMessage}`;
@@ -143,19 +147,21 @@ const user =useTelegramUser();
       const orderId = responseData?.orders?._id;
           
       const orderId4Digit = responseData?.orders?.orderId;
-      const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendMessage`, {
+      const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendPhoto`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             chat_id: user?.id||"1213", // User's Telegram ID
-            text: `Hello, ${user?.first_name||"first name"}! Your order has been placed successfully. Order ID: ${orderId4Digit||"1234"}`,
+            photo: responseData?.orders?.products[0]?.product_details?.image[0], // URL of the image
+            caption: `Hello, ${user?.first_name || "first name"}! Your order has been placed successfully. Order ID: ${orderId4Digit || "1234"}`,
+
             reply_markup: {
               inline_keyboard: [
                   [
                       {
-                          text: "View Order",
+                          text: "View your Order ↗️",
                           web_app: {
                               url: `${import.meta.env.VITE_DEV}/order/${orderId}`
                           }
@@ -168,6 +174,7 @@ const user =useTelegramUser();
         if (telegramResponse.ok) {
       const result = await telegramResponse.json();
       successAlert('Message sent successfully:');
+
   } else {
     successAlert('Failed to send message:', telegramResponse.statusText);
   }
@@ -226,7 +233,7 @@ const user =useTelegramUser();
 
             <div className='flex  justify-between   text-sm' >
               <p>Name </p>
-              <p className='flex items-center gap-2'><span className='line-through text-neutral-400'>{DisplayPriceInRupees(notDiscountTotalPrice)}</span><span>{telegram?.first_name||"first name"}</span></p>
+              <p className='flex items-center gap-2'><span className=' text-neutral-400'>{telegram?.first_name||"first name"}</span></p>
             </div>
             <div className='flex  justify-between   text-sm' >
               <p>Items total</p>

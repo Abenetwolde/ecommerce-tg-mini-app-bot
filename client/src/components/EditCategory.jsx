@@ -53,17 +53,26 @@ const EditCategory = ({close, fetchData,data : CategoryData}) => {
         if(!file){
             return
         }
+        const formData = new FormData();
+        formData.append('image', file);
         setLoading(true)
-        const response = await uploadImage(file)
-        const { data : ImageResponse } = response
-        setLoading(false)
-        
-        setData((preve)=>{
-            return{
-                ...preve,
-                image : ImageResponse.data.url
-            }
-        })
+        try {
+            const response = await Axios.post('/api/file/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+    
+            const { data: ImageResponse } = response;
+            setLoading(false)
+            setData((prev) => ({
+                ...prev,
+                image: ImageResponse?.data?.url,
+            }));
+        } catch (error) {
+            setLoading(false)
+            console.error('Error uploading image:', error);
+        }
     }
   return (
     <section className='fixed top-0 bottom-0 left-0 right-0 p-4 bg-neutral-800 bg-opacity-60 flex items-center justify-center'>
