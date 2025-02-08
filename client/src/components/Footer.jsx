@@ -8,13 +8,13 @@ const Footer = () => {
     <footer className='border-t'>
         <div className='container mx-auto p-4 text-center flex flex-col lg:flex-row lg:justify-between gap-2'>
         <p>
-        Made with <span role="img" aria-label="heart" style={{ color: 'red' }}>❤️</span> by 
+        Made with <span role="img" aria-label="heart" >❤️</span> by 
         <a 
           href="https://abnet-wolde-dev.vercel.app" 
           target="_blank" 
           rel="noopener noreferrer" 
-          className='text-[var(--tg-theme-button-light-color)]'
-          style={{ color: '', marginLeft: '5px' }}
+          className='text-[var(--tg-theme-button-light-color)] ml-5'
+         
         >
           Abnet 
         </a>
