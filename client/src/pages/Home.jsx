@@ -194,7 +194,7 @@ const Home = () => {
             <div key={cat._id + "displayCategory"} className='w-20 flex-shrink-0 rounded-lg h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)]' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
               <div className='rounded-sm overflow-hidden p-1'>
                 <img
-                  src={cat?.image}
+                 src={cat?.image?.replace(/^http:/, 'https:')}
                   className='w-full h-full object-scale-down'
                 />
                 <p className='text-[var(--tg-theme-text-color)] p-1 text-xs text-center whitespace-normal break-words'>{cat?.name}</p>

@@ -19,7 +19,8 @@ const CardProduct = ({data}) => {
     <Link to={url} className='bg-[var(--tg-theme-secondary-bg-color)] border-[var(--tg-theme-hint-color)] py-2 lg:p-4 grid gap-1 lg:gap-3 min-w-36 lg:min-w-52 rounded cursor-pointer ' >
       <div className=' relative min-h-20 w-full max-h-24 lg:max-h-32 rounded overflow-hidden'>
             <img 
-                src={data.image[0]}
+               src={data.image[0]?.replace(/^http:/, 'https:')}
+                // src={data.image[0]}
                 className='w-full h-full object-cover lg:scale-125'
             />
                {data.discount && (

@@ -92,7 +92,7 @@ const ProductDisplayPage = () => {
                         return(
                           <div className='w-20 h-20 min-h-20 min-w-20 scr cursor-pointer shadow-md' key={img+index}>
                             <img
-                                src={img}
+                                src={img.replace(/^http:/, 'https:')}
                                 alt='min-product'
                                 onClick={()=>setImage(index)}
                                 className='w-full h-full object-scale-down' 

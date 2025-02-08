@@ -66,7 +66,8 @@ const DisplayCartItem = ({ close }) => {
                                                     <div key={item?._id + "cartItemDisplay"} className='flex  w-full gap-4'>
                                                         <div className='w-16 h-16 min-h-16 min-w-16  rounded'>
                                                             <img
-                                                                src={item?.productId?.image[0]}
+                                                            
+                                                                src={item?.productId?.image[0].replace(/^http:/, 'https:')}
                                                                 className='object-scale-down'
                                                             />
                                                         </div>
