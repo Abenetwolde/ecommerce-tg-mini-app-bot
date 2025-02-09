@@ -69,13 +69,13 @@ const Home = () => {
   }
   const [userData, setUserData] = useState(null);
 
-  // useEffect(() => {
-  //   // Retrieve user data from localStorage
-  //   const user = localStorage.getItem('user');
-  //   if (user) {
-  //     setUserData(JSON.stringify(JSON.parse(user), null, 2));
-  //   }
-  // }, []);
+  useEffect(() => {
+    // Retrieve user data from localStorage
+    const user = localStorage.getItem('user');
+    if (user) {
+      setUserData(JSON.stringify(JSON.parse(user), null, 2));
+    }
+  }, []);
   const location = useLocation();
   const telegram = useTelegramUser()
   const isLoginPage = location.pathname === '/login';
@@ -154,12 +154,12 @@ const Home = () => {
       
         </Swiper> */}
             <div>
-      {user ? (
+      {userData ? (
         <div>
-          <p><strong>First Name:</strong> {user.first_name}</p>
-          <p><strong>Last Name:</strong> {user.last_name || "N/A"}</p>
-          <p><strong>Username:</strong> {user.username || "N/A"}</p>
-          <p><strong>Language Code:</strong> {user.language_code}</p>
+          <p><strong>First Name:</strong> {userData.first_name}</p>
+          <p><strong>Last Name:</strong> {userData.last_name || "N/A"}</p>
+          <p><strong>Username:</strong> {userData.username || "N/A"}</p>
+          <p><strong>Language Code:</strong> {userData.language_code}</p>
         </div>
       ) : (
         <p>Loading user info...</p>
