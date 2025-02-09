@@ -17,7 +17,7 @@ import orderRouter from './route/order.route.js'
 import ProductModel from './models/product.model.js'
 
 const app = express()
-aapp.use(cors({
+app.use(cors({
     credentials: true,
     origin: [
         "https://ecommerce-tg-mini-app-bot.vercel.app",
