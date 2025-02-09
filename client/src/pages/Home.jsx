@@ -73,7 +73,7 @@ const Home = () => {
     // Retrieve user data from localStorage
     const user = localStorage.getItem('user');
     if (user) {
-      setUserData(JSON.stringify(JSON.parse(user), null, 2));
+      setUserData(JSON.parse(user));
     }
   }, []);
   const location = useLocation();
