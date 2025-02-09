@@ -153,7 +153,7 @@ const Home = () => {
 
       
         </Swiper> */}
-            {/* <div>
+            <div>
       {user ? (
         <div>
           <p><strong>First Name:</strong> {user.first_name}</p>
@@ -164,7 +164,7 @@ const Home = () => {
       ) : (
         <p>Loading user info...</p>
       )}
-    </div> */}
+    </div>
         <div className="swiper-pagination"></div>
       {/* </div> */}
       

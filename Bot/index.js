@@ -10,7 +10,7 @@ app.post('/webapp-data', (req, res) => {
   // Send a message to the user through the bot
   bot.telegram.sendMessage(userId, `You sent: ${data}`);
   res.status(200).send({ message: 'Data received and message sent' });
-}) 
+})  
 bot.start((ctx) => {
     ctx.reply(`Hello, ${ctx.from.first_name}! 👋
 
