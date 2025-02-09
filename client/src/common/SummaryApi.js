@@ -1,5 +1,5 @@
-export const baseURL = "http://localhost:8080"
-// export const baseURL = "https://backend-api-ecommerce-tg-mini-app-bot.vercel.app"
+// export const baseURL = "http://localhost:8080"
+export const baseURL = "https://nt3pqrw5-8080.uks1.devtunnels.ms"
 
 const SummaryApi = {
     register : {
