@@ -156,10 +156,10 @@ const Home = () => {
             <div>
       {userData ? (
         <div>
-          <p><strong>First Name:</strong> {userData.first_name}</p>
-          <p><strong>Last Name:</strong> {userData.last_name || "N/A"}</p>
-          <p><strong>Username:</strong> {userData.username || "N/A"}</p>
-          <p><strong>Language Code:</strong> {userData.language_code}</p>
+          <p><strong>First Name:</strong> {userData?.first_name}</p>
+          <p><strong>Last Name:</strong> {userData?.last_name || "N/A"}</p>
+          <p><strong>Username:</strong> {userData?.username || "N/A"}</p>
+          {/* <p><strong>Language Code:</strong> {userData.language_code}</p> */}
         </div>
       ) : (
         <p>Loading user info...</p>
