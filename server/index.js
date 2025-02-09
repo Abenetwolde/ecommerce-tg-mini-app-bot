@@ -20,7 +20,8 @@ const app = express()
 app.use(cors({
     credentials : true,
     //https://bcfqsffj-8080.uks1.devtunnels.ms/
-    origin : [process.env.FRONTEND_URL,'https://ecommerce-tg-mini-app-bot-1.onrender.com','https://bcfqsffj-5173.uks1.devtunnels.ms','https://9mil0hr4q6dp.share.zrok.io','https://ecommerce-tg-mini-app-bot.vercel.app','http://localhost:5173']
+    origin:"*"
+    // origin : [process.env.FRONTEND_URL,'https://ecommerce-tg-mini-app-bot-1.onrender.com','https://bcfqsffj-5173.uks1.devtunnels.ms','https://9mil0hr4q6dp.share.zrok.io','https://ecommerce-tg-mini-app-bot.vercel.app','http://localhost:5173']
 }))
 // app.use((req, res, next) => {
 //     res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);

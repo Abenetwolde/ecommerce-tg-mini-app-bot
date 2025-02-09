@@ -73,7 +73,7 @@ function App() {
             },
         });
 
-        if (response.data.success) {
+        if (response?.data?.success) {
             // toast.success(response.data.message, { style: toastStyle });
              localStorage.setItem('accesstoken', response?.data?.data?.accesstoken);
             localStorage.setItem('refreshToken', response?.data?.data?.refreshToken);
@@ -86,7 +86,7 @@ function App() {
             toast.error(response.data.error, { style: toastStyle });
         }
     } catch (error) {
-        toast.error(`Authentication failed. ${error}`);
+        toast.error(`Authentication failed. ${error}`,{ style: toastStyle });
     }
 };
 
