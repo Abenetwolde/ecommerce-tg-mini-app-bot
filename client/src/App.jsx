@@ -86,7 +86,7 @@ function App() {
             toast.error(response.data.error, { style: toastStyle });
         }
     } catch (error) {
-        toast.error('Authentication failed. Please try again.');
+        toast.error(`Authentication failed. ${error}`);
     }
 };
 
