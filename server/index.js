@@ -25,8 +25,8 @@ app.use(cors({
         "https://backend-api-ecommerce-tg-mini-app-bot.vercel.app",
         "http://localhost:5173"
     ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    // methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
 }));
 // app.use((req, res, next) => {
 //     res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
