@@ -83,10 +83,10 @@ function App() {
             dispatch(setUserDetails(userDetails.data));
             dispatch(setAccessToken(response.data.data.accessToken)) 
         } else if (response.data.error) {
-            toast.error(response.data.error, { style: toastStyle });
+            toast.error(response.data.error);
         }
     } catch (error) {
-        toast.error(`Authentication failed. ${error}`,{ style: toastStyle });
+        toast.error(`Authentication failed. ${error}`);
     }
 };
 
