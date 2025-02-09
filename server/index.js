@@ -17,12 +17,17 @@ import orderRouter from './route/order.route.js'
 import ProductModel from './models/product.model.js'
 
 const app = express()
-app.use(cors({
-    // credentials : true,
-    //https://bcfqsffj-8080.uks1.devtunnels.ms/
-    origin:"*"
-    // origin : [process.env.FRONTEND_URL,'https://ecommerce-tg-mini-app-bot-1.onrender.com','https://bcfqsffj-5173.uks1.devtunnels.ms','https://9mil0hr4q6dp.share.zrok.io','https://ecommerce-tg-mini-app-bot.vercel.app','http://localhost:5173']
-}))
+aapp.use(cors({
+    credentials: true,
+    origin: [
+        "https://ecommerce-tg-mini-app-bot.vercel.app",
+        "https://ecommerce-tg-mini-app-bot-1.onrender.com",
+        "https://backend-api-ecommerce-tg-mini-app-bot.vercel.app",
+        "http://localhost:5173"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 // app.use((req, res, next) => {
 //     res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
 //     res.header("Access-Control-Allow-Credentials", "true");
