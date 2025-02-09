@@ -79,11 +79,11 @@ function App() {
             localStorage.setItem('refreshToken', response?.data?.data?.refreshToken);
 
             const userDetails = await fetchUserDetails();
-            localStorage.setItem('user', userDetails.data);
-            dispatch(setUserDetails(userDetails.data));
-            dispatch(setAccessToken(response.data.data.accessToken)) 
-        } else if (response.data.error) {
-            toast.error(response.data.error);
+            localStorage.setItem('user', userDetails?.data);
+            dispatch(setUserDetails(userDetails?.data));
+            dispatch(setAccessToken(response?.data?.data?.accessToken)) 
+        } else if (response?.data?.error) {
+            toast.error(response?.data?.error);
         }
     } catch (error) {
         toast.error(`Authentication failed. ${error}`);

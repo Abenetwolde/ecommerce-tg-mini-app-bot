@@ -148,6 +148,7 @@ export async function authUserController(request, response) {
         const user = await UserModel.findOne({ telegram_id });
 // console.log("user", user)
         if (user) {
+            console.log("user exiat...............")
             // If user exists, generate tokens and authenticate
             const accessToken = await generatedAccessToken(user._id);
             const refreshToken = await genertedRefreshToken(user._id);
@@ -160,7 +161,7 @@ export async function authUserController(request, response) {
 
             response.cookie('accessToken', accessToken, cookiesOption);
             response.cookie('refreshToken', refreshToken, cookiesOption);
-
+console.log("acesss........",accessToken)
             return response.json({
                 message: "User authenticated successfully.",
                 error: false,
