@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useNavigate } from "react-router-dom";
+import { useSwipeable } from "react-swipeable";
 import LanguageSelection from "./LanguageSelection";
 import { useTranslation } from 'react-i18next';
-import onboaring1 from '../assets/onboaring1.jpeg'
-import onboaring2 from '../assets/onboaring2.jpeg'
-import onboaring3 from '../assets/onboaring3.jpeg'
+import onboaring1 from '../assets/onboaring1.jpeg';
+import onboaring2 from '../assets/onboaring2.jpeg';
+import onboaring3 from '../assets/onboaring3.jpeg';
 
 function OnboardingScreenPage() {
   const [currentScreen, setCurrentScreen] = useState(0);
   const navigate = useNavigate();
   const { t } = useTranslation();
+
   const handleNext = () => {
     if (currentScreen < onboardingScreens.length - 1) {
       setCurrentScreen(currentScreen + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentScreen > 0) {
+      setCurrentScreen(currentScreen - 1);
     }
   };
 
@@ -31,6 +39,7 @@ function OnboardingScreenPage() {
     transform: `translateX(-${currentScreen * 100}%)`,
     from: { opacity: 0, transform: `translateX(-${currentScreen * 100}%)` },
   });
+
   const onboardingScreens = [
     { id: 0, type: "component", component: <LanguageSelection /> },
     {
@@ -52,9 +61,16 @@ function OnboardingScreenPage() {
       image: onboaring1
     },
   ];
-  
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrevious,
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true
+  });
+
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[var(--tg-theme-bg-color)]">
+    <div className="flex flex-col h-screen overflow-hidden bg-[var(--tg-theme-bg-color)]" {...swipeHandlers}>
       {/* Onboarding Screens */}
       <div className="flex-grow relative overflow-hidden">
         <animated.div
@@ -70,9 +86,6 @@ function OnboardingScreenPage() {
               ) : (
                 <>
                   <img src={screen.image} alt={screen.title} className="w-64 h-64 mb-8 rounded-lg shadow-lg" />
-                  {/* <h1 className="text-2xl font-bold text-center mb-4">
-                    {screen.title}
-                  </h1> */}
                   <p className="text-center mt-10 mb-4">{screen.description}</p>
                 </>
               )}
@@ -97,14 +110,14 @@ function OnboardingScreenPage() {
       <div className="flex justify-between px-4 pb-3">
         {currentScreen < onboardingScreens.length - 1 ? (
           <button onClick={handleSkip} className="text-gray-400 hover:text-gray-900">
-           {t("skip")}
+            {t("skip")}
           </button>
         ) : (
           <div></div>
         )}
         {currentScreen < onboardingScreens.length - 1 ? (
           <button onClick={handleNext} className="bg-[var(--tg-theme-button-color)] text-white px-6 py-1 rounded-lg">
-         {t("next")}
+            {t("next")}
           </button>
         ) : (
           <button onClick={handleStart} className="bg-[var(--tg-theme-button-color)] text-white px-6 py-1 rounded-lg">

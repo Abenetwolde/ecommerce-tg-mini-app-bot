@@ -23,7 +23,8 @@ app.use(cors({
         "https://web.telegram.org",
         "https://ecommerce-tg-mini-app-bot.vercel.app",
         "https://ecommerce-tg-mini-app-bot-1.onrender.com",
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "https://bcfqsffj-5173.uks1.devtunnels.ms"
     ],
     // methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     // allowedHeaders: ["Content-Type", "Authorization"],

@@ -36,9 +36,9 @@ const DisplayCartItem = ({ close }) => {
 
     }
     return (
-        <section className=' bg-[var(--tg-theme-bg-color)] fixed top-0 bottom-0 right-0 left-0 bg-opacity-70 z-50'>
-        
-            <div className=' w-full max-w-sm min-h-screen max-h-screen ml-auto'>
+        <section className=' bg-[var(--tg-theme-bg-color)] fixed items-center justify-center top-0 bottom-0 right-0 left-0 bg-opacity-70 z-50'>
+            <BackButton onClick={handleBackButtonClick} />
+            <div className=' w-full max-w-sm min-h-screen max-h-screen mx-auto'>
                 <div className='flex items-center p-4 shadow-md gap-3 justify-between'>
                     <h2 className='font-semibold'>Cart</h2>
                     <Link to={"/"} className='lg:hidden'>

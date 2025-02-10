@@ -25,6 +25,7 @@ import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import AdminLogin from "../pages/AdminLogin";
 import OrderDetails from "../pages/OrderDetails";
+import Dashboard1 from "../pages/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
                 path : "dashboard",
                 element : <Dashboard/>,
                 children : [
+                    {
+                        path : "dashboard",
+                        element : <Dashboard1/>
+                    },
                     {
                         path : "profile",
                         element : <Profile/>
