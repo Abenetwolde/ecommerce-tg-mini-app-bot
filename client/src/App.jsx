@@ -72,7 +72,7 @@ function App() {
                 avatar: user?.photo_url || '',
             },
         });
-
+        toast.success("toekn,",response?.data?.data?.accesstoken);
         if (response?.data?.success) {
             // toast.success(response.data.message, { style: toastStyle });
              localStorage.setItem('accesstoken', response?.data?.data?.accesstoken);
