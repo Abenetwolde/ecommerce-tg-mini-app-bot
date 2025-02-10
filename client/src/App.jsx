@@ -72,10 +72,10 @@ function App() {
                 avatar: user?.photo_url || '',
             },
         });
-        toast.success("toekn,",response?.data?.data?.accesstoken);
+        toast.success("toekn,",response?.data?.data?.accessToken);
         if (response?.data?.success) {
             // toast.success(response.data.message, { style: toastStyle });
-             localStorage.setItem('accesstoken', response?.data?.data?.accesstoken);
+             localStorage.setItem('accesstoken', response?.data?.data?.accessToken);
             localStorage.setItem('refreshToken', response?.data?.data?.refreshToken);
 
             const userDetails = await fetchUserDetails();
