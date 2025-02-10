@@ -20,6 +20,7 @@ const app = express()
 app.use(cors({
     credentials: true,
     origin: [
+        "https://web.telegram.org",
         "https://ecommerce-tg-mini-app-bot.vercel.app",
         "https://ecommerce-tg-mini-app-bot-1.onrender.com",
         "http://localhost:5173"
