@@ -22,7 +22,6 @@ app.use(cors({
     origin: [
         "https://ecommerce-tg-mini-app-bot.vercel.app",
         "https://ecommerce-tg-mini-app-bot-1.onrender.com",
-        "https://backend-api-ecommerce-tg-mini-app-bot.vercel.app",
         "http://localhost:5173"
     ],
     // methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
