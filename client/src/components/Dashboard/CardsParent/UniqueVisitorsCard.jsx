@@ -7,12 +7,12 @@ const UniqueVisitorsCard = ({data}) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex items-center space-x-4">
-        <div className="p-3 bg-blue-100 rounded-full">
-          <FaUsers className="text-blue-500 text-2xl" />
+        <div className="p-3 bg-gray-200 rounded-full">
+          <FaUsers className="text-gray-700 text-1xl" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-gray-700">Unique Visitors</h2>
-          <p className="text-2xl  text-gray-900">{data?.current}</p>
+          <h2 className="text-lg ">Unique Visitors</h2>
+          <p className="text-2xl font-semibold text-gray-700">{data?.current}</p>
         </div>
       </div>
   <div className="mt-4 flex items-center space-x-2">

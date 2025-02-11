@@ -1,124 +1,110 @@
 import React, { useState } from "react";
+import { FaFileAlt, FaMapMarkerAlt, FaExternalLinkAlt, FaTabletAlt, FaGlobe, FaCity, FaWindows, FaChrome } from "react-icons/fa";
+
+const tabs = [
+  { name: "Pages", icon: <FaFileAlt /> },
+  { name: "Locations", icon: <FaMapMarkerAlt /> },
+  { name: "Referrers", icon: <FaExternalLinkAlt /> },
+  { name: "Devices", icon: <FaTabletAlt /> },
+];
+
+const subTabs = {
+  Locations: [
+    { name: "Country", icon: <FaGlobe /> },
+    { name: "City", icon: <FaCity /> },
+  ],
+  Devices: [
+    { name: "OS", icon: <FaWindows /> },
+    { name: "Browser", icon: <FaChrome /> },
+  ],
+};
 
 const AnalyticsDashboard = ({ data }) => {
-  const [activeTab, setActiveTab] = useState("Devices");
-  const [activeSubTab, setActiveSubTab] = useState("OS");
+  // const { data } = apiData;
+  const [activeTab, setActiveTab] = useState("Pages");
+  const [activeSubTab, setActiveSubTab] = useState("");
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    if (subTabs[tab]) setActiveSubTab(subTabs[tab][0].name);
+  };
 
   const renderContent = () => {
     switch (activeTab) {
-      case "Devices":
+      case "Pages":
         return (
-          <div className="space-y-4">
-            <div className="flex space-x-4 border-b pb-2">
-              {["OS", "Browser"].map((subTab) => (
-                <button
-                  key={subTab}
-                  onClick={() => setActiveSubTab(subTab)}
-                  className={`px-4 py-2 rounded-t-lg ${
-                    activeSubTab === subTab
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-700 text-gray-400"
-                  }`}
-                >
-                  {subTab}
-                </button>
-              ))}
-            </div>
-            {activeSubTab === "OS" && (
-              <div>
-                <h3 className="font-semibold">OS</h3>
-                {data.os.map((os, index) => (
-                  <div key={index} className="bg-gray-900 p-4 rounded-lg shadow-md flex justify-between">
-                    <p className="font-semibold text-white">{os.os}</p>
-                    <p className="text-gray-400">{os.visits} visits</p>
-                  </div>
-                ))}
+          <div>
+            {data.pages.map((page, index) => (
+              <div key={index} className="border-b border-gray-300 py-3 flex justify-between">
+                <p>{page.page}</p>
+                <p className="text-gray-500">{page.visits} visits</p>
               </div>
-            )}
-            {activeSubTab === "Browser" && (
-              <div>
-                <h3 className="font-semibold">Browser</h3>
-                {data.browser.map((browser, index) => (
-                  <div key={index} className="bg-gray-900 p-4 rounded-lg shadow-md flex justify-between">
-                    <p className="font-semibold text-white">{browser.browser}</p>
-                    <p className="text-gray-400">{browser.visits} visits</p>
-                  </div>
-                ))}
-              </div>
-            )}
+            ))}
           </div>
         );
+      case "Devices":
       case "Locations":
         return (
-          <div className="space-y-4">
-            <div className="flex space-x-4 border-b pb-2">
-              {["Country", "City"].map((subTab) => (
-                <button
-                  key={subTab}
-                  onClick={() => setActiveSubTab(subTab)}
-                  className={`px-4 py-2 rounded-t-lg ${
-                    activeSubTab === subTab
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-700 text-gray-400"
-                  }`}
-                >
-                  {subTab}
-                </button>
-              ))}
+          <div className="mt-3 ml-3 ">
+            <div className="bg-gray-200 w-fit  p-2 rounded-lg">
+              <div className="flex space-x-4">
+                {subTabs[activeTab].map(({ name, icon }) => (
+                  <button
+                    key={name}
+                    onClick={() => setActiveSubTab(name)}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-300 ${
+                      activeSubTab === name ? "bg-gray-500 text-white" : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    {icon}
+                    <span>{name}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-            {activeSubTab === "Country" && (
-              <div>
-                <h3 className="font-semibold">Country</h3>
-                {data.locations.country.map((location, index) => (
-                  <div key={index} className="bg-gray-900 p-4 rounded-lg shadow-md flex justify-between">
-                    <p className="font-semibold text-white">{location.location}</p>
-                    <p className="text-gray-400">{location.visits} visits</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            {activeSubTab === "City" && (
-              <div>
-                <h3 className="font-semibold">City</h3>
-                {data.locations.city.map((location, index) => (
-                  <div key={index} className="bg-gray-900 p-4 rounded-lg shadow-md flex justify-between">
-                    <p className="font-semibold text-white">{location.location}</p>
-                    <p className="text-gray-400">{location.visits} visits</p>
-                  </div>
-                ))}
-              </div>
-            )}
+
+            {activeSubTab === "OS" &&
+              data.os.map((os, index) => (
+                <div key={index} className="border-b border-gray-300 py-3 flex justify-between">
+                  <p>{os.os}</p>
+                  <p className="text-gray-500">{os.visits} visits</p>
+                </div>
+              ))}
+
+            {activeSubTab === "Browser" &&
+              data.browser.map((browser, index) => (
+                <div key={index} className="border-b border-gray-300 py-3 flex justify-between">
+                  <p>{browser.browser}</p>
+                  <p className="text-gray-500">{browser.visits} visits</p>
+                </div>
+              ))}
+
+            {activeSubTab === "Country" &&
+              data.locations.country.map((location, index) => (
+                <div key={index} className="border-b border-gray-300 py-3 flex justify-between">
+                  <p>{location.location}</p>
+                  <p className="text-gray-500">{location.visits} visits</p>
+                </div>
+              ))}
+
+            {activeSubTab === "City" &&
+              data.locations.city.map((location, index) => (
+                <div key={index} className="border-b border-gray-300 py-3 flex justify-between">
+                  <p>{location.location}</p>
+                  <p className="text-gray-500">{location.visits} visits</p>
+                </div>
+              ))}
           </div>
         );
       case "Referrers":
         return (
-          <div className="space-y-4">
-            <div className="flex space-x-4 border-b pb-2">
-              {["Referrer", "Domain"].map((subTab) => (
-                <button
-                  key={subTab}
-                  onClick={() => setActiveSubTab(subTab)}
-                  className={`px-4 py-2 rounded-t-lg ${
-                    activeSubTab === subTab
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-700 text-gray-400"
-                  }`}
-                >
-                  {subTab}
-                </button>
-              ))}
-            </div>
-            {activeSubTab === "Referrer" && (
-              <div>
-                <h3 className="font-semibold">Referrer</h3>
-                {data.referrer.map((ref, index) => (
-                  <div key={index} className="bg-gray-900 p-4 rounded-lg shadow-md flex justify-between">
-                    <p className="font-semibold text-white">{ref.referrer}</p>
-                    <p className="text-gray-400">{ref.visits} visits</p>
-                  </div>
-                ))}
+          <div>
+            {data.referrer.map((ref, index) => (
+              <div key={index} className="border-b border-gray-300 py-3 flex justify-between">
+                <p>{ref.referrer}</p>
+                <p className="text-gray-500">{ref.visits} visits</p>
               </div>
-            )}
+            ))}
           </div>
         );
       default:
@@ -127,24 +113,27 @@ const AnalyticsDashboard = ({ data }) => {
   };
 
   return (
-    <div className="p-6 bg-black text-white">
-      <div className="flex space-x-4 mb-6 border-b pb-2">
-        {["Pages", "Locations", "Referrers", "Devices"].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-t-lg ${
-              activeTab === tab
-                ? "bg-gray-800 text-white"
-                : "bg-gray-700 text-gray-400"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
+    <div className="p-6 text-gray-900" >
+      <div className="bg-gray-200 p-2 rounded-lg">
+        <div className="flex justify-between">
+          {tabs.map(({ name, icon }) => (
+            <button
+              key={name}
+              onClick={() => handleTabChange(name)}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-300 ${
+                activeTab === name ? "bg-gray-500 text-white" : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              {icon}
+              <span>{name}</span>
+            </button>
+          ))}
+        </div>
       </div>
+
       {renderContent()}
-      <p className="text-gray-400 mt-4">Your analytics dashboard provides insights into visits and sources.</p>
+
+      <p className="text-gray-500 mt-4">Your analytics dashboard provides insights into visits and sources.</p>
     </div>
   );
 };

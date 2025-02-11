@@ -4,9 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import LanguageSelection from "./LanguageSelection";
 import { useTranslation } from 'react-i18next';
-import onboaring1 from '../assets/onboaring1.jpeg';
-import onboaring2 from '../assets/onboaring2.jpeg';
-import onboaring3 from '../assets/onboaring3.jpeg';
+
+
+import ad1 from '../assets/ad1.jpg';
+import ad2 from '../assets/ad2.jpg';
+import ad3 from '../assets/ad3.png';
+// import ad1 from '../assets/ad1.jpg';
+// import onboaring2 from '../assets/onboaring2.jpeg';
+// import onboaring3 from '../assets/onboaring3.jpeg';
 
 function OnboardingScreenPage() {
   const [currentScreen, setCurrentScreen] = useState(0);
@@ -46,19 +51,19 @@ function OnboardingScreenPage() {
       id: 1,
       title: "Welcome to the App",
       description: t("onboaring1"),
-      image: onboaring3
+      image: ad3
     },
     {
       id: 2,
       title: "Stay Organized",
       description: t("onboaring2"),
-      image: onboaring2
+      image: ad2
     },
     {
       id: 3,
       title: "Get Started",
       description: t("onboaring3"),
-      image: onboaring1
+      image: ad1
     },
   ];
 

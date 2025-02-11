@@ -13,6 +13,7 @@ import { useGlobalContext } from '../provider/GlobalProvider';
 import DisplayCartItem from './DisplayCartItem';
 import useTelegramUser from '../hookscopy/useTelegramUser';
 import LanguageDropdown from './LanguageDropdown';
+import ad1 from "../assets/ad1.jpg"
 
 const Header = () => {
     const [isMobile] = useMobile()
@@ -23,6 +24,7 @@ const Header = () => {
     const isSearchPage = location.pathname === "/search"
     const navigate = useNavigate()
     const user = useSelector((state) => state?.user)
+    const userFromLocal = localStorage.getItem("user")
     console.log("user fro center state ", user?._id)
     const [openUserMenu, setOpenUserMenu] = useState(false)
     const cartItem = useSelector(state => state.cartItem.cart)
@@ -67,9 +69,12 @@ const Header = () => {
                     <div className="sticky  w-full top-0 z-150 bg-[var(--tg-theme-bg-color)] ">
                         <div className=' mx-auto flex items-center px-2 justify-between'>
                             {/**logo */}
+                            <div className='hidden lg:block'>
+                                        <img src={ad1} alt='Logo' className='h-10 rounded-md w-auto' />
+                                    </div>
                             <div></div>
 
-                            <div className='hidden lg:block'>
+                            <div className='hidden lg:hidden'>
                                 <Search />
                             </div>
 
@@ -81,21 +86,22 @@ const Header = () => {
                                 {/*   <LanguageDropdown />  */}
                                 {/**user icons display in only mobile version**/}
                                 <button className='text-[var(--tg-theme-hint-color)] lg:hidden' onClick={handleMobileUser}>
-                                {telegram?.photo_url ? (
-              <img
-                src={telegram.photo_url}
-                alt="Profile"
-                className="w-6 h-6 rounded-full"
-              />
-            ) : (
-              <FaRegCircleUser size={26} />
-            )}
+                                    {telegram?.photo_url ? (
+                                        <img
+                                            src={telegram.photo_url}
+                                            alt="Profile"
+                                            className="w-6 h-6 rounded-full"
+                                        />
+                                    ) : (
+                                        <FaRegCircleUser size={26} />
+                                    )}
                                 </button>
 
                                 {/**Desktop**/}
                                 <div className='hidden lg:flex  items-center gap-10'>
+                              
                                     {
-                                        user?._id ? (
+                                        userFromLocal ? (
                                             <div className='relative'>
                                                 <div onClick={() => setOpenUserMenu(preve => !preve)} className='flex select-none items-center gap-1 cursor-pointer'>
                                                     <p>Account</p>
@@ -124,8 +130,8 @@ const Header = () => {
                                             <button onClick={redirectToLoginPage} className='text-lg px-2'>Login</button>
                                         )
                                     }
-                                    <button onClick={() => setOpenCartSection(true)} className='flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white'>
-                                        {/**add to card icons */}
+                                    {/* <button onClick={() => setOpenCartSection(true)} className='flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white'>
+
                                         <div className='animate-bounce'>
                                             <BsCart4 size={26} />
                                         </div>
@@ -141,7 +147,7 @@ const Header = () => {
                                                 )
                                             }
                                         </div>
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
                         </div>

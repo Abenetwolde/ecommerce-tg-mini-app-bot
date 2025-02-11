@@ -48,7 +48,7 @@ const VisitorsChart = ({ data }) => {
           },
         },
       },
-      colors: ["#3B82F6"], // Bar color
+      colors: ["#808080"], // Bar color
       stroke: {
         width: 2,
         curve: "smooth", // Smooth curve

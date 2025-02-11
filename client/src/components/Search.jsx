@@ -30,6 +30,7 @@ const Search = ({ searchText, setSearchText }) => {
         const value = e.target.value
         setSearchText(value)
         console.log("searchText",value)
+        
         // const url = `/search?q=${value}`
         // navigPate(url)
     }

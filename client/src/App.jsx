@@ -173,7 +173,10 @@ const fetchSubCategory = async () => {
           <main className='min-h-[78vh]'>
             <Outlet />
           </main>
-          <Footer />
+          <div className='hidden lg:block'>
+          <Footer  />
+          </div>
+        
           <Toaster />
           {location.pathname !== '/checkout' && <CartMobileLink />}
         </GlobalProvider>

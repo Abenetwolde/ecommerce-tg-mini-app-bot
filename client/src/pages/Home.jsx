@@ -11,8 +11,14 @@ import Search from '../components/Search'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { useTranslation } from 'react-i18next'
-
+import { TrackClick } from '@loglib/tracker/react';
 import 'swiper/css';
+import ad1 from '../assets/ad1.jpg'
+import ad2 from '../assets/ad2.jpg'
+import ad3 from '../assets/ad3.png'
+import banner1 from '../assets/banner1.jpg'
+import banner2 from '../assets/banner2.jpg'
+import banner3 from '../assets/banner3.jpeg'
 import CardLoading from '../components/CardLoading'
 
 
@@ -84,6 +90,9 @@ const Home = () => {
   const loadingCardNumber = new Array(6).fill(null)
   return (
     <>
+   <TrackClick name="Home Page" payload={{
+        foo: "home"
+    }}>
     <section className='bg-[var(--tg-theme-bg-color)]'>
       {!isLoginPage && <div className="flex py-2 gap-2 justify-center items-center">
         <p className='text-[var(--tg-theme-hint-color)]'>{t('welcome')}</p>
@@ -114,45 +123,7 @@ const Home = () => {
         )}
       </div> */}
 
-        {/* <Swiper
-          spaceBetween={10}
 
-          slidesPerView={1} // Display 1 image at a time
-          loop={true} // Enable looping through images
-          pagination={{
-            clickable: true, // Makes pagination dots clickable
-            // el: '.swiper-pagination', // Custom pagination class
-          }}// Add pagination controls
-          autoplay={{
-            delay: 4000, // Delay between slide transitions (in ms)
-            disableOnInteraction: true, // Autoplay continues even if user interacts with Swiper
-          }}
-          navigation // Enable navigation buttons
-          modules={[Autoplay, Pagination, Navigation]}
-        >
-\
-          <SwiperSlide>
-            <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
-              <img
-                src={banner}
-                className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
-                alt='banner'
-              />
-            </div>
-
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={`w-full my-5 h-full min-h-20 rounded ${!banner && "animate-pulse my-2 "}`}>
-              <img
-                src={banner}
-                className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
-                alt='banner'
-              />
-            </div>
-          </SwiperSlide>
-
-      
-        </Swiper> */}
             {/* <div>
       {userData ? (
         <div>
@@ -231,10 +202,54 @@ const Home = () => {
           )
         })
       }
+<Swiper
+  spaceBetween={10}
+  slidesPerView={1} // Display 1 image at a time
+  loop={true} // Enable looping through images
+  pagination={{
+    clickable: true, // Makes pagination dots clickable
+  }} // Add pagination controls
+  autoplay={{
+    delay: 3000, // Delay between slide transitions (in ms)
+    disableOnInteraction: true, // Autoplay continues even if user interacts with Swiper
+  }}
 
+  navigation // Enable navigation buttons
+  modules={[Autoplay, Pagination, Navigation]}
+>
+  <SwiperSlide>
+    <div className={`w-full my-5 max-h-30 h-30 rounded ${!banner && "animate-pulse my-2 "}`}>
+      <img
+        src={banner1}
+        className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full object-cover lg:hidden'
+        alt='banner'
+      />
+    </div>
+  </SwiperSlide>
+  <SwiperSlide>
+    <div className={`w-full my-5 max-h-30 h-30 rounded ${!banner && "animate-pulse my-2 "}`}>
+      <img
+        src={banner2}
+        className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
+        alt='banner'
+      />
+    </div>
+  </SwiperSlide>
+  <SwiperSlide>
+    <div className={`w-full my-5 max-h-30 h-30 rounded ${!banner && "animate-pulse my-2 "}`}>
+      <img
+        src={banner3}
+        className='mt-1 bg-[var(--tg-theme-bg-color)] rounded w-full h-full lg:hidden'
+        alt='banner'
+      />
+    </div>
+  </SwiperSlide>
+</Swiper>
       {/* <MainButton text="Send Message" onClick={handleButtonClick} /> */}
 
     </section>
+    
+    </TrackClick>
     </>
   )
 }

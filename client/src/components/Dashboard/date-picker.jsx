@@ -1,14 +1,14 @@
 import React, { useState } from "react";
+import { FaCalendarAlt, FaChevronDown } from "react-icons/fa";
 
 const DatePicker = ({ onDateChange }) => {
   const [selectedRange, setSelectedRange] = useState("Last 24 Hours");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = (range) => {
-    console.log("Selected range:", range);
     setSelectedRange(range);
-    setIsOpen(false); // Close the dropdown after selection
-    onDateChange(range); // Call the onDateChange function with the selected range
+    setIsOpen(false);
+    onDateChange(range);
   };
 
   const ranges = [
@@ -23,26 +23,30 @@ const DatePicker = ({ onDateChange }) => {
   ];
 
   return (
-    <div className="relative">
-      {/* Dropdown Trigger Button */}
-      <button
-          type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
-        {selectedRange}
-      </button>
+    <div className="relative w-50">
+      {/* Input Field as Dropdown Trigger */}
+      <div className="relative">
+        <input
+          type="text"
+          readOnly
+          value={selectedRange}
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full px-7 py-2 pr-10 bg-white border border-gray-300 rounded-md shadow-sm text-md font-medium text-gray-700 focus:outline-none focus:ring-0 hover:bg-gray-50 cursor-pointer"
+        />
+        <FaCalendarAlt className="absolute left-1 top-3 text-gray-500" />
+        <FaChevronDown className="absolute right-3 top-3 text-gray-400 pointer-events-none" />
+      </div>
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        <div className="absolute z-10 mt-2 w-full rounded-md shadow-lg bg-white border border-gray-200">
           <div className="py-1">
             {ranges.map((range) => (
               <button
-                            type="button"
+                type="button"
                 key={range}
                 onClick={() => handleSelect(range)}
-                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-left"
               >
                 {range}
               </button>
@@ -50,7 +54,6 @@ const DatePicker = ({ onDateChange }) => {
           </div>
         </div>
       )}
-      <p className="text-sm text-gray-400 mt-2">{selectedRange}</p>
     </div>
   );
 };

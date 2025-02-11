@@ -5,7 +5,7 @@ import isAdmin from '../utils/isAdmin'
 const AdminPermision = ({children}) => {
     // const user = useSelector(state => state.user)
     const user = JSON.parse(localStorage.getItem('user'))
-console.log(" user from route.........",user)
+
 
   return (
     <>

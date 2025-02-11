@@ -7,12 +7,12 @@ const AverageTimeCard = ({data}) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex items-center space-x-4">
-        <div className="p-3 bg-yellow-100 rounded-full">
-          <FaClock className="text-yellow-500 text-2xl" />
+        <div className="p-3 bg-gray-200 rounded-full">
+          <FaClock className="text-gray-700 text-1xl" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-gray-700">Average Time</h2>
-          <p className="text-2xl  text-gray-900">{data?.current}</p>
+          <h2 className="text-1xl">Average Time</h2>
+          <p className="text-2xl font-semibold">{data?.current}</p>
         </div>
       </div>
    <div className="mt-4 flex items-center space-x-2">
