@@ -14,6 +14,8 @@ import { BackButton } from '@vkruglikov/react-telegram-web-app'
 import { useTranslation } from 'react-i18next'
 import { AiOutlineDashboard, AiOutlineUnorderedList } from "react-icons/ai";
 import { FaList, FaBoxes, FaUpload, FaShoppingCart, FaMapMarkerAlt } from "react-icons/fa";
+import { useQuery } from '@tanstack/react-query'
+import { fetchUser } from '../provider/fetchData'
 const parseJSON = (jsonString) => {
   try {
     return (new Function('return ' + jsonString))();
@@ -23,15 +25,25 @@ const parseJSON = (jsonString) => {
   }
 };
 const UserMenu = ({close}) => {
+  const { data: user, isLoading, isError } = useQuery({
+    queryKey: ['user'],
+    queryFn: fetchUser,
+  });  
+  
   //  const user = useSelector((state)=> state.user)
-  const userString = localStorage.getItem('user');
-  const user = JSON.parse(userString);
-  // Parse the JSON string into a JavaScript object
-  // const user = userString ? JSON.parse(userString) : null;
-  console.log("user...................",user)
+  // const userString = localStorage.getItem('user');
+  // const user = JSON.parse(userString);
+  // // Parse the JSON string into a JavaScript object
+  // // const user = userString ? JSON.parse(userString) : null;
+  // console.log("user...................",user)
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
+
+  
+
+  //  if (isLoading) return <div>Loading...</div>;
+  console.log("user..............",user)
    const handleLogout = async()=>{
         try {
           const response = await Axios({
@@ -66,24 +78,26 @@ const UserMenu = ({close}) => {
   };
 
   const getLinkClasses = (path) =>
-    `px-2 py-2 flex items-center gap-2 rounded ${
-      location.pathname === path ? "bg-gray-200 text-gray-800" : "hover:bg-gray-100"
+    `md:px-2 md:py-2 py-1 flex items-center md:gap-2 gap-1 rounded ${
+      location.pathname === path ? "bg-gray-200 text-gray-800" : "md:hover:bg-gray-100"
     }`;
 const {t}=useTranslation()
   return (
+ <>
+{isLoading?<p>Loading...</p>:
     <div className='md:bg-white'>
- <BackButton onClick={handleBackButtonClick}/>
-        <div className='font-semibold'>{t('my_account')}</div>
-        <div className='text-sm flex items-center gap-2'>
-          <span className='max-w-52 text-ellipsis line-clamp-1'>{tguser?.first_name   ||""} <span className='text-medium text-red-600'>{user.role === "ADMIN" ? "(Admin)" : "" }</span></span>
-          <Link onClick={handleClose} to={"/dashboard/profile"} className='hover:text-primary-200'>
-            <HiOutlineExternalLink size={15}/>
-          </Link>
-        </div>
+          <BackButton onClick={handleBackButtonClick} />
+      <div className='font-semibold sm:text-xs'>{t('my_account')}</div>
+      <div className='text-sm flex items-center gap-2 sm:gap-1 sm:text-xs'>
+        <span className='max-w-52 text-ellipsis line-clamp-1'>{tguser?.first_name || ""} <span className='text-medium text-red-600'>{user.role === "ADMIN" ? "(Admin)" : ""}</span></span>
+        <Link onClick={handleClose} to={"/dashboard/profile"} className='hover:text-primary-200 sm:hover:text-gray-700'>
+          <HiOutlineExternalLink size={15} />
+        </Link>
+      </div>
 
-        <Divider/>
+    <Divider className='h-0.5' />
 
-        <div className='text-sm grid gap-5 p-2'>
+    <div className='text-sm grid gap-5 p-2 sm:gap-2 sm:text-xs'>
       {isAdmin(user.role) && (
         <Link onClick={handleClose} to="/dashboard/" className={getLinkClasses("/dashboard/")}>
           <AiOutlineDashboard /> Dashboard
@@ -116,7 +130,9 @@ const {t}=useTranslation()
         <FaMapMarkerAlt /> {t('saved_address')}
       </Link>
     </div>
-    </div>
+  </div>
+}
+  </>
   )
 }
 

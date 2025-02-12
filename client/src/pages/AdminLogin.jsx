@@ -77,7 +77,7 @@ const AdminLogin = () => {
                     <div className='grid gap-1'>
                         <label htmlFor='email'>Email :</label>
                         <input
-                            type='email'
+                            // type='email'
                             id='email'
                             className='bg-blue-50 p-2 border rounded outline-none focus:border-primary-200'
                             name='email'

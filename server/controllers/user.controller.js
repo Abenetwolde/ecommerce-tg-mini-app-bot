@@ -12,6 +12,7 @@ import jwt from 'jsonwebtoken'
 export async function registerUserController(request, response) {
     try {
         const { name, email, password } = request.body
+        console.log(request.body)
 
         if (!name || !email || !password) {
             return response.status(400).json({
@@ -21,8 +22,8 @@ export async function registerUserController(request, response) {
             })
         }
 
-        const user = await UserModel.findOne({ email })
-
+        const user = await UserModel.findOne({ name:name })
+       
         if (user) {
             return response.json({
                 message: "Already register email",
@@ -36,16 +37,23 @@ export async function registerUserController(request, response) {
 
         const payload = {
             name,
-            email,
+            // email,
             password: hashPassword
         }
+        let newUser
+try {
+     newUser = new UserModel(payload)  
 
-        const newUser = new UserModel(payload)
-        const save = await newUser.save()
-        const accesstoken = await generatedAccessToken(user._id)
-        const refreshToken = await genertedRefreshToken(user._id)
+    const save = await newUser.save()
+} catch (error) {
+    console.log(error)
+}
 
-        const updateUser = await UserModel.findByIdAndUpdate(user?._id, {
+
+        const accesstoken = await generatedAccessToken(newUser._id)
+        const refreshToken = await genertedRefreshToken(newUser._id)
+
+        const updateUser = await UserModel.findByIdAndUpdate(newUser?._id, {
             last_login_date: new Date()
         })
 
@@ -229,7 +237,7 @@ export async function loginController(request, response) {
     try {
         const { email, password } = request.body
 
-
+console.log("login", email)
         if (!email || !password) {
             return response.status(400).json({
                 message: "provide email, password",
