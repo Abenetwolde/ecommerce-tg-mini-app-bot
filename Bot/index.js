@@ -21,7 +21,7 @@ bot.start((ctx) => {
         parse_mode: "Markdown",
         ...Markup.inlineKeyboard([
           //https://ecommerce-tg-mini-app-bot.vercel.app  https://ecommerce-tg-mini-app-bot-1.onrender.com
-          Markup.button.webApp("🚀 Order Now & Get It Fast!", `https://ecommerce-tg-mini-app-bot.vercel.app`),
+          Markup.button.webApp("🚀 Order Now & Get It Fast!", `https://gcubr2s13nyk.share.zrok.io`),
         ]) 
 });   
 })

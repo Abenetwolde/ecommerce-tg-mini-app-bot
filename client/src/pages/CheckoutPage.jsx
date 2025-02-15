@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { loadStripe } from '@stripe/stripe-js'
 import successAlert from '../utils/SuccessAlert'
 import useTelegramUser from '../hookscopy/useTelegramUser'
+import ethiopia from './ethiopia (1).png'
 
 const CheckoutPage = () => {
   const { notDiscountTotalPrice, totalPrice, totalQty, fetchCartItem, fetchOrder } = useGlobalContext()
@@ -147,37 +148,37 @@ const user =useTelegramUser();
       const orderId = responseData?.orders?._id;
           
       const orderId4Digit = responseData?.orders?.orderId;
-      const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendPhoto`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            chat_id: user?.id||"1213", // User's Telegram ID
-            photo: responseData?.orders?.products[0]?.product_details?.image[0], // URL of the image
-            caption: `Hello, ${user?.first_name || "first name"}! Your order has been placed successfully. Order ID: ${orderId4Digit || "1234"}`,
+  //     const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendPhoto`, {
+  //       method: 'POST',
+  //       headers: {
+  //           'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //           chat_id: user?.id||"1213", // User's Telegram ID
+  //           photo: responseData?.orders?.products[0]?.product_details?.image[0], // URL of the image
+  //           caption: `Hello, ${user?.first_name || "first name"}! Your order has been placed successfully. Order ID: ${orderId4Digit || "1234"}`,
 
-            reply_markup: {
-              inline_keyboard: [
-                  [
-                      {
-                          text: "View your Order ↗️",
-                          web_app: {
-                              url: `${import.meta.env.VITE_DEV}/order/${orderId}`
-                          }
-                      }
-                  ]
-              ]
-          }
-        }),
-    });
-        if (telegramResponse.ok) {
-      const result = await telegramResponse.json();
-      successAlert('Message sent successfully:');
+  //           reply_markup: {
+  //             inline_keyboard: [
+  //                 [
+  //                     {
+  //                         text: "View your Order ↗️",
+  //                         web_app: {
+  //                             url: `${import.meta.env.VITE_DEV}/order/${orderId}`
+  //                         }
+  //                     }
+  //                 ]
+  //             ]
+  //         }
+  //       }),
+  //   });
+  //       if (telegramResponse.ok) {
+  //     const result = await telegramResponse.json();
+  //     successAlert('Message sent successfully:');
 
-  } else {
-    successAlert('Failed to send message:', telegramResponse.statusText);
-  }
+  // } else {
+  //   successAlert('Failed to send message:', telegramResponse.statusText);
+  // }
       if (fetchCartItem) {
         fetchCartItem();
       }
@@ -186,6 +187,103 @@ const user =useTelegramUser();
       }
     } catch (error) {
       AxiosToastError(error);
+    }
+  };
+  const handleTelegramStarsPayment = async () => {
+    try {
+      // Create an order on your server
+      toast.loading("Loading...");
+      const response = await Axios({
+        ...SummaryApi.payment_url, // API endpoint to create a payment
+        data: {
+          list_items: cartItemsList,
+          addressId: addressList[selectAddress]?._id,
+          subTotalAmt: totalPrice,
+          totalAmt: totalPrice,
+        },
+      });
+
+      const { data: responseData } = response;
+      const orderId = responseData?.orders?._id;
+          
+      const orderId4Digit = responseData?.orders?.orderId;
+
+      // Create an invoice link using Telegram's Bot API
+      const invoiceResponse = await fetch(
+        `https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/createInvoiceLink`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: 'Purchase of Digital Goods',
+            description: 'Thank you for your purchase!',
+            payload: JSON.stringify({ orderId }), // Unique payload for the invoice
+            provider_token: '', // Empty for Telegram Stars
+            currency: 'XTR', // Telegram Stars currency code
+            prices: [{ label: 'Total Amount', amount: totalPrice * 100 }], // Amount in smallest units
+          }),
+        }
+      );
+
+      const invoiceData = await invoiceResponse.json();
+
+      if (invoiceData.ok) {
+        const invoiceLink = invoiceData.result;
+
+        // Open the invoice within the Telegram WebApp
+        window.Telegram.WebApp.openInvoice(invoiceLink, async (status) => {
+          if (status === 'paid') {
+            toast.success('Payment successful!');
+            if (fetchCartItem) fetchCartItem();
+            if (fetchOrder) fetchOrder();
+
+            // Send a confirmation message to the user via Telegram
+            await fetch(
+              `https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendMessage`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  chat_id: user?.id,
+                  text: `Hello, ${
+                    user?.first_name || 'Customer'
+                  }! Your order has been placed successfully. Order ID: ${
+                    orderId || 'N/A'
+                  }`,
+                  reply_markup: {
+                    inline_keyboard: [
+                      [
+                        {
+                          text: 'View your Order ↗️',
+                          web_app: {
+                            url: `${import.meta.env.VITE_DEV}/order/${orderId}`,
+                          },
+                        },
+                      ],
+                    ],
+                  },
+                }),
+              }
+            );
+
+            // Optionally, close the WebApp after a delay
+            setTimeout(() => {
+              window.Telegram.WebApp.close();
+            }, 2000);
+          } else {
+            toast.error('Payment failed or was cancelled.');
+          }
+        });
+      } else {
+        toast.error('Failed to create invoice. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during Telegram Stars payment:', error);
+      toast.error('An error occurred.', error);
     }
   };
   const telegram=useTelegramUser()
@@ -252,10 +350,27 @@ const user =useTelegramUser();
               <p>{DisplayPriceInRupees(totalPrice)}</p>
             </div>
           </div>
-          <div className='w-full flex flex-col gap-4'>
-            <button className='py-2 px-4 bg-[var(--tg-theme-button-color)]  rounded text-white font-semibold' onClick={handleOnlinePayment}>Online Payment</button>
-
+          <div className='w-full flex flex-col gap-4 mt-3'>
+          <button
+      className='py-2 px-4 bg-[var(--tg-theme-secondary-bg-color)] border-[var(--tg-theme-bg-color)] rounded text-white font-semibold flex items-center justify-center'
+      onClick={handleOnlinePayment}
+    >
+   
+      Pay with Chapa
+      <img
+        src={ethiopia}
+        alt='Ethiopian Flag'
+        className='w-6 h-6 ml-2'
+      />
+    </button>
+    <button
+    className='py-2 px-4 bg-[var(--tg-theme-bg-color)]  rounded text-white font-semibold  text-[var(--tg-theme-button-color)] bg-[var(--tg-theme-secondary-bg-color)]'
+    onClick={handleTelegramStarsPayment}
+  >
+    Pay with Telegram Stars 🌟
+  </button>
             <button className='py-2 px-4 border-2 border-[var(--tg-theme-button-color)] font-semibold text-[var(--tg-theme-button-color)] ' onClick={handleCashOnDelivery}>Cash on Delivery</button>
+  
           </div>
         </div>
       </div>

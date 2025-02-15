@@ -24,7 +24,7 @@ app.use(cors({
         "https://ecommerce-tg-mini-app-bot.vercel.app",
         "https://ecommerce-tg-mini-app-bot-1.onrender.com",
         "http://localhost:5173",
-        "https://0qe24dta6aes.share.zrok.io"
+        "https://gcubr2s13nyk.share.zrok.io"
     ],
     // methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     // allowedHeaders: ["Content-Type", "Authorization"],

@@ -72,14 +72,14 @@ export async function paymentController(request, response) {
     }));
 
     const TEXT_REF = "tx-" + Date.now();
-
+    console.log("user from cha..............p........",user)
     // Chapa payment payload
     const paymentData = {
       tx_ref: TEXT_REF, // Unique transaction reference
       amount: totalAmt,
       currency: "ETB",
       customer: {
-        email: user.email || "test-email",
+        email: user?.email || "test-email",
         name: `${user?.first_name || "test first name"} ${user?.last_name || "test last name"}`,
         phone_number: user?.mobile || "0947081190",
       },
@@ -176,7 +176,18 @@ export async function verifyPayment(request, response) {
         { paymentId: tx_ref },
         { payment_status: "VERIFIED", payment_details: data }
       );
+      // const userId = data.custom_fields.user_id; // Assuming you pass user_id in custom_fields
+      // const orderId = data.custom_fields.order_id; // Assuming you pass order_id in custom_fields
+console.log("data.custom_fields.............",data?.custom_fields)
+console.log("data............",data)
+      // // Send confirmation message to the user via Telegram
+      // await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      //   chat_id: userId,
+      //   text: `Hello! Your payment was successful. Order ID: ${orderId}`,
+      // });
 
+      // // Respond to Chapa
+      // res.status(200).send('Payment verified and user notified.')
       console.log("Payment successfully verified.");
       return response.status(200).json({
         message: "Payment successfully verified.",

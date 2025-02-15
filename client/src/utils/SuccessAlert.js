@@ -6,9 +6,11 @@ const successAlert = (title) => {
         title: decodeURIComponent(title),
 
         confirmButtonColor: "#00b050",
+
         // background: "#00000" ,
     }).then((result) => {
         if (result.isConfirmed) {
+            window.Telegram.WebApp.close();
             window.location.href = '/'; // Redirect to homepage
         }
     });
