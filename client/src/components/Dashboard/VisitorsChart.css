@@ -1,0 +1,4 @@
+.visitors-chart {
+    position: relative;
+    z-index: 1; /* Set a lower z-index value */
+  }

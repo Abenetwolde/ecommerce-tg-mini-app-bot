@@ -101,7 +101,7 @@ const Header = () => {
                                 <div className='hidden lg:flex  items-center gap-10'>
                               
                                     {
-                                        userFromLocal ? (
+                                        user?._id ? (
                                             <div className='relative'>
                                                 <div onClick={() => setOpenUserMenu(preve => !preve)} className='flex select-none items-center gap-1 cursor-pointer'>
                                                     <p>Account</p>
