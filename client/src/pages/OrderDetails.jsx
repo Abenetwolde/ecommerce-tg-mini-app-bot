@@ -38,7 +38,7 @@ const OrderDetails = () => {
       if (cancelResponse.status === 200) {
         // Notify via Telegram bot
         const telegramResponse = await fetch(
-          `https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendMessage`,
+          `https://api.telegram.org/bot${import.meta.env.VITE_TOKEN}/sendMessage`,
           {
             method: "POST",
             headers: {

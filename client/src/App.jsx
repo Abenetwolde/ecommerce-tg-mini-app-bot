@@ -88,7 +88,7 @@ function App() {
             toast.error(response?.data?.error);
         }
     } catch (error) {
-        toast.error(`Authentication failed. ${error}`);
+        toast.error(`Sorry the Server is down now. ${error}`);
     }
 };
 
@@ -156,7 +156,7 @@ const fetchSubCategory = async () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-    <div className="contentWrapper bg-tg-theme-bg text-tg-theme-text px-4 py-1 shadow-md">
+    <div className="contentWrapper bg-tg-theme-bg text-tg-theme-text px-2 py-1 shadow-md">
       {isLoading ? (
         <div className=" flex items-center justify-center h-screen w-screen fixed top-0 left-0  z-50">
         <div className="text-center">

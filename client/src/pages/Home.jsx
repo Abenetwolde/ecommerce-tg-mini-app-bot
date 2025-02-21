@@ -58,7 +58,13 @@ const Home = () => {
       console.error('Error sending message:', error);
     }
   };
-
+  const amTranslations = {
+    "Most Viewed": "የበለጠ የታየው",
+    "Recommended": "የሚመከረው",
+    "Electronics": "ኤሌክትሮኒክስ",
+    "Clothing": "አልባሳት"
+  };
+  const selectedLanguage = localStorage.getItem('i18nextLng') || 'en'; 
   const handleRedirectProductListpage = (id, cat) => {
     console.log(id, cat)
     const subcategory = subCategoryData.find(sub => {
@@ -86,9 +92,11 @@ const Home = () => {
   const telegram = useTelegramUser()
   const isLoginPage = location.pathname === '/login';
   const isSearchPage = location.pathname === "/search"
-  
+  const excludedCategories = ["Most Viewed", "Recommended"];
+  const includedCategories = ["Most Viewed", "Recommended"];
   const loadingCardNumber = new Array(6).fill(null)
-  return (
+
+   return (
     <>
    <TrackClick name="Home Page" payload={{
         foo: "home"
@@ -139,7 +147,7 @@ const Home = () => {
         <div className="swiper-pagination"></div>
       {/* </div> */}
       
-      <p className='px-4 mx-auto text-sm font-semibold '>{t('category')}</p>
+      <p className='px-4 my-2 mx-auto text-sm font-semibold '>{t('category')}</p>
       <div className='container mx-auto px-4 my-2 overflow-x-auto no-scrollbar '>
   <div className='flex gap-2'>
     {
@@ -160,7 +168,7 @@ const Home = () => {
           </div>
         ))
       ) : (
-        categoryData.map((cat, index) => {
+        categoryData.filter(cat => !excludedCategories.includes(cat.name)).map((cat, index) => {
           return (
             <div key={cat._id + "displayCategory"} className='w-20 flex-shrink-0 rounded-lg h-full bg-[var(--tg-theme-secondary-bg-color)] border-bg-[var(--tg-theme-bg-color)]' onClick={() => handleRedirectProductListpage(cat._id, cat.name)}>
               <div className='rounded-sm overflow-hidden p-1'>
@@ -192,12 +200,16 @@ const Home = () => {
           </div>
         </div>
         ) :
-        categoryData?.map((c, index) => {
+        categoryData
+        ?.filter(c => includedCategories.includes(c?.name))
+        .map((c, index) => {
+          const displayName = selectedLanguage === "am" ? amTranslations[c?.name] || c?.name : c?.name;
+      
           return (
             <CategoryWiseProductDisplay
               key={c?._id + "CategorywiseProduct"}
               id={c?._id}
-              name={c?.name}
+              name={displayName}
             />
           )
         })

@@ -41,13 +41,13 @@ const CardProduct = ({data}) => {
             }
         </div> */}
       </div>
-      <div className='px-2 lg:px-0 font-medium text-ellipsis text-sm lg:text-base line-clamp-2'>
+      <div className='px-2 pb-1 lg:px-0 font-medium text-ellipsis text-sm lg:text-base line-clamp-2'>
         {data.name}
       </div>
-      <div className='w-fit gap-1 px-2 lg:px-0 text-sm lg:text-base'>
+      {/* <div className='w-fit gap-1 px-2 lg:px-0 text-sm lg:text-base'>
         {data.unit} 
         
-      </div>
+      </div> */}
 
       <div className='px-2 lg:px-0 flex items-center justify-between gap-1 lg:gap-3 text-sm lg:text-base'>
         <div className='flex items-center gap-1'>

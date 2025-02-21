@@ -12,14 +12,14 @@ const Success = () => {
   useEffect(() => {
     if (message) {
       successAlert(decodeURIComponent(message));
-      setTimeout(() => {
-        window.Telegram.WebApp.close();
-      }, 2000);
+      // setTimeout(() => {
+      //   window.Telegram.WebApp.close();
+      // }, 2000);
     }else{
       successAlert("Payment Successfully")
-      setTimeout(() => {
-        window.Telegram.WebApp.close();
-      }, 2000);
+      // setTimeout(() => {
+      //   window.Telegram.WebApp.close();
+      // }, 2000);
     }
   }, [message]);
     console.log("location",)  

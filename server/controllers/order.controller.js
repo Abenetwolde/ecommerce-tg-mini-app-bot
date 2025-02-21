@@ -314,7 +314,7 @@ export const getOrderById = async (req, res) => {
     const { orderId } = req.params;
     const neworderId = `ORD-${orderId}`.toString()
   
-    const order = await OrderModel.findById(orderId)
+    const order = await OrderModel.findOne({orderId:orderId})
       .populate('userId')
       // .populate('productId')
       .populate('delivery_address');
@@ -359,8 +359,8 @@ console.log(`order_status..........`,order_status)
       }
 
       // Find the order and update its status
-      const order = await OrderModel.findByIdAndUpdate(
-          orderId , // Find by orderId
+      const order = await OrderModel.findOneAndUpdate(
+          {orderId:orderId} , // Find by orderId
           { order_status }, // Update the order_status
           { new: true } // Return the updated document
       );

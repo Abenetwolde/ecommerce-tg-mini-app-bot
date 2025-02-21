@@ -35,7 +35,7 @@ const user =useTelegramUser();
 
       const { data: responseData } = response
       const orderId = responseData.data[0]?.orderId;
-      const telegramResponse = await fetch(`https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendPhoto`, {
+      const telegramResponse = await fetch(`https://api.telegram.org/bot${import.meta.env.VITE_TOKEN}/sendPhoto`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ const user =useTelegramUser();
       });
   
       const { data: responseData } = response;
-          console.log("product Image......",responseData.orders.products[0]?.product_details?.image[0])
+          // console.log("product Image......",responseData.orders.products[0]?.product_details?.image[0])
       const successMessage = "online Payment successful!";
       const encodedMessage = encodeURIComponent(successMessage);
       window.location.href = `${responseData.payment_url}?message=${encodedMessage}`;
@@ -210,7 +210,7 @@ const user =useTelegramUser();
 
       // Create an invoice link using Telegram's Bot API
       const invoiceResponse = await fetch(
-        `https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/createInvoiceLink`,
+        `https://api.telegram.org/bot${import.meta.env.VITE_TOKEN}/createInvoiceLink`,
         {
           method: 'POST',
           headers: {
@@ -228,7 +228,7 @@ const user =useTelegramUser();
       );
 
       const invoiceData = await invoiceResponse.json();
-
+console.log("invoice data.......", invoiceData)
       if (invoiceData.ok) {
         const invoiceLink = invoiceData.result;
 
@@ -238,42 +238,46 @@ const user =useTelegramUser();
             toast.success('Payment successful!');
             if (fetchCartItem) fetchCartItem();
             if (fetchOrder) fetchOrder();
-
-            // Send a confirmation message to the user via Telegram
-            await fetch(
-              `https://api.telegram.org/bot6109494690:AAGHFhZ0U9v5tz2Ii0rVlE3xm2j4bg5OaVA/sendMessage`,
+try {
+  await fetch(
+    `https://api.telegram.org/bot${import.meta.env.VITE_TOKEN}/sendMessage`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: user?.id,
+        text: `Hello, ${
+          user?.first_name || 'Customer'
+        }! Your order has been placed successfully. Order ID: ${
+          orderId || 'N/A'
+        }`,
+        reply_markup: {
+          inline_keyboard: [
+            [
               {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
+                text: 'View your Order ↗️',
+                web_app: {
+                  url: `${import.meta.env.VITE_DEV}/order/${orderId}`,
                 },
-                body: JSON.stringify({
-                  chat_id: user?.id,
-                  text: `Hello, ${
-                    user?.first_name || 'Customer'
-                  }! Your order has been placed successfully. Order ID: ${
-                    orderId || 'N/A'
-                  }`,
-                  reply_markup: {
-                    inline_keyboard: [
-                      [
-                        {
-                          text: 'View your Order ↗️',
-                          web_app: {
-                            url: `${import.meta.env.VITE_DEV}/order/${orderId}`,
-                          },
-                        },
-                      ],
-                    ],
-                  },
-                }),
-              }
-            );
+              },
+            ],
+          ],
+        },
+      }),
+    }
+  ); 
+} catch (error) {
+  toast.error('Payment failed or was cancelled.',error);
+}
+            // Send a confirmation message to the user via Telegram
+         
 
             // Optionally, close the WebApp after a delay
-            setTimeout(() => {
-              window.Telegram.WebApp.close();
-            }, 2000);
+            // setTimeout(() => {
+            //   window.Telegram.WebApp.close();
+            // }, 2000);
           } else {
             toast.error('Payment failed or was cancelled.');
           }
@@ -335,7 +339,7 @@ const user =useTelegramUser();
             </div>
             <div className='flex  justify-between   text-sm' >
               <p>Items total</p>
-              <p className='flex items-center gap-2'><span className='line-through text-neutral-400'>{DisplayPriceInRupees(notDiscountTotalPrice)}</span><span>{DisplayPriceInRupees(totalPrice)}</span></p>
+              <p className='flex items-center gap-2'><span className=' text-neutral-400'></span><span>{DisplayPriceInRupees(totalPrice)}</span></p>
             </div>
             <div className='flex  justify-between   text-sm'>
               <p>Quntity total</p>

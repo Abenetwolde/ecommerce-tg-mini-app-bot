@@ -10,7 +10,7 @@ const successAlert = (title) => {
         // background: "#00000" ,
     }).then((result) => {
         if (result.isConfirmed) {
-            window.Telegram.WebApp.close();
+            // window.Telegram.WebApp.close();
             window.location.href = '/'; // Redirect to homepage
         }
     });

@@ -72,7 +72,8 @@ const ProductDisplayPage = () => {
       <div className=''>
           <div className=' lg:min-h-[65vh] lg:max-h-[65vh] rounded min-h-56 max-h-56 h-full w-full'>
               <img
-                  src={data.image[image]}
+              
+                  src={data.image[image]?.replace(/^http:/, 'https:')}
                   className='w-full h-full object-scale-down'
               /> 
           </div>
@@ -119,10 +120,10 @@ const ProductDisplayPage = () => {
                   <p className='font-semibold'>Description</p>
                   <p className='text-base'>{data.description}</p>
               </div>
-              <div>
+              {/* <div>
                   <p className='font-semibold'>Unit</p>
                   <p className='text-base'>{data.unit}</p>
-              </div>
+              </div> */}
               {
                 data?.more_details && Object.keys(data?.more_details).map((element,index)=>{
                   return(
@@ -140,12 +141,12 @@ const ProductDisplayPage = () => {
       <div className='p-4 lg:pl-7 text-base lg:text-lg'>
           {/* <p className=' bg-[var(--tg-theme-secondary-bg-color)] w-fit px-2 rounded-full'>10 Min ago</p>  */}
           <h2 className='text-lg font-semibold lg:text-3xl'>{data.name}</h2>  
-          <p className=''>{data.unit}</p> 
+          {/* <p className=''>{data.unit}</p>  */}
           <Divider/>
           <div>
             <p className=''>Price</p> 
             <div className='flex items-center gap-2 lg:gap-4'>
-              <div className='border px-4 py-2 rounded  w-fit'>
+              <div className=' px-4 py-2 rounded  w-fit'>
                   <p className='font-semibold text-lg lg:text-xl'>{DisplayPriceInRupees(pricewithDiscount(data.price,data.discount))}</p>
               </div>
               {
