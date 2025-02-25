@@ -2,6 +2,18 @@ const { Telegraf ,Markup} = require('telegraf');
 const http = require('http');
 const express = require('express');
 const bot = new Telegraf('7933890817:AAHuRrmLm3zdypK1Z2jdKhlShgg0PlBALTE');
+const mongoose = require('mongoose');
+const TGBotUser = require('./user.model');
+mongoose.connect('mongodb://localhost:27017/ecommerce_tg_webapp', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
 const app = express();
 app.use(express.json()); //
 app.post('/webapp-data', (req, res) => {
@@ -11,7 +23,7 @@ app.post('/webapp-data', (req, res) => {
   bot.telegram.sendMessage(userId, `You sent: ${data}`);
   res.status(200).send({ message: 'Data received and message sent' });
 })  
-bot.start((ctx) => {
+bot.start(async(ctx) => {
     ctx.reply(`Hello, ${ctx.from.first_name}! 👋
 
 🛍 Shop your favorite products right here inside Telegram!
@@ -21,9 +33,29 @@ bot.start((ctx) => {
         parse_mode: "Markdown",
         ...Markup.inlineKeyboard([
           //https://ecommerce-tg-mini-app-bot.vercel.app  https://ecommerce-tg-mini-app-bot-1.onrender.com
-          Markup.button.webApp("🚀 Order Now & Get It Fast!", `https://xexymtbtkdkj.share.zrok.io`),
+          Markup.button.webApp("🚀 Order Now & Get It Fast!", `https://2v9ierbf19ep.share.zrok.io`),
         ]) 
-});   
+}); 
+const { id, first_name, last_name, username } = ctx.from;
+
+// Register the user in the database
+try {
+  let user = await TGBotUser.findOne({ telegramId: id });
+  if (!user) {
+    user = new TGBotUser({
+      telegramId: id,
+      firstName: first_name,
+      lastName: last_name,
+      username: username,
+    });
+    await user.save();
+    console.log('User registered:', user);
+  } else {
+    console.log('User already registered:', user);
+  }
+} catch (error) {
+  console.error('Error registering user:', error);
+}  
 })
 // bot.on('callback_query', async (ctx) => {
 //   const callbackData = ctx.callbackQuery.data;

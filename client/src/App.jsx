@@ -22,11 +22,13 @@ import "@fontsource/poppins"; // Defaults to weight 400
 import "@fontsource/poppins/400.css"; // Specify weight
 import "@fontsource/poppins/400-italic.css";
 import splash_screen from './assets/splash_screen.jpeg'
+import { useNavigate } from 'react-router-dom';
 // import { setAccessToken } from '../store/userSlice'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 
 function App() {
+  const navigate = useNavigate()
   const queryClient = new QueryClient();
   const tg = useTelegram()
   const userState = useSelector((state) => state?.user);
@@ -34,11 +36,25 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(true); // State for showing onboarding screen
 
-
+  const userFromLocal = localStorage.getItem('user');
   // console.log("tg",tg)
   const dispatch = useDispatch()
   const location = useLocation()
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Detect initial screen size
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Update state on resize
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize); // Cleanup
+  }, []);
+  useEffect(() => {
+    if (!userFromLocal && !isMobile) {
+      navigate("/login")// Redirect to login if user is not found & device is not mobile
+    }
+  }, [userFromLocal, isMobile]);
   const isTelegramReady = useIsReadyTelegram();
   const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding');
   useEffect(() => {
@@ -74,7 +90,7 @@ function App() {
                 avatar: user?.photo_url || '',
             },
         });
-        toast.success("toekn,",response?.data?.data?.accessToken);
+
         if (response?.data?.success) {
             // toast.success(response.data.message, { style: toastStyle });
              localStorage.setItem('accesstoken', response?.data?.data?.accessToken);
@@ -114,9 +130,6 @@ useEffect(async () => {
 }, []);
 const fetchUser = async () => {
   const userData = await fetchUserDetails()
-  // toast.success("User Data fetched",userData?.data)
-  console.log("userData///////////",userData)
-  // localStorage.setItem('user', JSON.stringify(userData.data));
   dispatch(setUserDetails(userData.data))
 }
 

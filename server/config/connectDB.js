@@ -11,7 +11,7 @@ if(!process.env.MONGODB_URI){
 
 async function connectDB(){
     try {
-        await mongoose.connect(process.env.MONGODB_URI)
+        await mongoose.connect(process.env.MONGODB_URI_ATLAT)
         console.log("connect DB")
         await ProductModel.syncIndexes();
         console.log('Indexes synced successfully.');

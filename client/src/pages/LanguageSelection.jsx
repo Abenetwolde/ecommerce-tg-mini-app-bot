@@ -2,6 +2,7 @@ import { useState } from "react";
 import amharic from "../assets/amharic.png";
 import english from "../assets/english.jpeg";
 import logo from "../assets/logo.jpeg";
+import ad3 from '../assets/ad3.png';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 export default function LanguageSelection() {
@@ -23,7 +24,7 @@ export default function LanguageSelection() {
     <div className="flex flex-col items-center justify-center  p-2 bg-[var(--tg-theme-bg-color)]">
       {/* Google Translate Icon */}
       <div className="flex flex-col items-center space-y-2">
-        <img src={logo} alt="Bot" className="rounded-sm w-20 h-20 object-cover" />
+        <img src={ad3} alt="Bot" className="rounded-sm w-20 h-20 object-cover" />
         <h2 className="text-lg font-semibold text-[var(--tg-theme-text-color)]">{t("select_language")}</h2>
         <p className="text-sm text-[var(--tg-theme-hint-color)] text-center">
           {t("language_sub")}

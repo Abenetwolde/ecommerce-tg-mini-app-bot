@@ -12,8 +12,8 @@ import { setUserDetails } from '../store/userSlice';
 
 const AdminLogin = () => {
     const [data, setData] = useState({
-        email: "",
-        password: "",
+        email: "test-account",
+        password: "1234",
     })
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
@@ -46,7 +46,7 @@ const AdminLogin = () => {
                 toast.error(response.data.message)
             }
 
-            if(response.data.success){
+            if(response?.data.success){
                 toast.success(response.data.message)
                 localStorage.setItem('accesstoken',response.data.data.accesstoken)
                 localStorage.setItem('refreshToken',response.data.data.refreshToken)
@@ -59,7 +59,7 @@ const AdminLogin = () => {
                     email : "",
                     password : "",
                 })
-                navigate("/")
+                navigate("/dashboard")
             }
 
         } catch (error) {

@@ -16,14 +16,7 @@ import { AiOutlineDashboard, AiOutlineUnorderedList } from "react-icons/ai";
 import { FaList, FaBoxes, FaUpload, FaShoppingCart, FaMapMarkerAlt } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query'
 import { fetchUser } from '../provider/fetchData'
-const parseJSON = (jsonString) => {
-  try {
-    return (new Function('return ' + jsonString))();
-  } catch (error) {
-    console.error('Error parsing JSON string:', error);
-    return null;
-  }
-};
+
 const UserMenu = ({close}) => {
   const { data: user, isLoading, isError } = useQuery({
     queryKey: ['user'],
@@ -57,7 +50,7 @@ const UserMenu = ({close}) => {
             dispatch(logout())
             // localStorage.clear()
             toast.success(response.data.message)
-            navigate("/")
+            navigate("/login")
           }
         } catch (error) {
           console.log(error)
@@ -89,7 +82,7 @@ const {t}=useTranslation()
           <BackButton onClick={handleBackButtonClick} />
       <div className='font-semibold sm:text-xs'>{t('my_account')}</div>
       <div className='text-sm flex items-center gap-2 sm:gap-1 sm:text-xs'>
-        <span className='max-w-52 text-ellipsis line-clamp-1'>{tguser?.first_name || ""} <span className='text-medium text-red-600'>{user.role === "ADMIN" ? "(Admin)" : ""}</span></span>
+        <span className='max-w-52 text-ellipsis line-clamp-1'>{tguser?.first_name || ""} <span className='text-medium text-red-600'>{user.role === "ADMIN" ? "(Admin)" : user.role === "TESTER" ?"(TESTER)":""}</span></span>
         <Link onClick={handleClose} to={"/dashboard/profile"} className='hover:text-primary-200 sm:hover:text-gray-700'>
           <HiOutlineExternalLink size={15} />
         </Link>
@@ -98,7 +91,7 @@ const {t}=useTranslation()
     <Divider className='h-0.5' />
 
     <div className='text-sm grid gap-5 p-2 sm:gap-2 sm:text-xs'>
-      {isAdmin(user.role) && (
+      {(isAdmin(user.role) || user.role === "TESTER") && (
         <Link onClick={handleClose} to="/dashboard/" className={getLinkClasses("/dashboard/")}>
           <AiOutlineDashboard /> Dashboard
         </Link>
@@ -123,12 +116,13 @@ const {t}=useTranslation()
           <FaBoxes /> Product
         </Link>
       )}
-      <Link onClick={handleClose} to="/dashboard/myorders" className={getLinkClasses("/dashboard/myorders")}>
+      { user.role === "USER" &&<Link onClick={handleClose} to="/dashboard/myorders" className={getLinkClasses("/dashboard/myorders")}>
         <FaShoppingCart /> {t('my_orders')}
-      </Link>
-      <Link onClick={handleClose} to="/dashboard/address" className={getLinkClasses("/dashboard/address")}>
+      </Link>}
+      { user.role === "USER"&&  <Link onClick={handleClose} to="/dashboard/address" className={getLinkClasses("/dashboard/address")}>
         <FaMapMarkerAlt /> {t('saved_address')}
-      </Link>
+      </Link>}
+    
     </div>
   </div>
 }

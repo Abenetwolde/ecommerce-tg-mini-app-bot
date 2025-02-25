@@ -127,23 +127,23 @@ const OrderDetails = () => {
         {/* Product List */}
         <div className="bg-[var(--tg-theme-secondary-bg-color)] p-4 rounded-lg shadow space-y-4">
           <h3 className="font-semibold">Your Orderd Items</h3>
-          {order.products.map((product) => (
+          {/* {order?.product_details?.map((product) => ( */}
             <div
-              key={product.productId}
+              // key={product.productId}
               className="flex items-center border-b py-2 last:border-b-0"
             >
               <img
-                src={product.product_details.image[0] || "/default-image.png"}
-                alt={product.product_details.name}
+                src={order?.product_details.image[0] || "/default-image.png"}
+                alt={order?.product_details.name}
                 className="w-16 h-16 object-cover rounded-md"
               />
               <div className="ml-4 flex-1">
-                <p className="font-medium">{product.product_details.name}</p>
-                <p className="text-sm">Qty: {product.quantity}</p>
+                <p className="font-medium">{order.product_details.name}</p>
+                <p className="text-sm">Qty: 1{/* {order.quantity} */}</p>
               </div>
-              <p className="font-semibold">{product.price} ETB</p>
+              <p className="font-semibold">{order.totalAmt} ETB</p>
             </div>
-          ))}
+          {/* ))} */}
         </div>
 
         {/* Order Summary */}
