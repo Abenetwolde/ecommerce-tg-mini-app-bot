@@ -4,7 +4,7 @@ const express = require('express');
 const bot = new Telegraf('7933890817:AAHuRrmLm3zdypK1Z2jdKhlShgg0PlBALTE');
 const mongoose = require('mongoose');
 const TGBotUser = require('./user.model');
-mongoose.connect('mongodb://localhost:27017/ecommerce_tg_webapp', {
+mongoose.connect('mongodb+srv://abnet:80110847@cluster0.exudn.mongodb.net/ecommerce_tg_webapp?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -33,7 +33,7 @@ bot.start(async(ctx) => {
         parse_mode: "Markdown",
         ...Markup.inlineKeyboard([
           //https://ecommerce-tg-mini-app-bot.vercel.app  https://ecommerce-tg-mini-app-bot-1.onrender.com
-          Markup.button.webApp("🚀 Order Now & Get It Fast!", `https://2v9ierbf19ep.share.zrok.io`),
+          Markup.button.webApp("🚀 Order Now & Get It Fast!", `https://ecommerce-tg-mini-app-bot.vercel.app`),
         ]) 
 }); 
 const { id, first_name, last_name, username } = ctx.from;

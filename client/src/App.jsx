@@ -93,18 +93,18 @@ function App() {
 
         if (response?.data?.success) {
             // toast.success(response.data.message, { style: toastStyle });
-             localStorage.setItem('accesstoken', response?.data?.data?.accessToken);
-            localStorage.setItem('refreshToken', response?.data?.data?.refreshToken);
+            await localStorage.setItem('accesstoken', response?.data?.data?.accessToken);
+            await localStorage.setItem('refreshToken', response?.data?.data?.refreshToken);
 
             const userDetails = await fetchUserDetails();
-            localStorage.setItem('user', userDetails?.data);
+            await localStorage.setItem('user', userDetails?.data);
             dispatch(setUserDetails(userDetails?.data));
             dispatch(setAccessToken(response?.data?.data?.accessToken)) 
         } else if (response?.data?.error) {
             toast.error(response?.data?.error);
         }
     } catch (error) {
-        toast.error(`Sorry the Server is down now. ${error}`);
+        toast.error(`Sorry the Server is down now, please try again later`);
     }
 };
 
@@ -118,9 +118,9 @@ function App() {
 };
 
 
-useEffect(() => {
- 
-  initializeApp();
+useEffect(async() => {
+  await authenticateUser();
+  // initializeApp();
 }, []);
 useEffect(async () => {
   // localStorage.clear()
