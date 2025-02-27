@@ -215,11 +215,12 @@ function App() {
             {location.pathname !== "/checkout" && <CartMobileLink />}
           </GlobalProvider>
         ) : isMobile?(
-          <div className="flex items-center justify-center h-screen">
-          <h1 className="text-red-500">The server is busy. Please try again.</h1>
+          <div className="flex flex-col items-center justify-center h-screen">
+          <FaRedo className="text-blue-500 mb-4" size={50} /> {/* Retry icon */}
+          <h1 className="text-red-500 mb-4">The server is busy. Please try again.</h1>
           <button
             onClick={handleRetry}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
             Retry
           </button>
