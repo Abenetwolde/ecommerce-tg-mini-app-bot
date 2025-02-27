@@ -26,7 +26,7 @@ import "@fontsource/poppins/400.css";
 import "@fontsource/poppins/400-italic.css";
 import splash_screen from "./assets/splash_screen.jpeg";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { FaRedo } from 'react-icons/fa'; // Import the retry icon from react-icons
 function App() {
   const navigate = useNavigate();
   const queryClient = new QueryClient();
