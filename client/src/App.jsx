@@ -153,7 +153,7 @@ function App() {
           await Promise.all([fetchCategory(), fetchSubCategory()]);
         } else {
           setIsAuthenticated(false);
-          navigate("/login"); // Redirect if authentication fails
+          // navigate("/login"); // Redirect if authentication fails
         }
       } else if (userState?.accessToken) {
         setIsAuthenticated(true); // Already authenticated
