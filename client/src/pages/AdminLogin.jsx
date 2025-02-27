@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
 import toast from 'react-hot-toast';
@@ -15,6 +15,22 @@ const AdminLogin = () => {
         email: "test-account",
         password: "1234",
     })
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    // const userFromLocal = localStorage.getItem("user");
+    // const hasCompletedOnboarding = localStorage.getItem("hasCompletedOnboarding");
+  
+    // Handle window resize for mobile detection
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+  
+      useEffect(() => {
+        if (!isMobile) {
+          return;
+        }
+      }, [ isMobile]);
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()

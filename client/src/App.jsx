@@ -216,7 +216,7 @@ function App() {
           </GlobalProvider>
         ) : isMobile?(
           <div className="flex items-center justify-center h-screen">
-          <h1 className="text-red-500">Authentication failed. Please try again.</h1>
+          <h1 className="text-red-500">The server is busy. Please try again.</h1>
           <button
             onClick={handleRetry}
             className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
