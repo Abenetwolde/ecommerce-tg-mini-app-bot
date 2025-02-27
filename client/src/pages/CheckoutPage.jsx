@@ -12,7 +12,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import successAlert from '../utils/SuccessAlert'
 import useTelegramUser from '../hookscopy/useTelegramUser'
 import ethiopia from './ethiopia (1).png'
-
+import { BackButton } from '@vkruglikov/react-telegram-web-app';
 const CheckoutPage = () => {
   const { notDiscountTotalPrice, totalPrice, totalQty, fetchCartItem, fetchOrder } = useGlobalContext()
   const [openAddress, setOpenAddress] = useState(false)
@@ -35,7 +35,7 @@ const user =useTelegramUser();
 
       const { data: responseData } = response
       const orderId = responseData.data[0]?.orderId;
-      const telegramResponse = await fetch(`https://api.telegram.org/bot${import.meta.env.VITE_TOKEN}/sendPhoto`, {
+      const telegramResponse = await fetch(`https://api.telegram.org/bot${import.meta.env.VITE_TOKEN||"7933890817:AAHuRrmLm3zdypK1Z2jdKhlShgg0PlBALTE"}/sendPhoto`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const user =useTelegramUser();
                       {
                           text: "View your Order ↗️",
                           web_app: {
-                              url: `${import.meta.env.VITE_DEV}/order/${orderId}`
+                              url: `${import.meta.env.VITE_DEV||"https://ecommerce-tg-mini-app-bot.vercel.app"}/order/${orderId}`
                           }
                       }
                   ]
@@ -210,7 +210,7 @@ const user =useTelegramUser();
 
       // Create an invoice link using Telegram's Bot API
       const invoiceResponse = await fetch(
-        `https://api.telegram.org/bot${import.meta.env.VITE_TOKEN}/createInvoiceLink`,
+        `https://api.telegram.org/bot${import.meta.env.VITE_TOKEN||"7933890817:AAHuRrmLm3zdypK1Z2jdKhlShgg0PlBALTE"}/createInvoiceLink`,
         {
           method: 'POST',
           headers: {
@@ -222,7 +222,7 @@ const user =useTelegramUser();
             payload: JSON.stringify({ orderId }), // Unique payload for the invoice
             provider_token: '', // Empty for Telegram Stars
             currency: 'XTR', // Telegram Stars currency code
-            prices: [{ label: 'Total Amount', amount: totalPrice * 100 }], // Amount in smallest units
+            prices: [{ label: 'Total Amount', amount: 5 * 100 }], // Amount in smallest units
           }),
         }
       );
@@ -259,7 +259,7 @@ try {
               {
                 text: 'View your Order ↗️',
                 web_app: {
-                  url: `${import.meta.env.VITE_DEV}/order/${orderId}`,
+                  url: `${import.meta.env.VITE_DEV||"https://ecommerce-tg-mini-app-bot.vercel.app"}/order/${orderId}`,
                 },
               },
             ],
@@ -291,8 +291,14 @@ try {
     }
   };
   const telegram=useTelegramUser()
+  const handleBackButtonClick = () => {
+    console.log('Hello, I am back button!');
+    // You can handle custom navigation logic here if needed
+    window.history.back(); // Example: goes back in the browser history
+};
   return (
     <section className=''>
+         <BackButton onClick={handleBackButtonClick} />
       <div className='container mx-auto p-4 flex flex-col lg:flex-row w-full gap-5 justify-between'>
         <div className='w-full'>
           {/***address***/}
